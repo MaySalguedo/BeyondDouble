@@ -2,9 +2,11 @@ package math.core;
 
 /**
 
-	@author Dandelion
-
 	Manages the format and convertion between differents numeric notations. 
+
+	@author Dandelion
+	@version 0.0.2
+	@since 0.0.1
 
 */
 
@@ -12,6 +14,31 @@ public class Notationer{
 
 	protected static final char DECIMAL_POINT = '.';
 	protected static final char THOUSANDS_SEPARATOR = ',';
+
+	/**
+
+		Recieves a number as a {@code StringBuilder} paramether, validates it to make sure it is infact a number and normalizes it 
+		to make readable in case it is not on a standard notation.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String[] parts = Notationer.validateAndNormalize(new StringBuilder(
+
+				"1234.56"
+
+			));
+
+		}</pre>
+		
+		The return values will be {@code parts[0]} = 1234 and {@code parts[1]} = 56
+
+		@param number Number as a {@code StringBuilder}.
+		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
+		@throw IllegalArgumentException if {@code StringBuilder number} is either {@code null} or empty.
+		@since 0.0.1
+
+	*/
 
 	protected static String[] validateAndNormalize(StringBuilder number){
 
@@ -27,14 +54,36 @@ public class Notationer{
 
 		return splitIntoIntegerAndDecimalParts(cleaned);
 
-	}/**/
+	}
 
-	protected static String format(String integerPart, String decimalPart, boolean useDecimalPoint){
+	/**
+
+		Recieves a number as two {@code String} paramethers, one representing the integer part and the other representing its decimal part 
+		and a {@code boolean} paramether that tells if the number uses decimal point notation. This paramether is {@code true} if it does.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String n = Notationer.format("1234", "56");
+
+		}</pre>
+		
+		The return values will be either {@code n} = 1,234.56 in case the {@code boolean useDecimalPointNotation} paramether if {@code true} or 
+		{@code n} = 1.234,56 in case is {@code false}.
+
+		@param integerPart Integer Part of a number.
+		@param DecimalPart Decimal Part of a number.
+		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} paramether.
+		@since 0.0.1
+
+	*/
+
+	protected static String format(String integerPart, String decimalPart, boolean useDecimalPointNotation){
 		
 		StringBuilder formatted = new StringBuilder();
 		
-		char mainSeparator = !useDecimalPoint ? DECIMAL_POINT : THOUSANDS_SEPARATOR;
-		char secondarySeparator = useDecimalPoint ? DECIMAL_POINT : THOUSANDS_SEPARATOR;
+		char mainSeparator = !useDecimalPointNotation ? DECIMAL_POINT : THOUSANDS_SEPARATOR;
+		char secondarySeparator = useDecimalPointNotation ? DECIMAL_POINT : THOUSANDS_SEPARATOR;
 
 		formatIntegerPart(formatted, integerPart, mainSeparator);
 
@@ -52,7 +101,7 @@ public class Notationer{
 	protected static StringBuilder expandScientificNotation(StringBuilder scientificNumber){
 
 		String[] parts = scientificNumber.toString().split("[Ee]");
-
+		//System.out.println(parts.length);
 		if (parts.length!=2) return scientificNumber;
 
 		int exponent = Integer.parseInt(parts[1]);
@@ -85,7 +134,7 @@ public class Notationer{
 
 				result.insert(0, "0." + "0".repeat(
 
-					- exponent - numbersBeforeDot
+					- exponent - (numbersBeforeDot!=0 ? numbersBeforeDot : 1)
 
 				));
 				
@@ -152,11 +201,11 @@ public class Notationer{
 
 		return parts.length==2 ? parts : new String[] {parts[0], ""};
 
-	}/**/
+	}
 
 	protected static String trimZeros(String str){
 
-		return str.replaceAll("^[0]+|[0]+$", "");
+		return str.replaceAll("^[0]+(?!$)"+(str.contains(".") ? "|[0]+$" : ""), "");
 
 	}
 

@@ -10,8 +10,8 @@ import math.core.Notationer;
 
 public class Digit extends Notationer{
 
-	private final String integerPart;
-	private final String decimalPart;
+	public final String integerPart;
+	public final String decimalPart;
 	public final boolean isNegative;
 
 	private boolean notation;
