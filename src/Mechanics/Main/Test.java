@@ -18,7 +18,7 @@ public class Test{
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit("00000452696834586000000");
+		Digit n = new Digit("1.23456E7");
 
 		System.out.print(n);
 		

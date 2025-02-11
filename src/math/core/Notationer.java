@@ -3,16 +3,49 @@ package math.core;
 /**
 
 	Manages the format and convertion between differents numeric notations. 
+	Intended to be only used as a stakeholder manager for its static functions.
+
+	<p>Example of use:</p>
+	<pre>{@code
+
+		public class MyClass extends Notationer{
+
+			//Rest of the code implementing the Notationer static functions
+
+		}
+
+	}</pre>
 
 	@author Dandelion
-	@version 0.0.2
-	@since 0.0.1
+	@version 0.0.3
+	@since v0.0.1
 
 */
 
 public class Notationer{
 
+	/**
+
+		Empty constructor.
+
+	*/
+
+	public Notationer(){}
+
+	/**
+
+		The {@code char DECIMAL_POINT} with value {@code '.'} represents the decimal point for the decimal point notation.
+
+	*/
+
 	protected static final char DECIMAL_POINT = '.';
+
+	/**
+
+		The {@code char THOUSANDS_SEPARATOR} with value {@code ','} represents the thousands separator for the decimal point notation.
+
+	*/
+
 	protected static final char THOUSANDS_SEPARATOR = ',';
 
 	/**
@@ -35,7 +68,7 @@ public class Notationer{
 
 		@param number Number as a {@code StringBuilder}.
 		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
-		@throw IllegalArgumentException if {@code StringBuilder number} is either {@code null} or empty.
+		@exception IllegalArgumentException if {@code StringBuilder number} is either {@code null} or empty.
 		@since 0.0.1
 
 	*/
@@ -71,8 +104,10 @@ public class Notationer{
 		The return values will be either {@code n} = 1,234.56 in case the {@code boolean useDecimalPointNotation} paramether if {@code true} or 
 		{@code n} = 1.234,56 in case is {@code false}.
 
-		@param integerPart Integer Part of a number.
-		@param DecimalPart Decimal Part of a number.
+		@param integerPart Integer Part of a number as a {@code String}.
+		@param decimalPart Decimal Part of a number as a {@code String}.
+		@param useDecimalPointNotation Tells if it uses or not decimal point notation as a {@code boolean}.
+
 		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} paramether.
 		@since 0.0.1
 
@@ -96,12 +131,36 @@ public class Notationer{
 
 		return formatted.toString();
 
-	}/**/
+	}
+
+	/**
+
+		Recieves a number as a {@code StringBuilder} paramether, validates it to make sure it is infact in scientific notation, if so 
+		it will return the number expanded, if not it will return itself.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			StringBuilder n = Notationer.expandScientificNotation(new StringBuilder(
+
+				"1.23456E3"
+
+			));
+
+		}</pre>
+		
+		The return values will be {@code n} = 1234.56
+
+		@param scientificNumber Number in scientific notation as a {@code StringBuilder}.
+		@return StringBuilder Returns a {@code StringBuilder} with the number expanded.
+		@since 0.0.1
+
+	*/
 
 	protected static StringBuilder expandScientificNotation(StringBuilder scientificNumber){
 
 		String[] parts = scientificNumber.toString().split("[Ee]");
-		//System.out.println(parts.length);
+
 		if (parts.length!=2) return scientificNumber;
 
 		int exponent = Integer.parseInt(parts[1]);
@@ -116,11 +175,15 @@ public class Notationer{
 
 			if (exponent>numbersAfterDot){
 
+				//Example: 1.23456E7 -> 12345600
+
 				result.append("0".repeat(exponent - numbersAfterDot));
 				
 				return result;
 
 			}else{
+
+				//Example: 1.23456E2 -> 123.456
 
 				result.insert(numbersBeforeDot + exponent, ".");
 
@@ -132,6 +195,8 @@ public class Notationer{
 
 			if (-exponent>numbersBeforeDot){
 
+				//Example: either 1.23456E-7 -> 0.00000123456 or 123456E-7 -> 0.000000123456
+
 				result.insert(0, "0." + "0".repeat(
 
 					- exponent - (numbersBeforeDot!=0 ? numbersBeforeDot : 1)
@@ -141,6 +206,8 @@ public class Notationer{
 				return result;
 
 			}else{
+
+				//Example: 123.456E-2 -> 1.23456
 
 				result.insert(numbersBeforeDot + exponent, ".");
 
@@ -152,9 +219,28 @@ public class Notationer{
 
 	}
 
+	/**
+
+		Recieves a number as a {@code String} paramether, validates its back and front, and then removes every non numeric characters.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			StringBuilder n = Notationer.cleanNonNumericCharacters("--.012++");
+
+		}</pre>
+		
+		The return values will be {@code parts[0]} = 0.0123
+
+		@param number Number as a {@code String}.
+		@return StringBuilder Returns a {@code StringBuilder} number that is a full readable.
+		@since 0.0.1
+
+	*/
+
 	protected static StringBuilder cleanNonNumericCharacters(String number){
 
-		StringBuilder cleaned = new StringBuilder(trimZeros(number));
+		StringBuilder cleaned = new StringBuilder(number);
 
 		int length = cleaned.length();
 		boolean decimalPointFound = false;
@@ -195,6 +281,26 @@ public class Notationer{
 
 	}
 
+	/**
+
+		Recieves a number as a {@code String} paramether, validates if it has a decimal part, if not it will fills it with empty to make 
+		sure it always return a 2 lenght {@code String} array.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String[] parts = Notationer.splitIntoIntegerAndDecimalParts("1234.56");
+
+		}</pre>
+		
+		The return values will be {@code parts[0]} = 1234 and {@code parts[1]} = 56
+
+		@param number Number as a {@code String}.
+		@return String[] Returns a {@code String} array with the integer and decimal part.
+		@since 0.0.1
+
+	*/
+
 	protected static String[] splitIntoIntegerAndDecimalParts(String number){
 
 		String[] parts = number.split("\\.");
@@ -203,11 +309,55 @@ public class Notationer{
 
 	}
 
+	/**
+
+		Recieves a number as a {@code String} paramether, validates if it has a decimal point to extend the regrex statement to not trim 
+		the zeros at the end if it is not a decimal number.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String n = Notationer.trimZeros("00000001234.56000000000");
+
+		}</pre>
+		
+		The return values will be {@code n} = 1234.56
+
+		@param str Number as a {@code String}.
+		@return String Returns a {@code String} with the zeros trimed.
+		@since 0.0.1
+
+	*/
+
 	protected static String trimZeros(String str){
 
 		return str.replaceAll("^[0]+(?!$)"+(str.contains(".") ? "|[0]+$" : ""), "");
 
 	}
+
+	/**
+
+		Recieves a empty {@code StringBuilder} recipient paramether, the integer part of a number as a {@code String} and {@code char} separator.
+		
+		<p>Example of use:</p>
+		<pre>{@code
+
+			StringBuffer n = new StringBuilder();
+			char separator = ',';
+
+			Notationer.trimZeros(n, "1234", separator);
+
+		}</pre>
+		
+		The new {@code n} value will be 1,234
+
+		@param formatted Empty recipient as a {@code StringBuilder}.
+		@param integerPart Integer part of a number as a {@code integerPart}.
+		@param separator Separator as a {@code char}.
+		
+		@since 0.0.1
+
+	*/
 
 	protected static void formatIntegerPart(StringBuilder formatted, String integerPart, char separator){
 
