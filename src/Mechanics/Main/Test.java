@@ -1,16 +1,16 @@
 package Mechanics.Main;
 
-/**
-
-	@author Dandelion
-
-	Test class. 
-
-*/
-
 import math.core.*;
 
 import java.util.Scanner;
+
+/**
+
+	Test class.
+
+	@author Dandelion
+
+*/
 
 public class Test{
 
@@ -18,9 +18,17 @@ public class Test{
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit("1.23456E7");
+		Digit n = new Digit("0");
 
-		System.out.print(n);
+		for (int f=-100; f<=100; f++){
+
+			for (int c=0; c<=100; c++){
+
+				System.out.println(n+">"+f+"."+c+" = "+n.compareTo(new Digit(f+"."+c)));
+
+			}
+
+		}
 		
 		System.out.print("\n\n");
 		

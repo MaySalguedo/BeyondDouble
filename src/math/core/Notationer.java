@@ -69,6 +69,10 @@ public class Notationer{
 		@param number Number as a {@code StringBuilder}.
 		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
 		@exception IllegalArgumentException if {@code StringBuilder number} is either {@code null} or empty.
+		@see math.core.Notationer#expandScientificNotation(StringBuilder)
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Notationer#cleanNonNumericCharacters(String)
+		@see math.core.Notationer#splitIntoIntegerAndDecimalParts(String)
 		@since 0.0.1
 
 	*/
@@ -109,6 +113,7 @@ public class Notationer{
 		@param useDecimalPointNotation Tells if it uses or not decimal point notation as a {@code boolean}.
 
 		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} paramether.
+		@see math.core.Notationer#formatIntegerPart(StringBuilder, String, char)
 		@since 0.0.1
 
 	*/
