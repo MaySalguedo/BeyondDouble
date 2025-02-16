@@ -16,7 +16,7 @@ import math.core.Notationer;
 	}</pre>
 
 	@author Dandelion
-	@version 0.0.3
+	@version v0.0.4
 	@since v0.0.1
 
 */
@@ -50,41 +50,12 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
-		The {@code boolean notation} represents if the number is either using the 
-		decimal point notation or the dot decimal notation, {@code true} for DPN, {@code false} for DDN.
+		The {@code boolean notation} represents if the number is either using the decimal point 
+		notation or the dot decimal notation, {@code true} for DPN, {@code false} for DDN.
 
 	*/
 
-	private boolean notation;
-
-	/**
-
-		Creates an instance of {@code Digit} with a {@code double} value.
-
-		@param n Real number
-		@see math.core.Notationer#validateAndNormalize(StringBuilder)
-		@since v0.0.1
-
-	*/
-
-	public Digit(double n){
-
-		StringBuilder number = new StringBuilder(n+"");
-
-		this.isNegative = number.charAt(0)=='-';
-
-		if (this.isNegative){
-
-			number.deleteCharAt(0);
-
-		}
-
-		String[] parts = Digit.validateAndNormalize(number);
-		this.integerPart = parts[0];
-		this.decimalPart = parts[1];
-		this.notation = true;
-
-	}
+	public boolean notation;
 
 	/**
 
@@ -107,9 +78,9 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		StringBuilder number = new StringBuilder(n);
 
-		this.isNegative = number.charAt(0)=='-';
+		boolean isNegativeBackUp = number.charAt(0)=='-';
 
-		if (this.isNegative){
+		if (isNegativeBackUp){
 
 			number.deleteCharAt(0);
 
@@ -118,7 +89,65 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		String[] parts = Digit.validateAndNormalize(number);
 		this.integerPart = parts[0];
 		this.decimalPart = parts[1];
+		this.isNegative = (this.integerPart.equals("0") && this.decimalPart.equals("")) ? false : isNegativeBackUp;
 		this.notation = true;
+
+	}
+
+	/**
+
+		Creates an instance of {@code Digit} with a {@code double} value.
+
+		@param n Real number.
+		@see math.core.Notationer#validateAndNormalize(StringBuilder)
+		@since v0.0.1
+
+	*/
+
+	public Digit(double n){
+
+		this(n+"");
+
+	}
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code String}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Integer part of the number.
+		@see math.core.Notationer#validateAndNormalize(StringBuilder)
+		@since v0.0.4
+
+	*/
+
+	public Digit(String integerPart, String decimalPart){
+
+		this(integerPart+"."+decimalPart);
+
+	}
+
+	/**
+
+		Creates an instance of {@code Digit} with all the attributes required.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Integer part of the number.
+		@param isNegative The {@code boolean isNegative} represents if the number is either negative 
+		or positive.
+		@param notation The {@code boolean notation} represents if the number is either using the decimal point 
+		notation or the dot decimal notation.
+
+		@since v0.0.4
+
+	*/
+
+	protected Digit(String integerPart, String decimalPart, boolean isNegative, boolean notation){
+
+		this.integerPart = integerPart;
+		this.decimalPart = decimalPart;
+		this.isNegative = isNegative;
+		this.notation = notation;
 
 	}
 
@@ -132,7 +161,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		@return String Returns a full notationed readable number.
 		@see math.core.Notationer#format(String, String, boolean)
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -165,10 +194,11 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		@see java.lang.Comparable#compareTo(Object)
 		@see math.core.Digit#compareIntegerParts(String, String)
 		@see math.core.Digit#compareDecimalParts(String, String)
-		@since 0.0.3
+		@since v0.0.3
 
 	*/
 
+	@Override
 	public int compareTo(Digit n){
 
 		//Case 2: Either both negative or positive
@@ -177,15 +207,273 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		//Case 1: Diferent Signs
 		if (this.isNegative!=n.isNegative) return multiplier;
 
-		int integersCompared = compareIntegerParts(this.integerPart, n.integerPart);
+		int integersCompared = this.compareIntegerParts(this.integerPart, n.integerPart);
 
 		if (integersCompared!=0) return multiplier * integersCompared;
 
-		int decimalsCompared = compareDecimalParts(this.decimalPart, n.decimalPart);
+		int decimalsCompared = this.compareDecimalParts(this.decimalPart, n.decimalPart);
 
 		if (decimalsCompared!=0) return multiplier * decimalsCompared;
 
 		return 0;
+
+	}
+
+	/**
+
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the numbers.
+
+		@param n double value.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
+		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
+		@see java.lang.Comparable#compareTo(Object)
+		@see math.core.Digit#compareTo(Digit)
+		@since v0.0.4
+
+	*/
+
+	public int compareTo(double n){
+
+		return this.compareTo(new Digit(n));
+
+	}
+
+	/**
+
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the numbers.
+
+		@param n int value.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
+		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
+		@see java.lang.Comparable#compareTo(Object)
+		@see math.core.Digit#compareTo(Digit)
+		@since v0.0.4
+
+	*/
+
+	protected int compareTo(int n){
+
+		return this.compareTo(new Digit(n+"", "", this.isNegative, this.notation));
+
+	}
+
+	/**
+
+		Creates a Digit instance with the {@code boolean isNegative} attribute negated.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit(1);
+			Digit m = n.negate();
+
+		}</pre>
+
+		The return values will be {@code m} = -1
+
+		@return Digit Returns the negated value for the Digit instance.
+		@see math.core.Digit#Digit(String, String, boolean, boolean)
+		@since v0.0.4
+
+	*/
+
+	public Digit negate(){
+
+		return new Digit(this.integerPart, this.decimalPart, !this.isNegative, this.notation);
+
+	}
+
+	/**
+
+		Creates a Digit instance with the {@code boolean isNegative} attribute on false.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit(-1);
+			Digit m = n.abs();
+
+		}</pre>
+
+		The return values will be {@code m} = 1
+
+		@return Digit Returns the absolute value for the Digit instance.
+		@see math.core.Digit#Digit(String, String, boolean, boolean)
+		@since v0.0.4
+
+	*/
+
+	public Digit abs(){
+
+		return new Digit(this.integerPart, this.decimalPart, false, this.notation);
+
+	}
+
+	/**
+
+		Adds two numbers logicly and sequentially.
+
+		@param other double value.
+		@return Digit Result from the addition of the two values.
+		@see math.core.Digit#add(Digit)
+		@since v0.0.4
+
+	*/
+
+	public Digit add(double other){
+
+		return this.add(new Digit(other));
+
+	}
+
+	/**
+
+		Subtracts two numbers logicly and sequentially.
+
+		@param other double value.
+		@return Digit Result from the subtraction of the two values.
+		@see math.core.Digit#add(Digit)
+		@since v0.0.4
+
+	*/
+
+	public Digit subtract(double other){
+
+		return this.subtract(new Digit(other));
+
+	}
+
+	/**
+
+		Subtracts two {@code Digit} numbers logicly and sequentially.
+
+		@param other Digit instance.
+		@return Digit Result from the subtraction of the two intance.
+		@see math.core.Digit#add(Digit)
+		@since v0.0.4
+
+	*/
+
+	public Digit subtract(Digit other){
+
+		return this.add(other.negate());
+
+	}
+
+	/**
+
+		Adds two {@code Digit} numbers logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit("-123.45");
+			Digit m = new Digit(678.9);
+
+			Digit result = n.add(m);
+
+		}</pre>
+
+		The return values will be {@code result} = 555.45
+
+		@param other Digit instance.
+		@return Digit Result from the addition of the two instance.
+		@see math.core.Digit#negate()
+		@see math.core.Digit#abs()
+		@see math.core.Digit#padZerosRight(String, int)
+		@since v0.0.4
+
+	*/
+
+	public Digit add(Digit other){
+
+		/*
+
+			Note:
+
+			Let n be the current Digit instance
+			Let m be the other Digit intance
+
+		*/
+
+		int isThisZero = this.compareTo(0);
+
+		//Case I: n equals to zero
+		if (isThisZero==0) return other;
+
+		int isOtherZero = other.compareTo(0);
+
+		//Case II: m equals to zero
+		if (isOtherZero==0) return this;
+
+		Digit thisAbsolute = this.abs();
+		Digit otherAbsolute = other.abs();
+
+		//Case III: Both lower than zero
+		if (isThisZero<0 && isOtherZero<0) return thisAbsolute.add(otherAbsolute).negate();
+
+		int absolutesComapred = thisAbsolute.compareTo(otherAbsolute);
+
+		//Case IV: |n|<|m|
+		if (absolutesComapred<0) return other.add(this);
+
+		//Case V: |n|>|m| & n<m
+		if (absolutesComapred>0 && (isThisZero<isOtherZero)) return this.negate().add(other.negate()).negate();
+
+		int maxDecimalLength = this.decimalPart.length()>other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();
+
+		String thisFullNumber = this.integerPart + this.padZerosRight(this.decimalPart, maxDecimalLength);
+		String otherFullNumber = other.integerPart + this.padZerosRight(other.decimalPart, maxDecimalLength);
+
+		StringBuilder result = new StringBuilder();
+		int carryIn = 0;
+		int carryOut = 0;
+		int maxLength = thisFullNumber.length()>otherFullNumber.length() ? thisFullNumber.length() : otherFullNumber.length();
+
+		for (int i=maxLength-1; i>=0; i--){
+
+			int thisDigit = (thisFullNumber.charAt(i) - '0') - carryOut;
+			int otherDigit = otherFullNumber.charAt(i) - '0';
+
+			int sum = 0;
+
+			if (!other.isNegative){
+
+				sum = thisDigit + otherDigit + carryIn;
+				carryIn = sum/10;
+				result.insert(0, sum%10);
+
+			}else{
+
+				carryOut = 0;
+				carryIn = 0;
+
+				if ((thisDigit)<otherDigit){
+
+					carryIn = 10;
+					carryOut = 1;
+
+				}
+
+				sum = thisDigit - otherDigit + carryIn;
+				result.insert(0, sum);
+
+			}
+
+		}
+
+		if (carryIn>0){
+
+			result.insert(0, carryIn);
+
+		}
+
+		String fullResult = result.toString();
+		int length = fullResult.length();
+		String integerResult = fullResult.substring(0, length - maxDecimalLength);
+		String decimalResult = fullResult.substring(length - maxDecimalLength);
+
+		return new Digit(integerResult, decimalResult, false, this.notation);
 
 	}
 
@@ -207,11 +495,11 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
 		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
-		@since 0.0.3
+		@since v0.0.3
 
 	*/
 
-	protected int compareIntegerParts(String a, String b){
+	private int compareIntegerParts(String a, String b){
 
 		int aLength = a.length();
 		int bLength = b.length();
@@ -252,11 +540,11 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
 		equal, 1 if {@literal n<m} and -1 if {@literal n>m}.
-		@since 0.0.3
+		@since v0.0.3
 
 	*/
 
-	protected int compareDecimalParts(String a, String b){
+	private int compareDecimalParts(String a, String b){
 
 		int aLength = a.length();
 		int bLength = b.length();
@@ -275,6 +563,41 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		if (aLength==bLength) return 0;
 
 		return aLength>bLength ? 1 : -1;
+
+	}
+
+	/**
+
+		Add zeros to the {@code String} result until the length matches the lenght paramether.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = padZerosRight("5", 3);
+
+		}</pre>
+
+		The return values will be {@code result} = 500
+
+		@param str Integer number as a {@code String}
+		@param length Intented lenght for the {@code String} result.
+
+		@return String Returns String that matches the lenght paramether.
+		@since v0.0.4
+
+	*/
+
+	private String padZerosRight(String str, int length){
+
+		int strLength = str.length();
+
+		if (strLength>=length){
+
+			return str;
+
+		}
+
+		return new StringBuilder(str).append("0".repeat(length-strLength)).toString();
 
 	}
 

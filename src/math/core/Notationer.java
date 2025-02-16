@@ -17,7 +17,7 @@ package math.core;
 	}</pre>
 
 	@author Dandelion
-	@version 0.0.3
+	@version v0.0.4
 	@since v0.0.1
 
 */
@@ -73,7 +73,7 @@ public class Notationer{
 		@see math.core.Notationer#trimZeros(String)
 		@see math.core.Notationer#cleanNonNumericCharacters(String)
 		@see math.core.Notationer#splitIntoIntegerAndDecimalParts(String)
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -114,7 +114,7 @@ public class Notationer{
 
 		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} paramether.
 		@see math.core.Notationer#formatIntegerPart(StringBuilder, String, char)
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -158,7 +158,7 @@ public class Notationer{
 
 		@param scientificNumber Number in scientific notation as a {@code StringBuilder}.
 		@return StringBuilder Returns a {@code StringBuilder} with the number expanded.
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -239,7 +239,7 @@ public class Notationer{
 
 		@param number Number as a {@code String}.
 		@return StringBuilder Returns a {@code StringBuilder} number that is a full readable.
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -247,7 +247,6 @@ public class Notationer{
 
 		StringBuilder cleaned = new StringBuilder(number);
 
-		int length = cleaned.length();
 		boolean decimalPointFound = false;
 
 		if (cleaned.charAt(0)=='.'){
@@ -256,13 +255,15 @@ public class Notationer{
 
 		}
 
+		int length = cleaned.length();
+
 		if (cleaned.charAt(length-1)=='.'){
 
 			cleaned.deleteCharAt(length-1);
 
-		}
+			length--;
 
-		length = cleaned.length();
+		}
 
 		for (int i=length-1; i>=0; i--){
 
@@ -302,7 +303,7 @@ public class Notationer{
 
 		@param number Number as a {@code String}.
 		@return String[] Returns a {@code String} array with the integer and decimal part.
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -330,7 +331,7 @@ public class Notationer{
 
 		@param str Number as a {@code String}.
 		@return String Returns a {@code String} with the zeros trimed.
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 
@@ -360,7 +361,7 @@ public class Notationer{
 		@param integerPart Integer part of a number as a {@code integerPart}.
 		@param separator Separator as a {@code char}.
 		
-		@since 0.0.1
+		@since v0.0.1
 
 	*/
 

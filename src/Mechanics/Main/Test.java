@@ -18,17 +18,10 @@ public class Test{
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit("0");
+		Digit n = new Digit("-123.45");
+		Digit m = new Digit(678.9);
 
-		for (int f=-100; f<=100; f++){
-
-			for (int c=0; c<=100; c++){
-
-				System.out.println(n+">"+f+"."+c+" = "+n.compareTo(new Digit(f+"."+c)));
-
-			}
-
-		}
+		System.out.print(n+" + "+m+" = "+n.add(m));//802.35//555.45
 		
 		System.out.print("\n\n");
 		
