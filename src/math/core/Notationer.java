@@ -290,7 +290,7 @@ public class Notationer{
 	/**
 
 		Recieves a number as a {@code String} paramether, validates if it has a decimal part, if not it will fills it with empty to make 
-		sure it always return a 2 lenght {@code String} array.
+		sure it always return a 2 length {@code String} array.
 		
 		<p>Example of use:</p>
 		<pre>{@code

@@ -16,7 +16,7 @@ import math.core.Notationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.4
+	@version v0.0.5
 	@since v0.0.1
 
 */
@@ -174,7 +174,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
-		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the numbers.
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
 
 		<p>Example of use:</p>
 		<pre>{@code
@@ -221,7 +221,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
-		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the numbers.
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
 
 		@param n double value.
 		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
@@ -240,7 +240,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
-		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the numbers.
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
 
 		@param n int value.
 		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
@@ -251,9 +251,102 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	*/
 
-	protected int compareTo(int n){
+	public int compareTo(int n){
 
 		return this.compareTo(new Digit(n+"", "", this.isNegative, this.notation));
+
+	}
+
+	/**
+
+		Compares a {@code Digit} instance to zero.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit(1);
+
+			int result = n.compareToZero();
+
+		}</pre>
+
+		The return values will be {@code result} = 1
+
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if is equals to 
+		zero, 1 if {@literal n>0} and -1 if {@literal n<0}.
+		@since v0.0.5
+
+	*/
+
+	public int compareToZero(){
+
+		if (this.isNegative) return -1;
+
+		if (this.integerPart.matches("0") && this.decimalPart.matches("")) return 0;
+
+		return 1;
+
+	}
+
+	/**
+
+		Compares a {@code Digit} instance to one.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit(1);
+
+			int result = n.compareToOne();
+
+		}</pre>
+
+		The return values will be {@code result} = 0
+
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if is equals to 
+		one, 1 if {@literal n>1} and -1 if {@literal n<1}.
+		@since v0.0.5
+
+	*/
+
+	public int compareToOne(){
+
+		if (this.isNegative) return -1;
+
+		if (this.integerPart.matches("1") && this.decimalPart.matches("")) return 0;
+
+		return 1;
+
+	}
+
+	/**
+
+		Compares a {@code Digit} instance to minus one.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit(1);
+
+			int result = n.compareToMinusOne();
+
+		}</pre>
+
+		The return values will be {@code result} = 1
+
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if is equals to 
+		minus one, 1 if {@literal n>-1} and -1 if {@literal n<-1}.
+		@since v0.0.5
+
+	*/
+
+	public int compareToMinusOne(){
+
+		if (!this.isNegative) return 1;
+
+		if (this.integerPart.matches("1") && this.decimalPart.matches("")) return 0;
+
+		return -1;
 
 	}
 
@@ -381,99 +474,104 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		@see math.core.Digit#negate()
 		@see math.core.Digit#abs()
 		@see math.core.Digit#padZerosRight(String, int)
+		@see math.core.Digit#addition(int, String[], boolean)
 		@since v0.0.4
 
 	*/
 
 	public Digit add(Digit other){
 
-		/*
+		int isThisZero = this.compareToZero();
 
-			Note:
-
-			Let n be the current Digit instance
-			Let m be the other Digit intance
-
-		*/
-
-		int isThisZero = this.compareTo(0);
-
-		//Case I: n equals to zero
 		if (isThisZero==0) return other;
 
-		int isOtherZero = other.compareTo(0);
+		int isOtherZero = other.compareToZero();
 
-		//Case II: m equals to zero
 		if (isOtherZero==0) return this;
 
 		Digit thisAbsolute = this.abs();
 		Digit otherAbsolute = other.abs();
 
-		//Case III: Both lower than zero
 		if (isThisZero<0 && isOtherZero<0) return thisAbsolute.add(otherAbsolute).negate();
 
 		int absolutesComapred = thisAbsolute.compareTo(otherAbsolute);
 
-		//Case IV: |n|<|m|
 		if (absolutesComapred<0) return other.add(this);
 
-		//Case V: |n|>|m| & n<m
 		if (absolutesComapred>0 && (isThisZero<isOtherZero)) return this.negate().add(other.negate()).negate();
 
 		int maxDecimalLength = this.decimalPart.length()>other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();
 
-		String thisFullNumber = this.integerPart + this.padZerosRight(this.decimalPart, maxDecimalLength);
-		String otherFullNumber = other.integerPart + this.padZerosRight(other.decimalPart, maxDecimalLength);
+		String fullResult = this.addition(0, new String[] {
 
-		StringBuilder result = new StringBuilder();
-		int carryIn = 0;
-		int carryOut = 0;
-		int maxLength = thisFullNumber.length()>otherFullNumber.length() ? thisFullNumber.length() : otherFullNumber.length();
+			this.integerPart + this.padZerosRight(this.decimalPart, maxDecimalLength),
+			other.integerPart + this.padZerosRight(other.decimalPart, maxDecimalLength)
 
-		for (int i=maxLength-1; i>=0; i--){
+		}, !other.isNegative);
 
-			int thisDigit = (thisFullNumber.charAt(i) - '0') - carryOut;
-			int otherDigit = otherFullNumber.charAt(i) - '0';
-
-			int sum = 0;
-
-			if (!other.isNegative){
-
-				sum = thisDigit + otherDigit + carryIn;
-				carryIn = sum/10;
-				result.insert(0, sum%10);
-
-			}else{
-
-				carryOut = 0;
-				carryIn = 0;
-
-				if ((thisDigit)<otherDigit){
-
-					carryIn = 10;
-					carryOut = 1;
-
-				}
-
-				sum = thisDigit - otherDigit + carryIn;
-				result.insert(0, sum);
-
-			}
-
-		}
-
-		if (carryIn>0){
-
-			result.insert(0, carryIn);
-
-		}
-
-		String fullResult = result.toString();
 		int length = fullResult.length();
+
 		String integerResult = fullResult.substring(0, length - maxDecimalLength);
 		String decimalResult = fullResult.substring(length - maxDecimalLength);
 
 		return new Digit(integerResult, decimalResult, false, this.notation);
+
+	}
+
+	/**
+
+		Multiplies two {@code Digit} numbers logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit("25");
+			Digit m = new Digit(5);
+
+			Digit result = n.multiply(m);
+
+		}</pre>
+
+		The return values will be {@code result} = 125
+
+		@param other Digit instance.
+		@return Digit Result from the multiplication of the two instance.
+		@see math.core.Digit#negate()
+		@see math.core.Digit#multiplication(String, String)
+		@since v0.0.5
+
+	*/
+
+	public Digit multiply(Digit other){
+
+		if (this.compareToZero()==0 || other.compareToZero()==0) return new Digit(0);
+
+		int isThisOne = this.compareToOne();
+
+		if (isThisOne==0) return other;
+
+		int isOtherOne = other.compareToOne();
+
+		if (isOtherOne==0) return this;
+
+		int isThisMinusOne = this.compareToMinusOne();
+
+		if (isThisMinusOne==0) return other.negate();
+
+		int isOtherMinusOne = other.compareToMinusOne();
+
+		if (isOtherMinusOne==0) return this.negate();
+
+		int maxDecimalLength = this.decimalPart.length()>other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();
+
+		String fullResult = this.multiplication(this.integerPart+this.decimalPart, other.integerPart+other.decimalPart);
+
+		int length = fullResult.length();
+
+		String integerResult = fullResult.substring(0, length - maxDecimalLength);
+		String decimalResult = fullResult.substring(length - maxDecimalLength);
+
+		return new Digit(integerResult, decimalResult, this.isNegative!=other.isNegative, this.notation);
 
 	}
 
@@ -484,7 +582,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			int result = compareIntegerParts("45", "50");
+			int result = this.compareIntegerParts("45", "50");
 
 		}</pre>
 
@@ -529,7 +627,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			int result = compareDecimalParts("5", "52");
+			int result = this.compareDecimalParts("5", "52");
 
 		}</pre>
 
@@ -568,21 +666,21 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
-		Add zeros to the {@code String} result until the length matches the lenght paramether.
+		Add zeros to the {@code String} result to the right until the length matches the length paramether.
 
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String result = padZerosRight("5", 3);
+			String result = this.padZerosRight("5", 3);
 
 		}</pre>
 
 		The return values will be {@code result} = 500
 
 		@param str Integer number as a {@code String}
-		@param length Intented lenght for the {@code String} result.
+		@param length Intented length for the {@code String} result.
 
-		@return String Returns String that matches the lenght paramether.
+		@return String Returns String that matches the length paramether.
 		@since v0.0.4
 
 	*/
@@ -598,6 +696,211 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		}
 
 		return new StringBuilder(str).append("0".repeat(length-strLength)).toString();
+
+	}
+
+	/**
+
+		Add zeros to the {@code String} result to the left until the length matches the length paramether.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = this.padZerosLeft("5", 3);
+
+		}</pre>
+
+		The return values will be {@code result} = 005
+
+		@param str Integer number as a {@code String}
+		@param length Intented length for the {@code String} result.
+
+		@return String Returns String that matches the length paramether.
+		@since v0.0.5
+
+	*/
+
+	private String padZerosLeft(String str, int length){
+
+		int strLength = str.length();
+
+		if (strLength>=length){
+
+			return str;
+
+		}
+
+		return new StringBuilder(str).insert(0, "0".repeat(length-strLength)).toString();
+
+	}
+
+	/**
+
+		Adds integers as {@code String} logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = this.addition(0, new String[] {
+
+				"1", "2", "3"
+
+			}, true);
+
+		}</pre>
+
+		The return values will be {@code result} = 7
+
+		@param index Index to where in the array it will start adding the numbers.
+		@param integers {@String} array made out of integer numbers.
+		@param isAddition Is addition or substraction as {@code boolean}.
+
+		@return String Result from the addition of the integers.
+		@see math.core.Digit#padZerosLefr(String, int)
+		@since v0.0.5
+
+	*/
+
+	private String addition(int index, String[] integers, boolean isAddition){
+
+		if (integers.length==1) return integers[0];
+
+		String thisFullNumber = integers[index];
+		String otherFullNumber = integers[index + 1];
+
+		int maxLength = thisFullNumber.length()>otherFullNumber.length() ? thisFullNumber.length() : otherFullNumber.length();
+
+		thisFullNumber = padZerosLeft(thisFullNumber, maxLength);
+		otherFullNumber = padZerosLeft(otherFullNumber, maxLength);
+
+		StringBuilder result = new StringBuilder();
+		int carryIn = 0;
+		int carryOut = 0;
+
+		for (int i=maxLength-1; i>=0; i--){
+
+			int thisDigit = (thisFullNumber.charAt(i) - '0') - carryOut;
+			int otherDigit = otherFullNumber.charAt(i) - '0';
+
+			int sum = 0;
+
+			if (isAddition){
+
+				sum = thisDigit + otherDigit + carryIn;
+				carryIn = sum/10;
+				result.insert(0, sum%10);
+
+			}else{
+
+				carryOut = 0;
+				carryIn = 0;
+
+				if ((thisDigit)<otherDigit){
+
+					carryIn = 10;
+					carryOut = 1;
+
+				}
+
+				sum = thisDigit - otherDigit + carryIn;
+				result.insert(0, sum);
+
+			}
+
+		}
+
+		if (carryIn>0){
+
+			result.insert(0, carryIn);
+
+		}
+
+		if (integers.length==2){
+
+			return result.toString();
+
+		}else if ((integers.length - index + 2)==1){
+
+			return this.addition(0, new String[] {
+
+				result.toString(), integers[index + 2]
+
+			}, isAddition);
+
+		}else{
+
+			return this.addition(0, new String[] {
+
+				result.toString(), this.addition(index + 2, integers, isAddition)
+
+
+			}, isAddition);
+
+		}
+
+	}
+
+	/**
+
+		Multiplies integers as {@code String} logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = this.multiplication("12", "3");
+
+		}</pre>
+
+		The return values will be {@code result} = 36
+
+		@param thisInteger First integer as {@code String}.
+		@param otherInteger Second integer as {@code String}.
+
+		@return String Result from the multiplication of the integers.
+		@see math.core.Digit#addition(int, String[], boolean)
+		@since v0.0.5
+
+	*/
+
+	private String multiplication(String thisInteger, String otherInteger){
+
+		String[] integerColumn = new String[otherInteger.length()];
+
+		StringBuilder zero = new StringBuilder("");
+
+		for (int f=integerColumn.length-1; f>=0; f--){
+
+			StringBuilder result = new StringBuilder();
+			int carryIn = 0;
+			int multi = 0;
+
+			int otherDigit = otherInteger.charAt(f) - '0';
+
+			for (int c=thisInteger.length()-1; c>=0; c--){
+
+				int thisDigit = thisInteger.charAt(c) - '0';
+
+				multi = (thisDigit * otherDigit) + carryIn;
+				carryIn = multi/10;
+
+				result.insert(0, multi%10);
+
+			}
+
+			if (carryIn>0){
+
+				result.insert(0, carryIn);
+
+			}
+
+			result.append(zero);
+			zero.append("0");
+
+			integerColumn[f - (integerColumn.length - 1)] = result.toString();
+
+		}
+
+		return this.addition(0, integerColumn, true);
 
 	}
 

@@ -18,10 +18,10 @@ public class Test{
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit("-123.45");
-		Digit m = new Digit(678.9);
+		Digit n = new Digit("25");
+		Digit m = new Digit(5);
 
-		System.out.print(n+" + "+m+" = "+n.add(m));//802.35//555.45
+		System.out.print(n.multiply(m));
 		
 		System.out.print("\n\n");
 		
