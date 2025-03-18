@@ -16,7 +16,7 @@ import math.core.Notationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.5
+	@version v0.0.6
 	@since v0.0.1
 
 */
@@ -70,11 +70,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	public Digit(String n){
 
-		if (n!=null ? n.isEmpty() : false){
-
-			throw new IllegalArgumentException("Invalid Number");
-
-		}
+		if (n!=null ? n.isEmpty() : false) throw new IllegalArgumentException("Invalid Number");
 
 		StringBuilder number = new StringBuilder(n);
 
@@ -153,6 +149,29 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
+		Creates an instance of {@code Digit} with all the attributes required except the decimal part.
+
+		@param integerPart Integer part of the number.
+		@param isNegative The {@code boolean isNegative} represents if the number is either negative 
+		or positive.
+		@param notation The {@code boolean notation} represents if the number is either using the decimal point 
+		notation or the dot decimal notation.
+
+		@since v0.0.6
+
+	*/
+
+	protected Digit(String integerPart, boolean isNegative, boolean notation){
+
+		this.integerPart = Digit.trimZeros(integerPart);
+		this.decimalPart = "";
+		this.isNegative = isNegative;
+		this.notation = notation;
+
+	}
+
+	/**
+
 		Implements the {@code String format()} function from extended class Notationer to print the number on a 
 		readable notation using the attributes {@code this.integerPart}, {@code this.decimalPart} and {@code this.notation} 
 		as paramethers for such function.
@@ -165,8 +184,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	*/
 
-	@Override
-	public String toString(){
+	@Override public String toString(){
 
 		return (this.isNegative ? "-" : "")+Digit.format(this.integerPart, this.decimalPart, this.notation);
 
@@ -198,8 +216,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	*/
 
-	@Override
-	public int compareTo(Digit n){
+	@Override public int compareTo(Digit n){
 
 		//Case 2: Either both negative or positive
 		int multiplier = this.isNegative ? -1 : 1;
@@ -311,7 +328,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	public int compareToOne(){
 
-		if (this.isNegative) return -1;
+		if (this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.matches(""))) return -1;
 
 		if (this.integerPart.matches("1") && this.decimalPart.matches("")) return 0;
 
@@ -342,7 +359,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	public int compareToMinusOne(){
 
-		if (!this.isNegative) return 1;
+		if (!this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.matches(""))) return 1;
 
 		if (this.integerPart.matches("1") && this.decimalPart.matches("")) return 0;
 
@@ -438,23 +455,6 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
-		Subtracts two {@code Digit} numbers logicly and sequentially.
-
-		@param other Digit instance.
-		@return Digit Result from the subtraction of the two intance.
-		@see math.core.Digit#add(Digit)
-		@since v0.0.4
-
-	*/
-
-	public Digit subtract(Digit other){
-
-		return this.add(other.negate());
-
-	}
-
-	/**
-
 		Adds two {@code Digit} numbers logicly and sequentially.
 
 		<p>Example of use:</p>
@@ -520,6 +520,23 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 	/**
 
+		Subtracts two {@code Digit} numbers logicly and sequentially.
+
+		@param other Digit instance.
+		@return Digit Result from the subtraction of the two intance.
+		@see math.core.Digit#add(Digit)
+		@since v0.0.4
+
+	*/
+
+	public Digit subtract(Digit other){
+
+		return this.add(other.negate());
+
+	}
+
+	/**
+
 		Multiplies two {@code Digit} numbers logicly and sequentially.
 
 		<p>Example of use:</p>
@@ -562,7 +579,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		if (isOtherMinusOne==0) return this.negate();
 
-		int maxDecimalLength = this.decimalPart.length()>other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();
+		int maxDecimalLength = this.decimalPart.length() + other.decimalPart.length();
 
 		String fullResult = this.multiplication(this.integerPart+this.decimalPart, other.integerPart+other.decimalPart);
 
@@ -572,6 +589,58 @@ public class Digit extends Notationer implements Comparable<Digit>{
 		String decimalResult = fullResult.substring(length - maxDecimalLength);
 
 		return new Digit(integerResult, decimalResult, this.isNegative!=other.isNegative, this.notation);
+
+	}
+
+	/**
+
+		Divides two {@code Digit} numbers logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit("7");
+			Digit m = new Digit(4);
+
+			Digit result = n.multiply(m);
+
+		}</pre>
+
+		The return values will be {@code result} = 1.75
+
+		@param other Digit instance.
+		@param presition Decimal presition.
+		@exception ArithmeticException if {@code Digit} other is zero.
+		@return Digit Result from the division of the two instance.
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Digit#division(String, String, long)
+
+		@since v0.0.6
+
+	*/
+
+	public Digit divide(Digit other, long presition){
+
+		if (other.compareToZero()==0) throw new ArithmeticException("Cannot divide by zero.");
+
+		int decimalLeft = this.decimalPart.length() - other.decimalPart.length();
+
+		String dividend = Digit.trimZeros(this.integerPart+this.decimalPart);
+		String divisor = Digit.trimZeros(other.integerPart+other.decimalPart);
+
+		if (decimalLeft>0){
+
+			dividend+= "0".repeat(decimalLeft);
+
+		}else{
+
+			divisor+= "0".repeat(-decimalLeft);
+
+		}
+	
+		String[] result = this.division(dividend, divisor, presition);
+
+		return new Digit(result[0], result[1], this.isNegative!=this.isNegative, this.notation);
 
 	}
 
@@ -675,7 +744,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 500
+		The return values will be {@code result} = "500"
 
 		@param str Integer number as a {@code String}
 		@param length Intented length for the {@code String} result.
@@ -710,7 +779,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 005
+		The return values will be {@code result} = "005"
 
 		@param str Integer number as a {@code String}
 		@param length Intented length for the {@code String} result.
@@ -749,21 +818,22 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 7
+		The return values will be {@code result} = "7"
 
 		@param index Index to where in the array it will start adding the numbers.
 		@param integers {@String} array made out of integer numbers.
 		@param isAddition Is addition or substraction as {@code boolean}.
 
 		@return String Result from the addition of the integers.
-		@see math.core.Digit#padZerosLefr(String, int)
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Digit#padZerosLeft(String, int)
 		@since v0.0.5
 
 	*/
 
 	private String addition(int index, String[] integers, boolean isAddition){
 
-		if (integers.length==1) return integers[0];
+		if (integers.length==1 || index==integers.length-1) return integers[integers.length-1];
 
 		String thisFullNumber = integers[index];
 		String otherFullNumber = integers[index + 1];
@@ -815,13 +885,17 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		}
 
-		if (integers.length==2){
+		int remainders = integers.length - (index + 2);
 
-			return result.toString();
+		String trimResult;
 
-		}else if ((integers.length - index + 2)==1){
+		if (integers.length==2 || remainders==0){
 
-			return this.addition(0, new String[] {
+			trimResult = result.toString();
+
+		}else if (remainders==1){
+
+			trimResult = this.addition(0, new String[] {
 
 				result.toString(), integers[index + 2]
 
@@ -829,7 +903,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		}else{
 
-			return this.addition(0, new String[] {
+			trimResult = this.addition(0, new String[] {
 
 				result.toString(), this.addition(index + 2, integers, isAddition)
 
@@ -837,6 +911,8 @@ public class Digit extends Notationer implements Comparable<Digit>{
 			}, isAddition);
 
 		}
+
+		return trimZeros(trimResult);
 
 	}
 
@@ -851,7 +927,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 36
+		The return values will be {@code result} = "36"
 
 		@param thisInteger First integer as {@code String}.
 		@param otherInteger Second integer as {@code String}.
@@ -879,7 +955,7 @@ public class Digit extends Notationer implements Comparable<Digit>{
 			for (int c=thisInteger.length()-1; c>=0; c--){
 
 				int thisDigit = thisInteger.charAt(c) - '0';
-
+				
 				multi = (thisDigit * otherDigit) + carryIn;
 				carryIn = multi/10;
 
@@ -896,11 +972,144 @@ public class Digit extends Notationer implements Comparable<Digit>{
 			result.append(zero);
 			zero.append("0");
 
-			integerColumn[f - (integerColumn.length - 1)] = result.toString();
+			integerColumn[(integerColumn.length - 1) - f] = result.toString();
 
 		}
 
 		return this.addition(0, integerColumn, true);
+
+	}
+
+	/**
+
+		Divides integers as {@code String} logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String[] result = this.division("7", "5", 20);
+
+		}</pre>
+
+		The return values will be {@code result[0]} = "1" and {@code result[1]} = "4"
+
+		@param dividend Integer dividend as {@code String}.
+		@param divisor Integer Divisor as {@code String}.
+		@param presition Decimal presition as {@code long}.
+
+		@return String[] Result from the division of the integers.
+		@see math.core.Digit#compareIntegerParts(String, String)
+		@see math.core.Digit#calculateDecimalPartForDivision(String, String, long)
+		@since v0.0.6
+
+	*/
+
+	private String[] division(String dividend, String divisor, long presition){
+
+		int isGreaterThanDivivisor = this.compareIntegerParts(dividend, divisor);
+
+		long integerPartCounter = 0;
+
+		while(isGreaterThanDivivisor>0){
+
+			dividend = this.addition(0, new String[] {
+
+				dividend.toString(), divisor.toString()
+
+			}, false);
+
+			integerPartCounter++;
+
+			isGreaterThanDivivisor = this.compareIntegerParts(dividend, divisor);
+
+		}
+
+		if (isGreaterThanDivivisor==0){ 
+
+			return new String[] {(integerPartCounter + 1)+"", ""};
+
+		}else{
+
+			return new String[] {integerPartCounter+"", this.calculateDecimalPartForDivision(dividend+"0", divisor, presition)};
+
+		}
+
+	}
+
+	/**
+
+		Calculates the decimal part of a division using the remainder and divisor as {@code String} logicly and sequentially.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = this.calculateDecimalPartForDivision("20", "5", 20);
+
+		}</pre>
+
+		The return values will be {@code result} = "4"
+
+		@param remainder Integer remainder as {@code String}.
+		@param divisor Integer Divisor as {@code String}.
+		@param presition Decimal presition as {@code long}.
+
+		@return String Decimal part for the division.
+
+		@see math.core.Digit#compareIntegerParts(String, String)
+		@see math.core.Digit#addition(int, String[], boolean)
+
+		@since v0.0.6
+
+	*/
+
+	private String calculateDecimalPartForDivision(String remainder, String divisor, long presition){
+
+		StringBuilder result = new StringBuilder("");
+
+		for (long i=0; i<presition; i++){
+
+			int isGreaterThanRemainder = this.compareIntegerParts(remainder, divisor);
+
+			byte counter = 0;
+
+			while(isGreaterThanRemainder>=0){
+
+				remainder = this.addition(0, new String[] {
+
+					remainder.toString(), divisor.toString()
+
+				}, false);
+
+				counter++;
+
+				isGreaterThanRemainder = this.compareIntegerParts(remainder, divisor);
+
+			}
+
+			if (!remainder.matches("0")){
+
+				result.append(counter);
+				remainder+= "0";
+
+			}else{
+
+				if (counter<10){
+
+					result.append(counter);
+
+					return result.toString();
+
+				}else{
+
+					return this.addition(0, new String[] {result.toString(), "1"}, true);
+
+				}
+
+			}
+
+		}
+
+		return result.toString();
 
 	}
 

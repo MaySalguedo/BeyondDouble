@@ -18,10 +18,10 @@ public class Test{
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit("25");
-		Digit m = new Digit(5);
+		Digit n = new Digit("4");
+		Digit m = new Digit("7");
 
-		System.out.print(n.multiply(m));
+		System.out.print(m.divide(n, 20));
 		
 		System.out.print("\n\n");
 		
