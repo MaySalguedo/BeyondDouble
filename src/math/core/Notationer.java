@@ -3,21 +3,21 @@ package math.core;
 /**
 
 	Manages the format and convertion between differents numeric notations. 
-	Intended to be only used as a stakeholder manager for its static functions.
+	Intended to be only used as a stakeholder manager for its functions.
 
 	<p>Example of use:</p>
 	<pre>{@code
 
-		public class MyClass extends Notationer{
+		public class MyClass{
 
-			//Rest of the code implementing the Notationer static functions
+			public Notationer notationManager = new Notationer();
 
 		}
 
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.4
+	@version v0.0.5
 	@since v0.0.1
 
 */
@@ -26,19 +26,11 @@ public class Notationer{
 
 	/**
 
-		Empty constructor.
-
-	*/
-
-	public Notationer(){}
-
-	/**
-
 		The {@code char DECIMAL_POINT} with value {@code '.'} represents the decimal point for the decimal point notation.
 
 	*/
 
-	protected static final char DECIMAL_POINT = '.';
+	public char DECIMAL_POINT = '.';
 
 	/**
 
@@ -46,7 +38,15 @@ public class Notationer{
 
 	*/
 
-	protected static final char THOUSANDS_SEPARATOR = ',';
+	public char THOUSANDS_SEPARATOR = ',';
+
+	/**
+
+		Empty constructor.
+
+	*/
+
+	public Notationer(){}
 
 	/**
 
@@ -77,7 +77,7 @@ public class Notationer{
 
 	*/
 
-	protected static String[] validateAndNormalize(StringBuilder number){
+	public String[] validateAndNormalize(StringBuilder number){
 
 		if (number!=null ? number.isEmpty() : false){
 
@@ -118,7 +118,7 @@ public class Notationer{
 
 	*/
 
-	protected static String format(String integerPart, String decimalPart, boolean useDecimalPointNotation){
+	public String format(String integerPart, String decimalPart, boolean useDecimalPointNotation){
 		
 		StringBuilder formatted = new StringBuilder();
 		
@@ -162,7 +162,7 @@ public class Notationer{
 
 	*/
 
-	protected static StringBuilder expandScientificNotation(StringBuilder scientificNumber){
+	public StringBuilder expandScientificNotation(StringBuilder scientificNumber){
 
 		String[] parts = scientificNumber.toString().split("[Ee]");
 
@@ -243,7 +243,7 @@ public class Notationer{
 
 	*/
 
-	protected static StringBuilder cleanNonNumericCharacters(String number){
+	public StringBuilder cleanNonNumericCharacters(String number){
 
 		StringBuilder cleaned = new StringBuilder(number);
 
@@ -307,7 +307,7 @@ public class Notationer{
 
 	*/
 
-	protected static String[] splitIntoIntegerAndDecimalParts(String number){
+	public String[] splitIntoIntegerAndDecimalParts(String number){
 
 		String[] parts = number.split("\\.");
 
@@ -335,7 +335,7 @@ public class Notationer{
 
 	*/
 
-	protected static String trimZeros(String str){
+	public String trimZeros(String str){
 
 		return str.replaceAll("^[0]+(?!$)"+(str.contains(".") ? "|[0]+$" : ""), "");
 
@@ -365,7 +365,7 @@ public class Notationer{
 
 	*/
 
-	protected static void formatIntegerPart(StringBuilder formatted, String integerPart, char separator){
+	public void formatIntegerPart(StringBuilder formatted, String integerPart, char separator){
 
 		int length = integerPart.length();
 

@@ -2,26 +2,23 @@ package Mechanics.Main;
 
 import math.core.*;
 
-import java.util.Scanner;
-
 /**
 
-	Test class.
+	MainRunnable class.
 
 	@author Dandelion
 
 */
 
-public class Test{
+public class MainRunnable{
 
 	public static void main(String[] abc){
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit("4");
-		Digit m = new Digit("7");
+		Digit n = new Digit(0.5);
 
-		System.out.print(m.divide(n, 20));
+		System.out.print(n.inverse());
 		
 		System.out.print("\n\n");
 		
