@@ -3,6 +3,8 @@ package math.core;
 import java.lang.Number;
 import java.lang.NumberFormatException;
 
+import java.math.RoundingMode;
+
 import math.core.Notationer;
 import math.core.Operationer;
 
@@ -22,7 +24,7 @@ import math.core.Operationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.7
+	@version v0.0.8
 	@since v0.0.1
 
 */
@@ -107,8 +109,27 @@ public class Digit extends Number implements Comparable<Digit>{
 		String[] parts = this.notationManager.validateAndNormalize(number);
 		this.integerPart = parts[0];
 		this.decimalPart = parts[1];
-		this.isNegative = (this.integerPart.equals("0") && this.decimalPart.equals("")) ? false : isNegativeBackUp;
+		this.isNegative = (this.integerPart.matches("0") && this.decimalPart.isEmpty()) ? false : isNegativeBackUp;
 		this.notation = true;
+
+	}
+
+	/**
+
+		Creates an instance of {@code Digit} with a number value as a {@code String} and the notation type as {@code boolean}.
+
+		@param n Real number as a {@code String}
+		@param notation Digit notation
+		@see math.core.Digit#Digit(String)
+		@since v0.0.8
+
+	*/
+
+	public Digit(String n, boolean notation){
+
+		this(n);
+
+		this.notation = notation;
 
 	}
 
@@ -117,7 +138,7 @@ public class Digit extends Number implements Comparable<Digit>{
 		Creates an instance of {@code Digit} with a {@code double} value.
 
 		@param n Real number.
-		@see math.core.Notationer#validateAndNormalize(StringBuilder)
+		@see math.core.Digit#Digit(String)
 		@since v0.0.1
 
 	*/
@@ -130,11 +151,30 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
+		Creates an instance of {@code Digit} with a {@code double} value and the notation type as {@code boolean}.
+
+		@param n Real number.
+		@param notation Digit notation
+		@see math.core.Digit#Digit(double)
+		@since v0.0.8
+
+	*/
+
+	public Digit(double n, boolean notation){
+
+		this(n);
+
+		this.notation = notation;
+
+	}
+
+	/**
+
 		Creates an instance of {@code Digit} with two number values as {@code String}.
 
 		@param integerPart Integer part of the number.
-		@param decimalPart Integer part of the number.
-		@see math.core.Notationer#validateAndNormalize(StringBuilder)
+		@param decimalPart Decimal part of the number.
+		@see math.core.Digit#Digit(String)
 		@since v0.0.4
 
 	*/
@@ -147,10 +187,67 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
+		Creates an instance of {@code Digit} with two number values as {@code String} and the notation type as {@code boolean}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@param notation Digit notation
+		@see math.core.Digit#Digit(String, String)
+		@since v0.0.8
+
+	*/
+
+	public Digit(String integerPart, String decimalPart, boolean notation){
+
+		this(integerPart, decimalPart);
+
+		this.notation = notation;
+
+	}
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code long}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@see math.core.Digit#Digit(String)
+		@since v0.0.8
+
+	*/
+
+	public Digit(long integerPart, long decimalPart){
+
+		this(integerPart+"."+decimalPart);
+
+	}
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code long} and the notation type as {@code boolean}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@param notation Digit notation
+		@see math.core.Digit#Digit(long, long)
+		@since v0.0.8
+
+	*/
+
+	public Digit(long integerPart, long decimalPart, boolean notation){
+
+		this(integerPart, decimalPart);
+
+		this.notation = notation;
+
+	}
+
+	/**
+
 		Creates an instance of {@code Digit} with all the attributes required.
 
 		@param integerPart Integer part of the number.
-		@param decimalPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
 		@param isNegative The {@code boolean isNegative} represents if the number is either negative 
 		or positive.
 		@param notation The {@code boolean notation} represents if the number is either using the decimal point 
@@ -163,8 +260,8 @@ public class Digit extends Number implements Comparable<Digit>{
 	protected Digit(String integerPart, String decimalPart, boolean isNegative, boolean notation){
 
 		this.integerPart = integerPart;
-		this.decimalPart = decimalPart;
-		this.isNegative = isNegative;
+		this.decimalPart = this.operationManager.trimZerosRight(decimalPart);
+		this.isNegative = (this.integerPart.matches("0") && this.decimalPart.isEmpty()) ? false : isNegative;
 		this.notation = notation;
 
 	}
@@ -185,9 +282,9 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	protected Digit(String integerPart, boolean isNegative, boolean notation){
 
-		this.integerPart = this.notationManager.trimZeros(integerPart);
+		this.integerPart = integerPart;
 		this.decimalPart = "";
-		this.isNegative = isNegative;
+		this.isNegative = this.integerPart.matches("0") ? false : isNegative;
 		this.notation = notation;
 
 	}
@@ -209,6 +306,120 @@ public class Digit extends Number implements Comparable<Digit>{
 	@Override public String toString(){
 
 		return (this.isNegative ? "-" : "")+this.notationManager.format(this.integerPart, this.decimalPart, this.notation);
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a byte. The numeric value represented by this object after conversion to type byte.
+
+		@exception NumberFormatException Throws by the method parseByte from class {@code Byte}.
+		@return The numeric value represented by this object after conversion to type byte.
+		@see java.lang.Number#byteValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public byte byteValue() throws NumberFormatException{
+
+		return Byte.parseByte(this.integerPart);
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a double. The numeric value represented by this object after conversion to type double.
+
+		@exception NumberFormatException Throws by the method parseDouble from class {@code double}.
+		@return The numeric value represented by this object after conversion to type double.
+		@see java.lang.Number#doubleValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public double doubleValue() throws NumberFormatException{
+
+		return Double.parseDouble(this.integerPart+(
+
+			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
+
+		));
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a float. The numeric value represented by this object after conversion to type float.
+
+		@exception NumberFormatException Throws by the method parseFloat from class {@code float}.
+		@return The numeric value represented by this object after conversion to type float.
+		@see java.lang.Number#floatValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public float floatValue() throws NumberFormatException{
+
+		return Float.parseFloat(this.integerPart+(
+
+			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
+
+		));
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a int. The numeric value represented by this object after conversion to type int.
+
+		@exception NumberFormatException Throws by the method parseInt from class {@code Integer}.
+		@return The numeric value represented by this object after conversion to type int.
+		@see java.lang.Number#intValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public int intValue() throws NumberFormatException{
+
+		return Integer.parseInt(this.integerPart);
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a long. The numeric value represented by this object after conversion to type long.
+
+		@exception NumberFormatException Throws by the method parseLong from class {@code Long}.
+		@return The numeric value represented by this object after conversion to type long.
+		@see java.lang.Number#longValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public long longValue() throws NumberFormatException{
+
+		return Long.parseLong(this.integerPart);
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a short. The numeric value represented by this object after conversion to type short.
+
+		@exception NumberFormatException Throws by the method parseShort from class {@code Short}.
+		@return The numeric value represented by this object after conversion to type short.
+		@see java.lang.Number#shortValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public short shortValue() throws NumberFormatException{
+
+		return Short.parseShort(this.integerPart+(
+
+			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
+
+		));
 
 	}
 
@@ -292,7 +503,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	public int compareTo(int n){
 
-		return this.compareTo(new Digit(n+"", "", this.isNegative, this.notation));
+		return this.compareTo(new Digit(n+"", this.isNegative, this.notation));
 
 	}
 
@@ -321,7 +532,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		if (this.isNegative) return -1;
 
-		if (this.integerPart.matches("0") && this.decimalPart.matches("")) return 0;
+		if (this.integerPart.matches("0") && this.decimalPart.isEmpty()) return 0;
 
 		return 1;
 
@@ -350,9 +561,9 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	public int compareToOne(){
 
-		if (this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.matches(""))) return -1;
+		if (this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.isEmpty())) return -1;
 
-		if (this.integerPart.matches("1") && this.decimalPart.matches("")) return 0;
+		if (this.integerPart.matches("1") && this.decimalPart.isEmpty()) return 0;
 
 		return 1;
 
@@ -381,9 +592,9 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	public int compareToMinusOne(){
 
-		if (!this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.matches(""))) return 1;
+		if (!this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.isEmpty())) return 1;
 
-		if (this.integerPart.matches("1") && this.decimalPart.matches("")) return 0;
+		if (this.integerPart.matches("1") && this.decimalPart.isEmpty()) return 0;
 
 		return -1;
 
@@ -556,6 +767,23 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
+		Gets the module between two {@code Digit} numbers logicly and sequentially.
+
+		@param other double instance.
+		@return Digit Result from the module of the firts instance given the second instance.
+		@see math.core.Digit#module(Digit)
+		@since v0.0.8
+
+	*/
+
+	public Digit module(double other){
+
+		return this.module(new Digit(other));
+
+	}
+
+	/**
+
 		Adds two {@code Digit} numbers logicly and sequentially.
 
 		<p>Example of use:</p>
@@ -610,10 +838,10 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}, !other.isNegative);
 
-		int length = fullResult.length();
+		int scale = fullResult.length() - maxDecimalLength;
 
-		String integerResult = fullResult.substring(0, length - maxDecimalLength);
-		String decimalResult = fullResult.substring(length - maxDecimalLength);
+		String integerResult = fullResult.substring(0, scale);
+		String decimalResult = fullResult.substring(scale);
 
 		return new Digit(integerResult, decimalResult, false, this.notation);
 
@@ -703,7 +931,7 @@ public class Digit extends Number implements Comparable<Digit>{
 			Digit n = new Digit("7");
 			Digit m = new Digit(4);
 
-			Digit result = n.divide(m);
+			Digit result = n.divide(m, 16);
 
 		}</pre>
 
@@ -726,8 +954,8 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		int decimalLeft = - this.decimalPart.length() + other.decimalPart.length();
 
-		String dividend = this.notationManager.trimZeros(this.integerPart+this.decimalPart);
-		String divisor = this.notationManager.trimZeros(other.integerPart+other.decimalPart);
+		String dividend = this.operationManager.trimZerosRight(this.integerPart+this.decimalPart);
+		String divisor = this.operationManager.trimZerosRight(other.integerPart+other.decimalPart);
 
 		if (decimalLeft>0){
 
@@ -741,121 +969,245 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		String[] result = this.operationManager.division(dividend, divisor, presition);
 
-		return new Digit(result[0], result[1], this.isNegative!=this.isNegative, this.notation);
+		return new Digit(result[0], result[1], this.isNegative!=other.isNegative, this.notation);
 
 	}
 
 	/**
 
-		Returns the value of the specified number as a byte. The numeric value represented by this object after conversion to type byte.
+		Gets the module between two {@code Digit} numbers logicly and sequentially.
 
-		@exception NumberFormatException Throws by the method parseByte from class {@code Byte}.
-		@return The numeric value represented by this object after conversion to type byte.
-		@see java.lang.Number#byteValue()
-		@since v0.0.7
+		<br><br>{@literal a mod b = |a| - |b| * FLOOR(|a|/|b|)}
+		
+		<br><br>The sign of the result will be the original sign from {@literal a}.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit("4");
+			Digit m = new Digit(2);
+
+			Digit result = n.module(m);
+
+		}</pre>
+
+		The return values will be {@code result} = 0
+
+		@param other Digit instance.
+		@exception ArithmeticException if {@code Digit} other is zero.
+		@return Digit Result from the module of the firts instance given the second instance.
+		@see math.core.Digit#abs()
+		@see math.core.Digit#subtract(Digit)
+		@see math.core.Digit#multiply(Digit)
+		@see math.core.Digit#divide(Digit, long)
+
+		@since v0.0.8
 
 	*/
 
-	public byte byteValue() throws NumberFormatException{
+	public Digit module(Digit other){
 
-		return Byte.parseByte(this.integerPart);
+		if (other.compareToZero()==0) throw new ArithmeticException("Cannot divide by zero.");
 
-	}
+		Digit thisAbsolute = this.abs();
+		Digit otherAbsolute = other.abs();
+
+		Digit result = thisAbsolute.subtract(
+
+			otherAbsolute.multiply(
+
+				thisAbsolute.divide(
+
+					otherAbsolute, 0
+
+				)
+
+			)
+
+		);// a - b * FLOOR(a/b)
+
+		return this.isNegative ? result.negate() : result;
+
+	}/**/
 
 	/**
 
-		Returns the value of the specified number as a double. The numeric value represented by this object after conversion to type double.
+		Rounds the number given a scale and a rounding mode.
 
-		@exception NumberFormatException Throws by the method parseDouble from class {@code double}.
-		@return The numeric value represented by this object after conversion to type double.
-		@see java.lang.Number#doubleValue()
-		@since v0.0.7
+		<p>Example of use:</p>
+		<pre>{@code
+
+			Digit n = new Digit("1.56");
+
+			Digit result = n.setScale(1, RoundingMode.HALF_UP);
+
+		}</pre>
+
+		The return values will be {@code result} = 1.6
+
+		@param scale Decimal scale.
+		@param mode Rounding mode.
+		@exception ArithmeticException if {@code RoundingMode} mode is not either a given constant for {@code RoundingMode} class or the constant is {@code RoundingMode.UNNECESARY}.
+		@return Digit Rounded instance.
+		@see java.math.RoundingMode
+
+		@since v0.0.8
 
 	*/
 
-	public double doubleValue() throws NumberFormatException{
+	public Digit setScale(int scale, RoundingMode mode){
 
-		return Double.parseDouble(this.integerPart+(
+		if (this.decimalPart.isEmpty()){
 
-			!this.decimalPart.matches("") ? "."+this.decimalPart : ""
+			return this;
 
-		));
+		}else if (scale<=0){
+
+			return new Digit(this.integerPart, this.isNegative, this.notation);
+
+		}else if (mode==RoundingMode.CEILING){
+
+			return this.RoundingOrTrunk(!this.isNegative);
+
+		}else if (mode==RoundingMode.FLOOR){
+
+			return this.RoundingOrTrunk(this.isNegative);
+
+		}else if (mode==RoundingMode.DOWN){
+
+			return new Digit(this.integerPart, this.isNegative, this.notation);
+
+		}else if (mode==RoundingMode.UP){
+
+			return RoundingOrTrunk(true);
+
+		}else if (mode==RoundingMode.HALF_UP){
+
+			return this.RoundingHalf(scale, true);
+
+		}else if (mode==RoundingMode.HALF_DOWN){
+
+			return this.RoundingHalf(scale, false);
+
+		}else if (mode==RoundingMode.HALF_EVEN){
+
+			return this.RoundingEven(scale, true);
+
+		}else{
+
+			throw new ArithmeticException("Invalid RoundingMode");
+
+		}
 
 	}
 
-	/**
+	private Digit RoundingOrTrunk(boolean rounding){
 
-		Returns the value of the specified number as a float. The numeric value represented by this object after conversion to type float.
+		if (rounding){
 
-		@exception NumberFormatException Throws by the method parseFloat from class {@code float}.
-		@return The numeric value represented by this object after conversion to type float.
-		@see java.lang.Number#floatValue()
-		@since v0.0.7
+			return new Digit(this.operationManager.addition(0, new String[] {
 
-	*/
+				this.integerPart, "1"
 
-	public float floatValue() throws NumberFormatException{
+			}, true), this.isNegative, this.notation);
 
-		return Float.parseFloat(this.integerPart+(
+		}else{
 
-			!this.decimalPart.matches("") ? "."+this.decimalPart : ""
+			return new Digit(this.integerPart, this.isNegative, this.notation);
 
-		));
+		}
 
 	}
 
-	/**
+	private Digit RoundingEven(int scale, boolean even){
 
-		Returns the value of the specified number as a int. The numeric value represented by this object after conversion to type int.
+		int isPointFive = this.operationManager.compareDecimalParts(this.decimalPart, "5");
 
-		@exception NumberFormatException Throws by the method parseInt from class {@code Integer}.
-		@return The numeric value represented by this object after conversion to type int.
-		@see java.lang.Number#intValue()
-		@since v0.0.7
+		Digit Even = new Digit(this.integerPart, this.isNegative, this.notation);
 
-	*/
+		int isEven = Even.module(new Digit("2", false, true)).compareToZero();
 
-	public int intValue() throws NumberFormatException{
+		if (isPointFive==0){
 
-		return Integer.parseInt(this.integerPart);
+			if (isEven==0){
+
+				return Even;
+
+			}else{
+
+				return new Digit(this.operationManager.addition(0, new String [] {
+
+					this.integerPart, "1"
+
+				}, true), this.isNegative, this.notation);
+
+			}
+
+		}else{
+
+			return this.RoundingHalf(scale, even);
+
+		}
+
+	}/**/
+
+	private Digit RoundingHalf(int scale, boolean even){
+
+		int decimalLength = this.decimalPart.length();
+
+		if (decimalLength<=scale) return this;
+
+		int carry = this.carry(this.decimalPart.substring(scale), even);
+
+		String newDecimalPart = this.decimalPart.substring(0, scale);
+
+		if (carry==1){
+
+			String roundedPart = this.operationManager.addition(0, new String[] {newDecimalPart, "1"}, true);
+
+			if (roundedPart.length()==newDecimalPart.length()){
+
+				return new Digit(this.integerPart, this.operationManager.trimZerosRight(roundedPart), this.isNegative, this.notation);
+
+			}else{
+
+				return new Digit(this.operationManager.addition(0, new String[] {
+
+					this.integerPart, "1"
+
+				}, true), this.isNegative, this.notation);
+
+			}
+
+		}else{
+
+			return new Digit(this.integerPart, newDecimalPart, this.isNegative, this.notation);
+
+		}
 
 	}
 
-	/**
+	private int carry(String number, boolean even){
 
-		Returns the value of the specified number as a long. The numeric value represented by this object after conversion to type long.
+		int carry = 0;
 
-		@exception NumberFormatException Throws by the method parseLong from class {@code Long}.
-		@return The numeric value represented by this object after conversion to type long.
-		@see java.lang.Number#longValue()
-		@since v0.0.7
+		if (number.length()!=1){
 
-	*/
+			carry = this.carry(number.substring(1), even);
 
-	public long longValue() throws NumberFormatException{
+		}
 
-		return Long.parseLong(this.integerPart);
+		int n = number.charAt(0) - '0' + carry;
 
-	}
+		carry = 0;
 
-	/**
+		if (even ? n>=5 : n>5){
 
-		Returns the value of the specified number as a short. The numeric value represented by this object after conversion to type short.
+			carry = 1;
 
-		@exception NumberFormatException Throws by the method parseShort from class {@code Short}.
-		@return The numeric value represented by this object after conversion to type short.
-		@see java.lang.Number#shortValue()
-		@since v0.0.7
+		}
 
-	*/
-
-	public short shortValue() throws NumberFormatException{
-
-		return Short.parseShort(this.integerPart+(
-
-			!this.decimalPart.matches("") ? "."+this.decimalPart : ""
-
-		));
+		return carry;
 
 	}
 

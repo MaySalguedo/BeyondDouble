@@ -1,7 +1,5 @@
 package math.core;
 
-import math.core.Notationer;
-
 /**
 
 	Manages the operations and results of the four basic mathemathic operations. 
@@ -19,7 +17,7 @@ import math.core.Notationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.1
+	@version v0.0.2
 	@since v0.0.9
 
 */
@@ -41,7 +39,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			int result = this.compareIntegerParts("45", "50");
+			int result = this.operationManager.compareIntegerParts("45", "50");
 
 		}</pre>
 
@@ -52,7 +50,7 @@ public class Operationer{
 
 		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
 		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
-		@since v0.0.3
+		@since v0.0.1
 
 	*/
 
@@ -86,7 +84,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			int result = this.compareDecimalParts("5", "52");
+			int result = this.operationManager.compareDecimalParts("5", "52");
 
 		}</pre>
 
@@ -97,7 +95,7 @@ public class Operationer{
 
 		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
 		equal, 1 if {@literal n<m} and -1 if {@literal n>m}.
-		@since v0.0.3
+		@since v0.0.1
 
 	*/
 
@@ -130,7 +128,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String result = this.padZerosRight("5", 3);
+			String result = this.operationManager.padZerosRight("5", 3);
 
 		}</pre>
 
@@ -140,7 +138,7 @@ public class Operationer{
 		@param length Intented length for the {@code String} result.
 
 		@return String Returns String that matches the length paramether.
-		@since v0.0.4
+		@since v0.0.1
 
 	*/
 
@@ -165,7 +163,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String result = this.padZerosLeft("5", 3);
+			String result = this.operationManager.padZerosLeft("5", 3);
 
 		}</pre>
 
@@ -175,7 +173,7 @@ public class Operationer{
 		@param length Intented length for the {@code String} result.
 
 		@return String Returns String that matches the length paramether.
-		@since v0.0.5
+		@since v0.0.1
 
 	*/
 
@@ -195,12 +193,64 @@ public class Operationer{
 
 	/**
 
+		Trims right zeros.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = this.operationManager.trimZerosRight("500");
+
+		}</pre>
+
+		The return values will be {@code result} = "5"
+
+		@param str String value.
+
+		@return String Returns the trim string.
+		@since v0.0.2
+
+	*/
+
+	protected String trimZerosRight(String str){
+
+		return str.replaceAll("[0]+$", "");
+
+	}
+
+	/**
+
+		Trims left zeros.
+
+		<p>Example of use:</p>
+		<pre>{@code
+
+			String result = this.operationManager.trimZerosRight("000");
+
+		}</pre>
+
+		The return values will be {@code result} = "0"
+
+		@param str String value.
+
+		@return String Returns the trim string.
+		@since v0.0.2
+
+	*/
+
+	protected String trimZerosLeft(String str){
+
+		return str.replaceAll("^[0]+(?!$)", "");
+
+	}
+
+	/**
+
 		Adds integers as {@code String} logicly and sequentially.
 
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String result = this.addition(0, new String[] {
+			String result = this.operationManager.addition(0, new String[] {
 
 				"1", "2", "3"
 
@@ -217,7 +267,7 @@ public class Operationer{
 		@return String Result from the addition of the integers.
 		@see math.core.Notationer#trimZeros(String)
 		@see math.core.Operationer#padZerosLeft(String, int)
-		@since v0.0.5
+		@since v0.0.1
 
 	*/
 
@@ -302,7 +352,7 @@ public class Operationer{
 
 		}
 
-		return new Notationer().trimZeros(trimResult);
+		return trimResult;
 
 	}
 
@@ -313,7 +363,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String result = this.multiplication("12", "3");
+			String result = this.operationManager.multiplication("12", "3");
 
 		}</pre>
 
@@ -324,7 +374,7 @@ public class Operationer{
 
 		@return String Result from the multiplication of the integers.
 		@see math.core.Operationer#addition(int, String[], boolean)
-		@since v0.0.5
+		@since v0.0.1
 
 	*/
 
@@ -377,7 +427,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String[] result = this.division("7", "5", 20);
+			String[] result = this.operationManager.division("7", "5", 20);
 
 		}</pre>
 
@@ -390,31 +440,31 @@ public class Operationer{
 		@return String[] Result from the division of the integers.
 		@see math.core.Operationer#compareIntegerParts(String, String)
 		@see math.core.Operationer#calculateDecimalPartForDivision(String, String, long)
-		@since v0.0.6
+		@since v0.0.1
 
 	*/
 
 	protected String[] division(String dividend, String divisor, long presition){
 
-		int isGreaterThanDivivisor = this.compareIntegerParts(dividend, divisor);
+		int isGreaterThanDividend = this.compareIntegerParts(dividend, divisor);
 
 		long integerPartCounter = 0;
 
-		while(isGreaterThanDivivisor>0){
+		while(isGreaterThanDividend>0){
 
-			dividend = this.addition(0, new String[] {
+			dividend = this.trimZerosRight(this.addition(0, new String[] {
 
 				dividend.toString(), divisor.toString()
 
-			}, false);
+			}, false));
 
 			integerPartCounter++;
 
-			isGreaterThanDivivisor = this.compareIntegerParts(dividend, divisor);
+			isGreaterThanDividend = this.compareIntegerParts(dividend, divisor);
 
 		}
 
-		if (isGreaterThanDivivisor==0){ 
+		if (isGreaterThanDividend==0){ 
 
 			return new String[] {(integerPartCounter + 1)+"", ""};
 
@@ -433,7 +483,7 @@ public class Operationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String result = this.calculateDecimalPartForDivision("20", "5", 20);
+			String result = this.operationManager.calculateDecimalPartForDivision("20", "5", 20);
 
 		}</pre>
 
@@ -448,7 +498,7 @@ public class Operationer{
 		@see math.core.Operationer#compareIntegerParts(String, String)
 		@see math.core.Operationer#addition(int, String[], boolean)
 
-		@since v0.0.6
+		@since v0.0.1
 
 	*/
 
@@ -458,21 +508,21 @@ public class Operationer{
 
 		for (long i=0; i<presition; i++){
 
-			int isGreaterThanRemainder = this.compareIntegerParts(remainder, divisor);
+			int isGreaterThanDividend = this.compareIntegerParts(remainder, divisor);
 
 			byte counter = 0;
 
-			while(isGreaterThanRemainder>=0){
+			while(isGreaterThanDividend>=0){
 
-				remainder = this.addition(0, new String[] {
+				remainder = this.trimZerosRight(this.addition(0, new String[] {
 
 					remainder.toString(), divisor.toString()
 
-				}, false);
+				}, false));
 
 				counter++;
 
-				isGreaterThanRemainder = this.compareIntegerParts(remainder, divisor);
+				isGreaterThanDividend = this.compareIntegerParts(remainder, divisor);
 
 			}
 

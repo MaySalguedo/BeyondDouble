@@ -1,5 +1,7 @@
 package Mechanics.Main;
 
+import java.math.RoundingMode;
+
 import math.core.*;
 
 /**
@@ -16,10 +18,13 @@ public class MainRunnable{
 
 		System.out.print("\n\n");
 
-		Digit n = new Digit(0.5);
+		double a = 7.2;
+		double b = 7;
 
-		System.out.print(n.inverse());
-		
+		Digit n = new Digit(a);
+
+		System.out.print(a+"%"+b+" = "+(a%b)+" | "+n.module(b));
+
 		System.out.print("\n\n");
 		
 	}

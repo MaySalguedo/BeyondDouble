@@ -56,7 +56,7 @@ public class Notationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String[] parts = Notationer.validateAndNormalize(new StringBuilder(
+			String[] parts = this.notationManager.validateAndNormalize(new StringBuilder(
 
 				"1234.56"
 
@@ -77,7 +77,7 @@ public class Notationer{
 
 	*/
 
-	public String[] validateAndNormalize(StringBuilder number){
+	protected String[] validateAndNormalize(StringBuilder number){
 
 		if (number!=null ? number.isEmpty() : false){
 
@@ -101,7 +101,7 @@ public class Notationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String n = Notationer.format("1234", "56");
+			String n = this.notationManager.format("1234", "56");
 
 		}</pre>
 		
@@ -118,7 +118,7 @@ public class Notationer{
 
 	*/
 
-	public String format(String integerPart, String decimalPart, boolean useDecimalPointNotation){
+	protected String format(String integerPart, String decimalPart, boolean useDecimalPointNotation){
 		
 		StringBuilder formatted = new StringBuilder();
 		
@@ -146,7 +146,7 @@ public class Notationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			StringBuilder n = Notationer.expandScientificNotation(new StringBuilder(
+			StringBuilder n = this.notationManager.expandScientificNotation(new StringBuilder(
 
 				"1.23456E3"
 
@@ -162,7 +162,7 @@ public class Notationer{
 
 	*/
 
-	public StringBuilder expandScientificNotation(StringBuilder scientificNumber){
+	protected StringBuilder expandScientificNotation(StringBuilder scientificNumber){
 
 		String[] parts = scientificNumber.toString().split("[Ee]");
 
@@ -231,7 +231,7 @@ public class Notationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			StringBuilder n = Notationer.cleanNonNumericCharacters("--.012++");
+			StringBuilder n = this.notationManager.cleanNonNumericCharacters("--.012++");
 
 		}</pre>
 		
@@ -243,7 +243,7 @@ public class Notationer{
 
 	*/
 
-	public StringBuilder cleanNonNumericCharacters(String number){
+	protected StringBuilder cleanNonNumericCharacters(String number){
 
 		StringBuilder cleaned = new StringBuilder(number);
 
@@ -295,7 +295,7 @@ public class Notationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String[] parts = Notationer.splitIntoIntegerAndDecimalParts("1234.56");
+			String[] parts = this.notationManager.splitIntoIntegerAndDecimalParts("1234.56");
 
 		}</pre>
 		
@@ -307,7 +307,7 @@ public class Notationer{
 
 	*/
 
-	public String[] splitIntoIntegerAndDecimalParts(String number){
+	protected String[] splitIntoIntegerAndDecimalParts(String number){
 
 		String[] parts = number.split("\\.");
 
@@ -323,7 +323,7 @@ public class Notationer{
 		<p>Example of use:</p>
 		<pre>{@code
 
-			String n = Notationer.trimZeros("00000001234.56000000000");
+			String n = this.notationManager.trimZeros("00000001234.56000000000");
 
 		}</pre>
 		
@@ -335,7 +335,7 @@ public class Notationer{
 
 	*/
 
-	public String trimZeros(String str){
+	protected String trimZeros(String str){
 
 		return str.replaceAll("^[0]+(?!$)"+(str.contains(".") ? "|[0]+$" : ""), "");
 
@@ -351,7 +351,7 @@ public class Notationer{
 			StringBuffer n = new StringBuilder();
 			char separator = ',';
 
-			Notationer.trimZeros(n, "1234", separator);
+			this.notationManager.formatIntegerPart(n, "1234", separator);
 
 		}</pre>
 		
@@ -365,7 +365,7 @@ public class Notationer{
 
 	*/
 
-	public void formatIntegerPart(StringBuilder formatted, String integerPart, char separator){
+	protected void formatIntegerPart(StringBuilder formatted, String integerPart, char separator){
 
 		int length = integerPart.length();
 
