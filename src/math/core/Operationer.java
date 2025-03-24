@@ -354,7 +354,7 @@ public class Operationer{
 
 		return trimResult;
 
-	}
+	}/**/
 
 	/**
 
@@ -452,7 +452,7 @@ public class Operationer{
 
 		while(isGreaterThanDividend>0){
 
-			dividend = this.trimZerosRight(this.addition(0, new String[] {
+			dividend = this.trimZerosLeft(this.addition(0, new String[] {
 
 				dividend.toString(), divisor.toString()
 
@@ -514,7 +514,7 @@ public class Operationer{
 
 			while(isGreaterThanDividend>=0){
 
-				remainder = this.trimZerosRight(this.addition(0, new String[] {
+				remainder = this.trimZerosLeft(this.addition(0, new String[] {
 
 					remainder.toString(), divisor.toString()
 

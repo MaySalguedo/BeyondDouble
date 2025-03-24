@@ -24,7 +24,7 @@ import math.core.Operationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.8
+	@version v0.0.9
 	@since v0.0.1
 
 */
@@ -420,6 +420,25 @@ public class Digit extends Number implements Comparable<Digit>{
 			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
 
 		));
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a String. The numeric value represented by this object after conversion to type String.
+
+		@return The numeric value represented by this object after conversion to type String.
+		@since v0.0.9
+
+	*/
+
+	public String stringValue(){
+
+		return this.integerPart+(
+
+			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
+
+		);
 
 	}
 
@@ -840,7 +859,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		int scale = fullResult.length() - maxDecimalLength;
 
-		String integerResult = fullResult.substring(0, scale);
+		String integerResult = scale!=0 ? this.operationManager.trimZerosLeft(fullResult.substring(0, scale)) : "0";
 		String decimalResult = fullResult.substring(scale);
 
 		return new Digit(integerResult, decimalResult, false, this.notation);
@@ -914,7 +933,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		int length = fullResult.length();
 
-		String integerResult = fullResult.substring(0, length - maxDecimalLength);
+		String integerResult = this.operationManager.trimZerosLeft(fullResult.substring(0, length - maxDecimalLength));
 		String decimalResult = fullResult.substring(length - maxDecimalLength);
 
 		return new Digit(integerResult, decimalResult, this.isNegative!=other.isNegative, this.notation);
@@ -954,8 +973,8 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		int decimalLeft = - this.decimalPart.length() + other.decimalPart.length();
 
-		String dividend = this.operationManager.trimZerosRight(this.integerPart+this.decimalPart);
-		String divisor = this.operationManager.trimZerosRight(other.integerPart+other.decimalPart);
+		String dividend = this.operationManager.trimZerosLeft(this.integerPart+this.decimalPart);
+		String divisor = this.operationManager.trimZerosLeft(other.integerPart+other.decimalPart);
 
 		if (decimalLeft>0){
 
@@ -966,6 +985,8 @@ public class Digit extends Number implements Comparable<Digit>{
 			divisor+= "0".repeat(-decimalLeft);
 
 		}
+
+		//System.out.println("dividend: "+dividend+"\ndivisor:  "+divisor+"\n");
 
 		String[] result = this.operationManager.division(dividend, divisor, presition);
 
