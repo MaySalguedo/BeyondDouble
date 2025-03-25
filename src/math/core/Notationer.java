@@ -5,7 +5,7 @@ package math.core;
 	Manages the format and convertion between differents numeric notations. 
 	Intended to be only used as a stakeholder manager for its functions.
 
-	<p>Example of use:</p>
+	<br><br><b>Usage Example</b>
 	<pre>{@code
 
 		public class MyClass{
@@ -50,10 +50,10 @@ public class Notationer{
 
 	/**
 
-		Recieves a number as a {@code StringBuilder} paramether, validates it to make sure it is infact a number and normalizes it 
+		Recieves a number as a {@code StringBuilder} parameter, validates it to make sure it is infact a number and normalizes it 
 		to make readable in case it is not on a standard notation.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String[] parts = this.notationManager.validateAndNormalize(new StringBuilder(
@@ -95,24 +95,24 @@ public class Notationer{
 
 	/**
 
-		Recieves a number as two {@code String} paramethers, one representing the integer part and the other representing its decimal part 
-		and a {@code boolean} paramether that tells if the number uses decimal point notation. This paramether is {@code true} if it does.
+		Recieves a number as two {@code String} parameters, one representing the integer part and the other representing its decimal part 
+		and a {@code boolean} parameter that tells if the number uses decimal point notation. This parameter is {@code true} if it does.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String n = this.notationManager.format("1234", "56");
 
 		}</pre>
 		
-		The return values will be either {@code n} = 1,234.56 in case the {@code boolean useDecimalPointNotation} paramether if {@code true} or 
+		The return values will be either {@code n} = 1,234.56 in case the {@code boolean useDecimalPointNotation} parameter if {@code true} or 
 		{@code n} = 1.234,56 in case is {@code false}.
 
 		@param integerPart Integer Part of a number as a {@code String}.
 		@param decimalPart Decimal Part of a number as a {@code String}.
 		@param useDecimalPointNotation Tells if it uses or not decimal point notation as a {@code boolean}.
 
-		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} paramether.
+		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} parameter.
 		@see math.core.Notationer#formatIntegerPart(StringBuilder, String, char)
 		@since v0.0.1
 
@@ -140,10 +140,10 @@ public class Notationer{
 
 	/**
 
-		Recieves a number as a {@code StringBuilder} paramether, validates it to make sure it is infact in scientific notation, if so 
+		Recieves a number as a {@code StringBuilder} parameter, validates it to make sure it is infact in scientific notation, if so 
 		it will return the number expanded, if not it will return itself.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			StringBuilder n = this.notationManager.expandScientificNotation(new StringBuilder(
@@ -226,9 +226,9 @@ public class Notationer{
 
 	/**
 
-		Recieves a number as a {@code String} paramether, validates its back and front, and then removes every non numeric characters.
+		Recieves a number as a {@code String} parameter, validates its back and front, and then removes every non numeric characters.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			StringBuilder n = this.notationManager.cleanNonNumericCharacters("--.012++");
@@ -289,10 +289,10 @@ public class Notationer{
 
 	/**
 
-		Recieves a number as a {@code String} paramether, validates if it has a decimal part, if not it will fills it with empty to make 
+		Recieves a number as a {@code String} parameter, validates if it has a decimal part, if not it will fills it with empty to make 
 		sure it always return a 2 length {@code String} array.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String[] parts = this.notationManager.splitIntoIntegerAndDecimalParts("1234.56");
@@ -317,10 +317,10 @@ public class Notationer{
 
 	/**
 
-		Recieves a number as a {@code String} paramether, validates if it has a decimal point to extend the regrex statement to not trim 
+		Recieves a number as a {@code String} parameter, validates if it has a decimal point to extend the regrex statement to not trim 
 		the zeros at the end if it is not a decimal number.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String n = this.notationManager.trimZeros("00000001234.56000000000");
@@ -343,9 +343,9 @@ public class Notationer{
 
 	/**
 
-		Recieves a empty {@code StringBuilder} recipient paramether, the integer part of a number as a {@code String} and {@code char} separator.
+		Recieves a empty {@code StringBuilder} recipient parameter, the integer part of a number as a {@code String} and {@code char} separator.
 		
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			StringBuffer n = new StringBuilder();

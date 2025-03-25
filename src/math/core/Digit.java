@@ -14,7 +14,7 @@ import math.core.Operationer;
 
 	Digit's class presition is arbitrary, which means it can represent numbers as big as the memory allows it.
 
-	<p>Example of use:</p>
+	<br><br><b>Usage Example</b>
 	<pre>{@code
 
 		Digit n = new Digit(1.23456E7);
@@ -24,7 +24,7 @@ import math.core.Operationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.9
+	@version v0.1.0
 	@since v0.0.1
 
 */
@@ -293,7 +293,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Implements the {@code String format()} function from extended class Notationer to print the number on a 
 		readable notation using the attributes {@code this.integerPart}, {@code this.decimalPart} and {@code this.notation} 
-		as paramethers for such function.
+		as parameters for such function.
 		
 		The return values will be either negative or positive depending on the state of the attribute {@code this.isNegative}.
 
@@ -446,7 +446,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(1.23456E7);
@@ -530,7 +530,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Compares a {@code Digit} instance to zero.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(1);
@@ -561,7 +561,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Compares a {@code Digit} instance to one.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(1);
@@ -592,7 +592,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Compares a {@code Digit} instance to minus one.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(1);
@@ -621,9 +621,89 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
+		Increases the {@code Digit} instance's value by one.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			Digit n = new Digit(-0.5);
+
+			Digit result = n.increase();
+
+		}</pre>
+
+		The return values will be {@code result} = 0.5
+
+		@return Digit Intance increased by one.
+		@since v0.1.0
+
+	*/
+
+	public Digit increase(){
+
+		boolean isBetween = this.compareToMinusOne() > 0 && this.compareToZero() < 0;
+
+		if (isBetween){
+
+			return this.negate();
+
+		}else if (!this.isNegative){
+
+			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);
+
+		}else{
+
+			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);
+
+		}
+
+	}
+
+	/**
+
+		Decreases the {@code Digit} instance's value by one.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			Digit n = new Digit(0.5);
+
+			Digit result = n.increase();
+
+		}</pre>
+
+		The return values will be {@code result} = -0.5
+
+		@return Digit Intance increased by one.
+		@since v0.1.0
+
+	*/
+
+	public Digit decrease(){
+
+		boolean isBetween = this.compareToOne() < 0 && this.compareToZero() > 0;
+
+		if (isBetween){
+
+			return this.negate();
+
+		}else if (this.isNegative){
+
+			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);
+
+		}else{
+
+			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);
+
+		}
+
+	}
+
+	/**
+
 		Creates a Digit instance with the {@code boolean isNegative} attribute negated.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(1);
@@ -649,7 +729,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Creates a Digit instance with the {@code boolean isNegative} attribute on false.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(-1);
@@ -675,7 +755,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Calculates the {@code Digit} instance's inverse value.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit(2);
@@ -805,7 +885,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Adds two {@code Digit} numbers logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit("-123.45");
@@ -822,7 +902,7 @@ public class Digit extends Number implements Comparable<Digit>{
 		@see math.core.Digit#negate()
 		@see math.core.Digit#abs()
 		@see math.core.Operationer#padZerosRight(String, int)
-		@see math.core.Operationer#addition(int, String[], boolean)
+		@see math.core.Operationer#addTwoTogether(String, String, boolean)
 		@since v0.0.4
 
 	*/
@@ -850,12 +930,13 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		int maxDecimalLength = this.decimalPart.length()>other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();
 
-		String fullResult = this.operationManager.addition(0, new String[] {
+		String fullResult = this.operationManager.addTwoTogether(
 
 			this.integerPart + this.operationManager.padZerosRight(this.decimalPart, maxDecimalLength),
-			other.integerPart + this.operationManager.padZerosRight(other.decimalPart, maxDecimalLength)
+			other.integerPart + this.operationManager.padZerosRight(other.decimalPart, maxDecimalLength),
+			!other.isNegative
 
-		}, !other.isNegative);
+		);
 
 		int scale = fullResult.length() - maxDecimalLength;
 
@@ -887,7 +968,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Multiplies two {@code Digit} numbers logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit("25");
@@ -944,7 +1025,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Divides two {@code Digit} numbers logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit("7");
@@ -1002,7 +1083,7 @@ public class Digit extends Number implements Comparable<Digit>{
 		
 		<br><br>The sign of the result will be the original sign from {@literal a}.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit("4");
@@ -1055,7 +1136,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		Rounds the number given a scale and a rounding mode.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			Digit n = new Digit("1.56");
@@ -1126,11 +1207,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		if (rounding){
 
-			return new Digit(this.operationManager.addition(0, new String[] {
-
-				this.integerPart, "1"
-
-			}, true), this.isNegative, this.notation);
+			return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);
 
 		}else{
 
@@ -1156,11 +1233,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 			}else{
 
-				return new Digit(this.operationManager.addition(0, new String [] {
-
-					this.integerPart, "1"
-
-				}, true), this.isNegative, this.notation);
+				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);
 
 			}
 
@@ -1184,7 +1257,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		if (carry==1){
 
-			String roundedPart = this.operationManager.addition(0, new String[] {newDecimalPart, "1"}, true);
+			String roundedPart = this.operationManager.increase(newDecimalPart);
 
 			if (roundedPart.length()==newDecimalPart.length()){
 
@@ -1192,11 +1265,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 			}else{
 
-				return new Digit(this.operationManager.addition(0, new String[] {
-
-					this.integerPart, "1"
-
-				}, true), this.isNegative, this.notation);
+				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);
 
 			}
 

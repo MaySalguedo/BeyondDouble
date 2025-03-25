@@ -1,11 +1,17 @@
 package math.core;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import java.util.Arrays;
+
 /**
 
 	Manages the operations and results of the four basic mathemathic operations. 
 	Intended to be only used as a stakeholder manager for its functions.
 
-	<p>Example of use:</p>
+	<br><br><b>Usage Example</b>
 	<pre>{@code
 
 		public class MyClass{
@@ -17,7 +23,7 @@ package math.core;
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.2
+	@version v0.0.3
 	@since v0.0.9
 
 */
@@ -36,7 +42,7 @@ public class Operationer{
 
 		Compares two positive integer numbers as two {@code String}.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			int result = this.operationManager.compareIntegerParts("45", "50");
@@ -81,7 +87,7 @@ public class Operationer{
 
 		Compares two decimal parts as two positive integer numbers as two {@code String}.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			int result = this.operationManager.compareDecimalParts("5", "52");
@@ -123,9 +129,9 @@ public class Operationer{
 
 	/**
 
-		Add zeros to the {@code String} result to the right until the length matches the length paramether.
+		Add zeros to the {@code String} result to the right until the length matches the length parameter.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String result = this.operationManager.padZerosRight("5", 3);
@@ -137,7 +143,7 @@ public class Operationer{
 		@param str Integer number as a {@code String}
 		@param length Intented length for the {@code String} result.
 
-		@return String Returns String that matches the length paramether.
+		@return String Returns String that matches the length parameter.
 		@since v0.0.1
 
 	*/
@@ -158,9 +164,9 @@ public class Operationer{
 
 	/**
 
-		Add zeros to the {@code String} result to the left until the length matches the length paramether.
+		Add zeros to the {@code String} result to the left until the length matches the length parameter.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String result = this.operationManager.padZerosLeft("5", 3);
@@ -172,7 +178,7 @@ public class Operationer{
 		@param str Integer number as a {@code String}
 		@param length Intented length for the {@code String} result.
 
-		@return String Returns String that matches the length paramether.
+		@return String Returns String that matches the length parameter.
 		@since v0.0.1
 
 	*/
@@ -195,7 +201,7 @@ public class Operationer{
 
 		Trims right zeros.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String result = this.operationManager.trimZerosRight("500");
@@ -221,7 +227,7 @@ public class Operationer{
 
 		Trims left zeros.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String result = this.operationManager.trimZerosRight("000");
@@ -247,120 +253,196 @@ public class Operationer{
 
 		Adds integers as {@code String} logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
-			String result = this.operationManager.addition(0, new String[] {
+			String result = this.operationManager.asyncAddition(new String[] {
 
 				"1", "2", "3"
 
-			}, true);
+			});
 
 		}</pre>
 
 		The return values will be {@code result} = "7"
 
-		@param index Index to where in the array it will start adding the numbers.
+		<br><br><b>Note:</b> <ol><li>The return value will have the same String length as the max String length value from the array.</li></ol>
+
 		@param integers {@code String} array made out of integer numbers.
-		@param isAddition Is addition or substraction as {@code boolean}.
 
 		@return String Result from the addition of the integers.
-		@see math.core.Notationer#trimZeros(String)
-		@see math.core.Operationer#padZerosLeft(String, int)
-		@since v0.0.1
+		@see math.core.Operationer#addTwoTogether(String, String, boolean)
+		@since v0.0.3
 
 	*/
 
-	protected String addition(int index, String[] integers, boolean isAddition){
+	protected String asyncAddition(String[] integers){
 
-		if (integers.length==1 || index==integers.length-1) return integers[integers.length-1];
+		try {
 
-		String thisFullNumber = integers[index];
-		String otherFullNumber = integers[index + 1];
+			int arrayLength = integers.length;
 
-		int maxLength = thisFullNumber.length()>otherFullNumber.length() ? thisFullNumber.length() : otherFullNumber.length();
+			if (arrayLength==1){
 
-		thisFullNumber = padZerosLeft(thisFullNumber, maxLength);
-		otherFullNumber = padZerosLeft(otherFullNumber, maxLength);
+				return integers[0];
 
-		StringBuilder result = new StringBuilder();
-		int carryIn = 0;
-		int carryOut = 0;
+			}else if (arrayLength==2){
 
-		for (int i=maxLength-1; i>=0; i--){
+				return this.addTwoTogether(integers[0], integers[1], true);
 
-			int thisDigit = (thisFullNumber.charAt(i) - '0') - carryOut;
-			int otherDigit = otherFullNumber.charAt(i) - '0';
+			}else if (arrayLength==3){
 
-			int sum = 0;
+				return this.addTwoTogether(this.addTwoTogether(
 
-			if (isAddition){
+					integers[0],
+					integers[1],
+					true
 
-				sum = thisDigit + otherDigit + carryIn;
-				carryIn = sum/10;
-				result.insert(0, sum%10);
+				), integers[2], true);
 
 			}else{
 
-				carryOut = 0;
-				carryIn = 0;
-
-				if ((thisDigit)<otherDigit){
-
-					carryIn = 10;
-					carryOut = 1;
-
-				}
-
-				sum = thisDigit - otherDigit + carryIn;
-				result.insert(0, sum);
+				return asyncAdditionRecursive(integers).get();
 
 			}
 
-		}
+		}catch(Exception e){
 
-		if (carryIn>0){
+			e.printStackTrace();
 
-			result.insert(0, carryIn);
-
-		}
-
-		int remainders = integers.length - (index + 2);
-
-		String trimResult;
-
-		if (integers.length==2 || remainders==0){
-
-			trimResult = result.toString();
-
-		}else if (remainders==1){
-
-			trimResult = this.addition(0, new String[] {
-
-				result.toString(), integers[index + 2]
-
-			}, isAddition);
-
-		}else{
-
-			trimResult = this.addition(0, new String[] {
-
-				result.toString(), this.addition(index + 2, integers, isAddition)
-
-
-			}, isAddition);
+			return "0";
 
 		}
 
-		return trimResult;
+	}
 
-	}/**/
+	/**
+
+		Adds two integers as {@code String} logicly and sequentially.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			String result = this.operationManager.addTwoTogether("5", "2", true);
+
+		}</pre>
+
+		The return values will be {@code result} = "7"
+
+		<br><br><b>Notes:</b>
+		<ol>
+
+			<li>The return value will have the same String length as the max String length value out of the two parameters.</li>
+			<li>For subtraction, the relation between the parameters must satisfy thisInteger >= otherInteger.</li>
+
+		</ol>
+
+		@param thisInteger Integer number as {@code String}.
+		@param otherInteger Integer number as {@code String}.
+		@param isAddition Is addition or substraction as {@code boolean}.
+
+		@return String Result from the addition of the integers.
+		@see math.core.Operationer#padZerosLeft(String, int)
+		@since v0.0.3
+
+	*/
+
+	protected String addTwoTogether(String thisInteger, String otherInteger, boolean isAddition){
+
+		int maxLength = thisInteger.length()>otherInteger.length() ? thisInteger.length() : otherInteger.length();
+
+		String thisFullNumber = padZerosLeft(thisInteger, maxLength);
+		String otherFullNumber = padZerosLeft(otherInteger, maxLength);
+
+		StringBuilder result = this.addTwoTogether(new StringBuilder(), thisFullNumber, otherFullNumber, 0, 0, maxLength-1, isAddition);
+
+		return result.toString();
+
+	}
+
+	/**
+
+		Increases the integer's value stored as a {@code String} by one.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			String result = this.operationManager.increase("0");
+
+		}</pre>
+
+		The return values will be {@code result} = "1"
+
+		<br><br><b>Notes:</b>
+		<ol>
+
+			<li>The return value will have the same String length as the parameter's length.</li>
+			<li>The parameter must satisfy thisInteger >= 0.</li>
+
+		</ol>
+
+		@param thisInteger Integer number as {@code String}.
+		@return String Parameter increased by one.
+		@since v0.0.3
+
+	*/
+
+	protected String increase(String thisInteger){
+
+		int length = thisInteger.length() - 1;
+
+		String paddedOne = "0".repeat(length) + "1";
+
+		StringBuilder result = this.addTwoTogether(new StringBuilder(), thisInteger, paddedOne, 0, 0, length, true);
+
+		return result.toString();
+
+	}
+
+	/**
+
+		Decreases the integer's value stored as a {@code String} by one.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			String result = this.operationManager.decrease("1");
+
+		}</pre>
+
+		The return values will be {@code result} = "0"
+
+		<br><br><b>Notes:</b>
+		<ol>
+
+			<li>The return value will have the same String length as the parameter's length.</li>
+			<li>The parameter must satisfy thisInteger >= 1s.</li>
+
+		</ol>
+
+		@param thisInteger Integer number as {@code String}.
+		@return String Parameter decreased by one.
+		@since v0.0.3
+
+	*/
+
+	protected String decrease(String thisInteger){
+
+		int length = thisInteger.length() - 1;
+
+		String paddedOne = "0".repeat(length) + "1";
+
+		StringBuilder result = this.addTwoTogether(new StringBuilder(), thisInteger, paddedOne, 0, 0, length, false);
+
+		return this.trimZerosLeft(result.toString());
+
+	}
 
 	/**
 
 		Multiplies integers as {@code String} logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String result = this.operationManager.multiplication("12", "3");
@@ -373,7 +455,7 @@ public class Operationer{
 		@param otherInteger Second integer as {@code String}.
 
 		@return String Result from the multiplication of the integers.
-		@see math.core.Operationer#addition(int, String[], boolean)
+		@see math.core.Operationer#asyncAddition(String[])
 		@since v0.0.1
 
 	*/
@@ -416,7 +498,7 @@ public class Operationer{
 
 		}
 
-		return this.addition(0, integerColumn, true);
+		return this.asyncAddition(integerColumn);
 
 	}
 
@@ -424,7 +506,7 @@ public class Operationer{
 
 		Divides integers as {@code String} logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String[] result = this.operationManager.division("7", "5", 20);
@@ -452,11 +534,7 @@ public class Operationer{
 
 		while(isGreaterThanDividend>0){
 
-			dividend = this.trimZerosLeft(this.addition(0, new String[] {
-
-				dividend.toString(), divisor.toString()
-
-			}, false));
+			dividend = this.trimZerosLeft(this.addTwoTogether(dividend.toString(), divisor.toString(), false));
 
 			integerPartCounter++;
 
@@ -480,7 +558,7 @@ public class Operationer{
 
 		Calculates the decimal part of a division using the remainder and divisor as {@code String} logicly and sequentially.
 
-		<p>Example of use:</p>
+		<br><br><b>Usage Example</b>
 		<pre>{@code
 
 			String result = this.operationManager.calculateDecimalPartForDivision("20", "5", 20);
@@ -496,7 +574,8 @@ public class Operationer{
 		@return String Decimal part for the division.
 
 		@see math.core.Operationer#compareIntegerParts(String, String)
-		@see math.core.Operationer#addition(int, String[], boolean)
+		@see math.core.Operationer#addTwoTogether(String, String, boolean)
+		@see math.core.Operationer#increase(String)
 
 		@since v0.0.1
 
@@ -514,11 +593,7 @@ public class Operationer{
 
 			while(isGreaterThanDividend>=0){
 
-				remainder = this.trimZerosLeft(this.addition(0, new String[] {
-
-					remainder.toString(), divisor.toString()
-
-				}, false));
+				remainder = this.trimZerosLeft(this.addTwoTogether(remainder.toString(), divisor.toString(), false));
 
 				counter++;
 
@@ -541,7 +616,7 @@ public class Operationer{
 
 				}else{
 
-					return this.addition(0, new String[] {result.toString(), "1"}, true);
+					return this.increase(result.toString());
 
 				}
 
@@ -550,6 +625,109 @@ public class Operationer{
 		}
 
 		return result.toString();
+
+	}
+
+	@SuppressWarnings("unchecked") private CompletableFuture<String> asyncAdditionRecursive(String[] integers) {
+
+		if (integers.length==1){
+
+			return CompletableFuture.completedFuture(integers[0]);
+
+		}
+
+		int pairs = integers.length / 2;
+
+		CompletableFuture<String>[] futures = new CompletableFuture[pairs];
+		ExecutorService executor = Executors.newFixedThreadPool(pairs);
+
+		for (int i=0; i<pairs; i++){
+
+			int index = i * 2;
+
+			futures[i] = CompletableFuture.supplyAsync(() -> this.addTwoTogether(integers[index], integers[index + 1], true), executor);
+
+		}
+
+		return CompletableFuture.allOf(futures).thenCompose(v -> {
+
+			try {
+
+				String[] results = new String[pairs + (integers.length % 2)];
+
+				for (int i=0; i<pairs; i++){
+
+					results[i] = futures[i].get();
+
+				}
+
+				if (integers.length%2!=0){
+
+					results[pairs] = integers[integers.length - 1];
+
+				}
+
+				executor.shutdown();
+
+				return asyncAdditionRecursive(results);
+
+			} catch (Exception e){
+
+				throw new RuntimeException(e);
+
+			}
+
+		});
+	}
+
+	private StringBuilder addTwoTogether(StringBuilder result, String thisFullNumber, String otherFullNumber, int carryIn, int carryOut, int index, boolean isAddition){
+
+		int thisDigit = (thisFullNumber.charAt(index) - '0') - carryOut;
+		int otherDigit = otherFullNumber.charAt(index) - '0';
+
+		int sum = 0;
+
+		if (isAddition){
+
+			sum = thisDigit + otherDigit + carryIn;
+			carryIn = sum/10;
+			result.insert(0, sum%10);
+
+		}else{
+
+			carryOut = 0;
+			carryIn = 0;
+
+			if ((thisDigit)<otherDigit){
+
+				carryIn = 10;
+				carryOut = 1;
+
+			}
+
+			sum = thisDigit - otherDigit + carryIn;
+			result.insert(0, sum);
+
+		}
+
+
+		if (carryIn>0 && index==0){
+
+			result.insert(0, carryIn);
+
+			return result;
+
+		}else if (index==0){
+
+			return result;
+
+		}else{
+
+			index--;
+
+			return this.addTwoTogether(result, thisFullNumber, otherFullNumber, carryIn, carryOut, index, isAddition);
+
+		}
 
 	}
 

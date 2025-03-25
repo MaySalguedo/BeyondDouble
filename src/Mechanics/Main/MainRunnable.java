@@ -27,7 +27,7 @@ public class MainRunnable{
 		System.out.println(a+" - "+b+" = "+(a - b)+" | "+n.subtract(b));
 		System.out.println(a+" * "+b+" = "+(a * b)+" | "+n.multiply(b));
 		System.out.println(a+" / "+b+" = "+(a / b)+" | "+n.divide(b, 19));
-		System.out.print(a+" % "+b+" = "+(a % b)+" | "+n.module(b));
+		System.out.print(a+" % "+b+" = "+(a % b)+" | "+n.module(b));/**/
 
 		System.out.print("\n\n");
 
