@@ -64,7 +64,7 @@ public class Notationer{
 
 		}</pre>
 		
-		The return values will be {@code parts[0]} = 1234 and {@code parts[1]} = 56
+		The return values will be {@code parts[0] = 1234} and {@code parts[1] = 56}
 
 		@param number Number as a {@code StringBuilder}.
 		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
@@ -105,8 +105,8 @@ public class Notationer{
 
 		}</pre>
 		
-		The return values will be either {@code n} = 1,234.56 in case the {@code boolean useDecimalPointNotation} parameter if {@code true} or 
-		{@code n} = 1.234,56 in case is {@code false}.
+		The return values will be either {@code n = 1,234.56} in case the {@code boolean useDecimalPointNotation} parameter if {@code true} or 
+		{@code n = 1.234,56} in case is {@code false}.
 
 		@param integerPart Integer Part of a number as a {@code String}.
 		@param decimalPart Decimal Part of a number as a {@code String}.
@@ -154,7 +154,7 @@ public class Notationer{
 
 		}</pre>
 		
-		The return values will be {@code n} = 1234.56
+		The return values will be {@code n = 1234.56}
 
 		@param scientificNumber Number in scientific notation as a {@code StringBuilder}.
 		@return StringBuilder Returns a {@code StringBuilder} with the number expanded.
@@ -235,7 +235,7 @@ public class Notationer{
 
 		}</pre>
 		
-		The return values will be {@code parts[0]} = 0.0123
+		The return values will be {@code parts[0] = 0.0123}
 
 		@param number Number as a {@code String}.
 		@return StringBuilder Returns a {@code StringBuilder} number that is a full readable.
@@ -299,7 +299,7 @@ public class Notationer{
 
 		}</pre>
 		
-		The return values will be {@code parts[0]} = 1234 and {@code parts[1]} = 56
+		The return values will be {@code parts[0] = 1234} and {@code parts[1] = 56}
 
 		@param number Number as a {@code String}.
 		@return String[] Returns a {@code String} array with the integer and decimal part.
@@ -327,7 +327,7 @@ public class Notationer{
 
 		}</pre>
 		
-		The return values will be {@code n} = 1234.56
+		The return values will be {@code n = 1234.56}
 
 		@param str Number as a {@code String}.
 		@return String Returns a {@code String} with the zeros trimed.
@@ -355,7 +355,7 @@ public class Notationer{
 
 		}</pre>
 		
-		The new {@code n} value will be 1,234
+		The new {@code n} value will be {@code 1,234}
 
 		@param formatted Empty recipient as a {@code StringBuilder}.
 		@param integerPart Integer part of a number as a {@code integerPart}.

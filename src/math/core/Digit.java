@@ -456,11 +456,11 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 1
+		The return value will be {@code result = 1}
 
 		@param n Digit instance.
-		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
-		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where {@literal 0} if both are 
+		equal, {@literal 1} if {@literal n>m} and {@literal -1} if {@literal n<m}.
 		@see java.lang.Comparable#compareTo(Object)
 		@see math.core.Operationer#compareIntegerParts(String, String)
 		@see math.core.Operationer#compareDecimalParts(String, String)
@@ -493,8 +493,8 @@ public class Digit extends Number implements Comparable<Digit>{
 		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
 
 		@param n double value.
-		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
-		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where {@literal 0} if both are 
+		equal, {@literal 1} if {@literal n>m} and {@literal -1} if {@literal n<m}.
 		@see java.lang.Comparable#compareTo(Object)
 		@see math.core.Digit#compareTo(Digit)
 		@since v0.0.4
@@ -512,8 +512,8 @@ public class Digit extends Number implements Comparable<Digit>{
 		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
 
 		@param n int value.
-		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if both are 
-		equal, 1 if {@literal n>m} and -1 if {@literal n<m}.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where {@literal 0} if both are 
+		equal, {@literal 1} if {@literal n>m} and {@literal -1} if {@literal n<m}.
 		@see java.lang.Comparable#compareTo(Object)
 		@see math.core.Digit#compareTo(Digit)
 		@since v0.0.4
@@ -539,10 +539,10 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 1
+		The return value will be {@code result = 1}
 
-		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if is equals to 
-		zero, 1 if {@literal n>0} and -1 if {@literal n<0}.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where {@literal 0} if is equals to 
+		zero, {@literal 1} if {@literal n>0} and {@literal -1} if {@literal n<0}.
 		@since v0.0.5
 
 	*/
@@ -570,10 +570,10 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 0
+		The return value will be {@code result = 0}
 
-		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if is equals to 
-		one, 1 if {@literal n>1} and -1 if {@literal n<1}.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where {@literal 0} if is equals to 
+		one, {@literal 1} if {@literal n>1} and {@literal -1} if {@literal n<1}.
 		@since v0.0.5
 
 	*/
@@ -601,10 +601,10 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 1
+		The return value will be {@code result = 1}
 
-		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where 0 if is equals to 
-		minus one, 1 if {@literal n>-1} and -1 if {@literal n<-1}.
+		@return int Returns an x value ranging from {@literal -1<x<1} where x belongs to integers. Where {@literal 0} if is equals to 
+		minus one, {@literal 1} if {@literal n>-1} and {@literal -1} if {@literal n<-1}.
 		@since v0.0.5
 
 	*/
@@ -632,7 +632,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 0.5
+		The return value will be {@code result = 0.5}
 
 		@return Digit Intance increased by one.
 		@since v0.1.0
@@ -672,7 +672,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = -0.5
+		The return value will be {@code result = -0.5}
 
 		@return Digit Intance increased by one.
 		@since v0.1.0
@@ -711,7 +711,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code m} = -1
+		The return value will be {@code m = -1}
 
 		@return Digit Returns the negated value for the {@code Digit} instance.
 		@see math.core.Digit#Digit(String, String, boolean, boolean)
@@ -737,7 +737,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code m} = 1
+		The return value will be {@code m = 1}
 
 		@return Digit Returns the absolute value for the {@code Digit} instance.
 		@see math.core.Digit#Digit(String, String, boolean, boolean)
@@ -763,7 +763,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code m} = 0.5
+		The return value will be {@code m = 0.5}
 
 		@param presition Decimal presition.
 		@return Digit Returns the inverse value for the {@code Digit} instance.
@@ -781,7 +781,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
-		Calculates the {@code Digit} instance's inverse value with the presition set at 128.
+		Calculates the {@code Digit} instance's inverse value with the presition set at {@code 128}.
 
 		@return Digit Returns the inverse value for the {@code Digit} instance.
 		@see math.core.Digit#inverse(long)
@@ -895,7 +895,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 555.45
+		The return value will be {@code result = 555.45}
 
 		@param other Digit instance.
 		@return Digit Result from the addition of the two instance.
@@ -978,7 +978,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 125
+		The return value will be {@code result = 125}
 
 		@param other Digit instance.
 		@return Digit Result from the multiplication of the two instance.
@@ -1035,7 +1035,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 1.75
+		The return value will be {@code result = 1.75}
 
 		@param other Digit instance.
 		@param presition Decimal presition.
@@ -1067,8 +1067,6 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}
 
-		//System.out.println("dividend: "+dividend+"\ndivisor:  "+divisor+"\n");
-
 		String[] result = this.operationManager.division(dividend, divisor, presition);
 
 		return new Digit(result[0], result[1], this.isNegative!=other.isNegative, this.notation);
@@ -1093,7 +1091,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 0
+		The return value will be {@code result = 0}
 
 		@param other Digit instance.
 		@exception ArithmeticException if {@code Digit} other is zero.
@@ -1145,7 +1143,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		}</pre>
 
-		The return values will be {@code result} = 1.6
+		The return values will be {@code result = 1.6}
 
 		@param scale Decimal scale.
 		@param mode Rounding mode.

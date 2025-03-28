@@ -23,10 +23,10 @@ public class MainRunnable{
 
 		Digit n = new Digit(a);
 
-		System.out.println(a+" + "+b+" = "+(a + b)+" | "+n.add(b));
-		System.out.println(a+" - "+b+" = "+(a - b)+" | "+n.subtract(b));
-		System.out.println(a+" * "+b+" = "+(a * b)+" | "+n.multiply(b));
-		System.out.println(a+" / "+b+" = "+(a / b)+" | "+n.divide(b, 19));
+		System.out.print(a+" + "+b+" = "+(a + b)+" | "+n.add(b)+"\n");
+		System.out.print(a+" - "+b+" = "+(a - b)+" | "+n.subtract(b)+"\n");
+		System.out.print(a+" * "+b+" = "+(a * b)+" | "+n.multiply(b)+"\n");
+		System.out.print(a+" / "+b+" = "+(a / b)+" | "+n.divide(b, 20)+"\n");
 		System.out.print(a+" % "+b+" = "+(a % b)+" | "+n.module(b));/**/
 
 		System.out.print("\n\n");
