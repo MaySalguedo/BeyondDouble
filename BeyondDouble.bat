@@ -1,11 +1,16 @@
 @echo off
 
+	cd C:\Users\felip\Documents\BeyondDouble
+
 	setlocal enabledelayedexpansion
+
+	javac -d build\classes -Xlint:unchecked -Xlint:deprecation .\src\math\core\interfaces\Operable.java .\src\math\core\interfaces\EnhancedOperable.java .\src\math\core\Notationer.java .\src\math\core\Operationer.java .\src\math\core\Digit.java .\src\math\taylor\Util.java .\src\Mechanics\Main\MainRunnable.java
+
+	echo Runtime start:
 
 	for /f "tokens=2 delims==" %%a in ('wmic os get localdatetime /value') do set "start_datetime=%%a"
 	set start_time=%start_datetime:~8,2%:%start_datetime:~10,2%:%start_datetime:~12,2%.%start_datetime:~15,2%
 
-	javac -d build\classes -Xlint:unchecked .\src\Mechanics\Main\MainRunnable.java .\src\math\core\Notationer.java .\src\math\core\Operationer.java .\src\math\core\Digit.java
 	java -cp build\classes; Mechanics.Main.MainRunnable
 
 	for /f "tokens=2 delims==" %%a in ('wmic os get localdatetime /value') do set "end_datetime=%%a"

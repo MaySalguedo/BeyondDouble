@@ -5,6 +5,7 @@ import java.lang.NumberFormatException;
 
 import java.math.RoundingMode;
 
+import math.core.interfaces.EnhancedOperable;
 import math.core.Notationer;
 import math.core.Operationer;
 
@@ -24,12 +25,12 @@ import math.core.Operationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.1.0
+	@version v0.1.1
 	@since v0.0.1
 
 */
 
-public class Digit extends Number implements Comparable<Digit>{
+public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	/**
 
@@ -759,7 +760,7 @@ public class Digit extends Number implements Comparable<Digit>{
 		<pre>{@code
 
 			Digit n = new Digit(2);
-			Digit m = n.inverse();
+			Digit m = n.inverse(2);
 
 		}</pre>
 
@@ -781,17 +782,54 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
-		Calculates the {@code Digit} instance's inverse value with the presition set at {@code 128}.
+		Calculates the {@code Digit} instance's inverse value with the presition set at {@code 128}. Overriding the implemented function {@code inverse} from {@code Operable} interface.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			Digit n = new Digit(2);
+			Digit m = n.inverse();
+
+		}</pre>
+
+		The return value will be {@code m = 0.5}
 
 		@return Digit Returns the inverse value for the {@code Digit} instance.
+		@see math.core.interfaces.EnhancedOperable#inverse()
 		@see math.core.Digit#inverse(long)
 		@since v0.0.7
 
 	*/
 
-	public Digit inverse(){
+	@Override public Digit inverse(){
 
 		return this.inverse(128);
+
+	}
+
+	/**
+
+		Gets the {@code Digit} instance's unity value being ({@code 1}). Overriding the implemented function {@code unity} from {@code Operable} interface.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			Digit n = new Digit(2);
+			Digit m = n.unity();
+
+		}</pre>
+
+		The return value will be {@code m = 1}
+
+		@return Digit Returns the unity value {@code 1} regardless of the {@code Digit} instance.
+		@see math.core.interfaces.EnhancedOperable#unity()
+		@since v0.1.1
+
+	*/
+
+	@Override public Digit unity(){
+
+		return new Digit("1", false, this.notation);
 
 	}
 
@@ -866,6 +904,23 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
+		Divides two numbers logicly and sequentially with the presition set at {@code 128}.
+
+		@param other double value.
+		@return Digit Result from the division.
+		@see math.core.Digit#divide(Digit)
+		@since v0.1.1
+
+	*/
+
+	public Digit divide(double other){
+
+		return this.divide(new Digit(other));
+
+	}
+
+	/**
+
 		Gets the module between two {@code Digit} numbers logicly and sequentially.
 
 		@param other double instance.
@@ -883,7 +938,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
-		Adds two {@code Digit} numbers logicly and sequentially.
+		Adds two {@code Digit} numbers logicly and sequentially. Overriding the implemented function {@code add} from {@code Operable} interface.
 
 		<br><br><b>Usage Example</b>
 		<pre>{@code
@@ -901,13 +956,14 @@ public class Digit extends Number implements Comparable<Digit>{
 		@return Digit Result from the addition of the two instance.
 		@see math.core.Digit#negate()
 		@see math.core.Digit#abs()
+		@see math.core.interfaces.Operable#add(Object)
 		@see math.core.Operationer#padZerosRight(String, int)
 		@see math.core.Operationer#addTwoTogether(String, String, boolean)
 		@since v0.0.4
 
 	*/
 
-	public Digit add(Digit other){
+	@Override public Digit add(Digit other){
 
 		int isThisZero = this.compareToZero();
 
@@ -949,16 +1005,17 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
-		Subtracts two {@code Digit} numbers logicly and sequentially.
+		Subtracts two {@code Digit} numbers logicly and sequentially. Overriding the implemented function {@code subtract} from {@code Operable} interface.
 
 		@param other Digit instance.
 		@return Digit Result from the subtraction of the two intance.
 		@see math.core.Digit#add(Digit)
+		@see math.core.interfaces.Operable#subtract(Object)
 		@since v0.0.4
 
 	*/
 
-	public Digit subtract(Digit other){
+	@Override public Digit subtract(Digit other){
 
 		return this.add(other.negate());
 
@@ -966,7 +1023,7 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
-		Multiplies two {@code Digit} numbers logicly and sequentially.
+		Multiplies two {@code Digit} numbers logicly and sequentially. Overriding the implemented function {@code multiply} from {@code Operable} interface.
 
 		<br><br><b>Usage Example</b>
 		<pre>{@code
@@ -982,13 +1039,14 @@ public class Digit extends Number implements Comparable<Digit>{
 
 		@param other Digit instance.
 		@return Digit Result from the multiplication of the two instance.
+		@see math.core.interfaces.Operable#multiply(Object)
 		@see math.core.Digit#negate()
 		@see math.core.Operationer#multiplication(String, String)
 		@since v0.0.5
 
 	*/
 
-	public Digit multiply(Digit other){
+	@Override public Digit multiply(Digit other){
 
 		if (this.compareToZero()==0 || other.compareToZero()==0) return new Digit(0);
 
@@ -1023,6 +1081,38 @@ public class Digit extends Number implements Comparable<Digit>{
 
 	/**
 
+		Divides two {@code Digit} numbers logicly and sequentially with the presition set at {@code 128}. 
+		Overriding the implemented function {@code divide} from {@code Operable} interface.
+
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			Digit n = new Digit("7");
+			Digit m = new Digit(4);
+
+			Digit result = n.divide(m);
+
+		}</pre>
+
+		The return value will be {@code result = 1.75}
+
+		@param other Digit instance.
+		@exception ArithmeticException if {@code Digit} other is zero.
+		@return Digit Result from the division of the two instance.
+		@see math.core.interfaces.Operable#divide(Object)
+		@see math.core.Digit#divide(Digit, long)
+		@since v0.1.1
+
+	*/
+
+	@Override public Digit divide(Digit other){
+
+		return this.divide(other, 128);
+
+	}
+
+	/**
+
 		Divides two {@code Digit} numbers logicly and sequentially.
 
 		<br><br><b>Usage Example</b>
@@ -1041,6 +1131,7 @@ public class Digit extends Number implements Comparable<Digit>{
 		@param presition Decimal presition.
 		@exception ArithmeticException if {@code Digit} other is zero.
 		@return Digit Result from the division of the two instance.
+		@see math.core.interfaces.Operable#divide(Object)
 		@see math.core.Notationer#trimZeros(String)
 		@see math.core.Operationer#division(String, String, long)
 

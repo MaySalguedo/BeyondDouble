@@ -1,1 +1,3 @@
 math.core
+math.core.interfaces
+math.taylor
