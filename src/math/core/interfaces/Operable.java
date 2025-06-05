@@ -4,7 +4,16 @@ package math.core.interfaces;
 
 	Abstracts the four basic mathematical operations.
 
-	<br><br><b>Usage Example</b>
+	<p><b>Key Features:</b></p>
+	<ul>
+
+		<li>Standardized contract for arithmetic operations</li>
+		<li>Type-safe implementation through generics</li>
+		<li>Extends {@link java.lang.Comparable} for value comparison</li>
+
+	</ul>
+
+	<p><b>Usage Example:</b></p>
 	<pre>{@code
 
 		public class MyClass implements Operable<MyClass>{

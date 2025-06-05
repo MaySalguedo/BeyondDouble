@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"math.core"},{"l":"math.core.interfaces"},{"l":"math.taylor"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"math.core"},{"l":"math.core.exceptions"},{"l":"math.core.interfaces"},{"l":"math.taylor"}];updateSearchResults();

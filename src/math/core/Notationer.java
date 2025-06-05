@@ -3,21 +3,58 @@ package math.core;
 /**
 
 	Manages the format and convertion between differents numeric notations. 
-	Intended to be only used as a stakeholder manager for its functions.
+	Intended to be used only as a stakeholder manager for its functions.<br><br>
 
-	<br><br><b>Usage Example</b>
+	Provides comprehensive number formatting, validation, and conversion utilities for different numeric notations.
+	This class handles conversion between scientific notation and standard form, manages thousands separators
+	and decimal points, cleans non-numeric characters, and splits numbers into integer/decimal components.
+
+	<p><b>Key Features:</b></p>
+	<ul>
+
+		<li><b>Scientific Notation Expansion</b> - Converts exponential format ({@code 1.23E4}) to standard form ({@code 12300})</li>
+		<li><b>Number Validation and Cleaning</b> - Removes invalid characters and normalizes number formats</li>
+		<li><b>Multi-Notation Support</b> - Formats numbers using either decimal point ({@code 1,234.56}) or comma ({@code 1.234,56}) notation</li>
+		<li><b>Component Separation</b> - Splits numbers into integer and decimal parts</li>
+		<li><b>Zero Trimming</b> - Removes insignificant leading/trailing zeros</li>
+		<li><b>Thousands Formatting</b> - Adds appropriate separators for readability</li>
+
+	</ul>
+
+	<p><b>Use Cases:</b></p>
+	<ol>
+
+		<li>Normalizing user-input numbers with mixed formats</li>
+		<li>Converting scientific notation for display purposes</li>
+		<li>Formatting large numbers with proper thousands separators</li>
+		<li>Preparing numbers for arithmetic operations by standardizing formats</li>
+		<li>Cleaning malformed numeric strings from external sources</li>
+
+	</ol>
+
+	<table border="1">
+
+		<caption><b>Notation Systems Supported:</b></caption>
+
+		<tr><th>System</th><th>Integer Separator</th><th>Decimal Separator</th><th>Example</th></tr>
+		<tr><td>Decimal Point Notation</td><td>Comma ({@code ,})</td><td>Period ({@code .})</td><td>{@code 1,234.56}</td></tr>
+		<tr><td>Decimal Comma Notation</td><td>Period ({@code .})</td><td>Comma ({@code ,})</td><td>{@code 1.234,56}</td></tr>
+
+	</table>
+
+	<p><b>Usage Example:</b></p>
 	<pre>{@code
 
 		public class MyClass{
 
-			public Notationer notationManager = new Notationer();
+			private Notationer notationManager = new Notationer();
 
 		}
 
 	}</pre>
 
 	@author Dandelion
-	@version v0.0.5
+	@version v0.0.6
 	@since v0.0.1
 
 */
@@ -50,8 +87,72 @@ public class Notationer{
 
 	/**
 
+		Recieves a {@code String} parameter and validates if it is a real number.
+		
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			boolean isValid = this.notationManager.isValidNumber("1.234E-5");
+
+		}</pre>
+		
+		The return values will be {@code isValid = true}
+
+		@param number Number as a {@code String}.
+		@return boolean Returns either {@code true} if it is a valid number or {@code false} if it is not.
+		@since v0.0.6
+
+	*/
+
+	public boolean isValidNumber(String number){
+
+		if (number!=null ? number.isEmpty() : true) return false;
+
+		return number.matches("^[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][-+]?\\d+)?$");
+
+	}
+
+	/**
+
+		Recieves a number as a {@code StringBuilder} parameter and normalizes it to make it readable in case it is not on a standard notation.
+		
+		<br><br><b>Usage Example</b>
+		<pre>{@code
+
+			String[] parts = this.notationManager.validateAndNormalize(new StringBuilder(
+
+				"1234.56"
+
+			));
+
+		}</pre>
+		
+		The return values will be {@code parts[0] = 1234} and {@code parts[1] = 56}
+
+		@param number Number as a {@code StringBuilder}.
+		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
+		@see math.core.Notationer#expandScientificNotation(StringBuilder)
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Notationer#cleanNonNumericCharacters(String, boolean)
+		@see math.core.Notationer#splitIntoIntegerAndDecimalParts(String)
+		@since v0.0.6
+
+	*/
+
+	public String[] Normalize(StringBuilder number){
+
+		String normalized = expandScientificNotation(number).toString();
+
+		String cleaned = cleanNonNumericCharacters(trimZeros(normalized), true).toString();
+
+		return splitIntoIntegerAndDecimalParts(cleaned);
+
+	}
+
+	/**
+
 		Recieves a number as a {@code StringBuilder} parameter, validates it to make sure it is infact a number and normalizes it 
-		to make readable in case it is not on a standard notation.
+		to make it readable in case it is not on a standard notation.
 		
 		<br><br><b>Usage Example</b>
 		<pre>{@code
@@ -71,7 +172,7 @@ public class Notationer{
 		@exception IllegalArgumentException if {@code StringBuilder number} is either {@code null} or empty.
 		@see math.core.Notationer#expandScientificNotation(StringBuilder)
 		@see math.core.Notationer#trimZeros(String)
-		@see math.core.Notationer#cleanNonNumericCharacters(String)
+		@see math.core.Notationer#cleanNonNumericCharacters(String, boolean)
 		@see math.core.Notationer#splitIntoIntegerAndDecimalParts(String)
 		@since v0.0.1
 
@@ -79,7 +180,7 @@ public class Notationer{
 
 	protected String[] validateAndNormalize(StringBuilder number){
 
-		if (number!=null ? number.isEmpty() : false){
+		if (number!=null ? number.isEmpty() : true){
 
 			throw new IllegalArgumentException("Invalid Number");
 
@@ -87,7 +188,7 @@ public class Notationer{
 
 		String normalized = expandScientificNotation(number).toString();
 
-		String cleaned = cleanNonNumericCharacters(trimZeros(normalized)).toString();
+		String cleaned = cleanNonNumericCharacters(trimZeros(normalized), false).toString();
 
 		return splitIntoIntegerAndDecimalParts(cleaned);
 
@@ -231,19 +332,20 @@ public class Notationer{
 		<br><br><b>Usage Example</b>
 		<pre>{@code
 
-			StringBuilder n = this.notationManager.cleanNonNumericCharacters("--.012++");
+			StringBuilder n = this.notationManager.cleanNonNumericCharacters("--.012++", false);
 
 		}</pre>
 		
 		The return values will be {@code parts[0] = 0.0123}
 
 		@param number Number as a {@code String}.
+		@param hasBeenValidated {@code boolean} parameter indicating if it has already been validated for a numberic format.
 		@return StringBuilder Returns a {@code StringBuilder} number that is a full readable.
 		@since v0.0.1
 
 	*/
 
-	protected StringBuilder cleanNonNumericCharacters(String number){
+	protected StringBuilder cleanNonNumericCharacters(String number, boolean hasBeenValidated){
 
 		StringBuilder cleaned = new StringBuilder(number);
 
@@ -264,6 +366,8 @@ public class Notationer{
 			length--;
 
 		}
+
+		if (hasBeenValidated) return cleaned;
 
 		for (int i=length-1; i>=0; i--){
 

@@ -5,17 +5,61 @@ import java.lang.NumberFormatException;
 
 import java.math.RoundingMode;
 
+import java.util.concurrent.ExecutionException;
+
 import math.core.interfaces.EnhancedOperable;
+import math.core.exceptions.IllegalNumberFormatException;
+import math.core.exceptions.UndeterminedException;
 import math.core.Notationer;
 import math.core.Operationer;
 
 /**
 
-	Turns any primitive given number or a real number as string into a full notationed readable number.
+	Turns any primitive given number or a real number as string into a full notationed readable number.<br><br>
 
-	Digit's class presition is arbitrary, which means it can represent numbers as big as the memory allows it.
+	Represents arbitrary-precision decimal numbers with configurable notation formatting.
+	This class provides immutable numeric values that can exceed primitive type limits,
+	along with comprehensive arithmetic operations, comparisons, and formatting capabilities.
+	
+	<p><b>Key Features:</b></p>
+	<ul>
 
-	<br><br><b>Usage Example</b>
+		<li><b>Arbitrary Precision</b> - Handles real numbers of virtually unlimited size (memory permitting)</li>
+		<li><b>Multiple Notation Systems</b> - Supports decimal point ({@code 1,234.56}) or comma ({@code 1.234,56}) formats</li>
+		<li><b>Full Arithmetic Operations</b> - Addition, subtraction, multiplication, division with precision control</li>
+		<li><b>Advanced Mathematical Functions</b> - Inverse, modulus, rounding, and sign operations</li>
+		<li><b>Comparison Utilities</b> - Specialized methods for comparing to zero, one, and minus one</li>
+		<li><b>Type Conversion</b> - Implements all {@code Number} primitive conversions</li>
+		<li><b>Immutable Design</b> - Thread-safe implementation with value semantics</li>
+
+	</ul>
+
+	<table border="1">
+
+		<caption><b>Core Capabilities</b></caption>
+
+		<tr><th>Category</th><th>Methods</th></tr>
+		<tr><td>Construction</td><td>From String, double, long pairs, or component parts</td></tr>
+		<tr><td>Arithmetic</td><td>add, subtract, multiply, divide, inverse, module</td></tr>
+		<tr><td>Comparison</td><td>compareTo, compareToZero, compareToOne, compareToMinusOne</td></tr>
+		<tr><td>Sign Operations</td><td>negate, abs, increase, decrease</td></tr>
+		<tr><td>Formatting</td><td>toString, stringValue</td></tr>
+		<tr><td>Precision Control</td><td>setScale (rounding modes), inverse (precision)</td></tr>
+
+	</table>
+	
+	<p><b>Technical Implementation Notes:</b></p>
+	<ul>
+
+		<li>Numbers stored as separate integer and decimal string components</li>
+		<li>Delegates arithmetic operations to {@link Operationer} utility</li>
+		<li>Uses {@link Notationer} for number formatting and parsing</li>
+		<li>Implements {@link EnhancedOperable} for advanced math operations</li>
+		<li>Supports all standard rounding modes ({@link RoundingMode})</li>
+
+	</ul>
+
+	<p><b>Usage Example:</b></p>
 	<pre>{@code
 
 		Digit n = new Digit(1.23456E7);
@@ -25,8 +69,12 @@ import math.core.Operationer;
 	}</pre>
 
 	@author Dandelion
-	@version v0.1.1
+	@version v0.1.2
 	@since v0.0.1
+	@see Operationer
+	@see Notationer
+	@see EnhancedOperable
+	@see RoundingMode
 
 */
 
@@ -87,27 +135,29 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		Creates an instance of {@code Digit} with a number value as a {@code String}.
 
 		@param n Real number as a {@code String}
-		@exception IllegalArgumentException if {@code String n} is either {@code null} or empty.
-		@see math.core.Notationer#validateAndNormalize(StringBuilder)
+		@exception IllegalNumberFormatException if {@code String n} is either {@code null}, empty or not a valid real number.
+		@see math.core.Notationer#isValidNumber(String)
+		@see math.core.Notationer#Normalize(StringBuilder)
 		@since v0.0.1
 
 	*/
 
 	public Digit(String n){
 
-		if (n!=null ? n.isEmpty() : false) throw new IllegalArgumentException("Invalid Number");
+		if (!this.notationManager.isValidNumber(n)) throw new IllegalNumberFormatException(n+" is not a valid real Number");
 
 		StringBuilder number = new StringBuilder(n);
 
 		boolean isNegativeBackUp = number.charAt(0)=='-';
+		boolean isPositiveBackUp = number.charAt(0)=='+';
 
-		if (isNegativeBackUp){
+		if (isNegativeBackUp || isPositiveBackUp){
 
 			number.deleteCharAt(0);
 
 		}
 
-		String[] parts = this.notationManager.validateAndNormalize(number);
+		String[] parts = this.notationManager.Normalize(number);
 		this.integerPart = parts[0];
 		this.decimalPart = parts[1];
 		this.isNegative = (this.integerPart.matches("0") && this.decimalPart.isEmpty()) ? false : isNegativeBackUp;
@@ -314,14 +364,14 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		Returns the value of the specified number as a byte. The numeric value represented by this object after conversion to type byte.
 
-		@exception NumberFormatException Throws by the method parseByte from class {@code Byte}.
+		@exception IllegalNumberFormatException Throws by the method parseByte from class {@code Byte}.
 		@return The numeric value represented by this object after conversion to type byte.
 		@see java.lang.Number#byteValue()
 		@since v0.0.7
 
 	*/
 
-	@Override public byte byteValue() throws NumberFormatException{
+	@Override public byte byteValue() throws IllegalNumberFormatException{
 
 		return Byte.parseByte(this.integerPart);
 
@@ -331,14 +381,14 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		Returns the value of the specified number as a double. The numeric value represented by this object after conversion to type double.
 
-		@exception NumberFormatException Throws by the method parseDouble from class {@code double}.
+		@exception IllegalNumberFormatException Throws by the method parseDouble from class {@code double}.
 		@return The numeric value represented by this object after conversion to type double.
 		@see java.lang.Number#doubleValue()
 		@since v0.0.7
 
 	*/
 
-	@Override public double doubleValue() throws NumberFormatException{
+	@Override public double doubleValue() throws IllegalNumberFormatException{
 
 		return Double.parseDouble(this.integerPart+(
 
@@ -352,14 +402,14 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		Returns the value of the specified number as a float. The numeric value represented by this object after conversion to type float.
 
-		@exception NumberFormatException Throws by the method parseFloat from class {@code float}.
+		@exception IllegalNumberFormatException Throws by the method parseFloat from class {@code float}.
 		@return The numeric value represented by this object after conversion to type float.
 		@see java.lang.Number#floatValue()
 		@since v0.0.7
 
 	*/
 
-	@Override public float floatValue() throws NumberFormatException{
+	@Override public float floatValue() throws IllegalNumberFormatException{
 
 		return Float.parseFloat(this.integerPart+(
 
@@ -373,14 +423,14 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		Returns the value of the specified number as a int. The numeric value represented by this object after conversion to type int.
 
-		@exception NumberFormatException Throws by the method parseInt from class {@code Integer}.
+		@exception IllegalNumberFormatException Throws by the method parseInt from class {@code Integer}.
 		@return The numeric value represented by this object after conversion to type int.
 		@see java.lang.Number#intValue()
 		@since v0.0.7
 
 	*/
 
-	@Override public int intValue() throws NumberFormatException{
+	@Override public int intValue() throws IllegalNumberFormatException{
 
 		return Integer.parseInt(this.integerPart);
 
@@ -390,14 +440,14 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		Returns the value of the specified number as a long. The numeric value represented by this object after conversion to type long.
 
-		@exception NumberFormatException Throws by the method parseLong from class {@code Long}.
+		@exception IllegalNumberFormatException Throws by the method parseLong from class {@code Long}.
 		@return The numeric value represented by this object after conversion to type long.
 		@see java.lang.Number#longValue()
 		@since v0.0.7
 
 	*/
 
-	@Override public long longValue() throws NumberFormatException{
+	@Override public long longValue() throws IllegalNumberFormatException{
 
 		return Long.parseLong(this.integerPart);
 
@@ -407,14 +457,14 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		Returns the value of the specified number as a short. The numeric value represented by this object after conversion to type short.
 
-		@exception NumberFormatException Throws by the method parseShort from class {@code Short}.
+		@exception IllegalNumberFormatException Throws by the method parseShort from class {@code Short}.
 		@return The numeric value represented by this object after conversion to type short.
 		@see java.lang.Number#shortValue()
 		@since v0.0.7
 
 	*/
 
-	@Override public short shortValue() throws NumberFormatException{
+	@Override public short shortValue() throws IllegalNumberFormatException{
 
 		return Short.parseShort(this.integerPart+(
 
@@ -766,7 +816,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		The return value will be {@code m = 0.5}
 
-		@param presition Decimal presition.
+		@param precision Decimal precision.
 		@return Digit Returns the inverse value for the {@code Digit} instance.
 		@see math.core.Digit#Digit(String, boolean, boolean)
 		@see math.core.Digit#divide(Digit, long)
@@ -774,15 +824,15 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit inverse(long presition){
+	public Digit inverse(long precision) {
 
-		return new Digit("1", false, this.notation).divide(this, presition);
+		return new Digit("1", false, this.notation).divide(this, precision);
 
 	}
 
 	/**
 
-		Calculates the {@code Digit} instance's inverse value with the presition set at {@code 128}. Overriding the implemented function {@code inverse} from {@code Operable} interface.
+		Calculates the {@code Digit} instance's inverse value with the precision set at {@code 128}. Overriding the implemented function {@code inverse} from {@code Operable} interface.
 
 		<br><br><b>Usage Example</b>
 		<pre>{@code
@@ -801,7 +851,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	@Override public Digit inverse(){
+	@Override public Digit inverse() {
 
 		return this.inverse(128);
 
@@ -878,7 +928,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit multiply(double other){
+	public Digit multiply(double other) {
 
 		return this.multiply(new Digit(other));
 
@@ -889,22 +939,22 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		Divides two numbers logicly and sequentially.
 
 		@param other double value.
-		@param presition Decimal presition.
+		@param precision Decimal precision.
 		@return Digit Result from the division.
 		@see math.core.Digit#divide(Digit, long)
 		@since v0.0.7
 
 	*/
 
-	public Digit divide(double other, long presition){
+	public Digit divide(double other, long precision) {
 
-		return this.divide(new Digit(other), presition);
+		return this.divide(new Digit(other), precision);
 
 	}
 
 	/**
 
-		Divides two numbers logicly and sequentially with the presition set at {@code 128}.
+		Divides two numbers logicly and sequentially with the precision set at {@code 128}.
 
 		@param other double value.
 		@return Digit Result from the division.
@@ -913,7 +963,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit divide(double other){
+	public Digit divide(double other) {
 
 		return this.divide(new Digit(other));
 
@@ -930,7 +980,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit module(double other){
+	public Digit module(double other) {
 
 		return this.module(new Digit(other));
 
@@ -1046,7 +1096,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	@Override public Digit multiply(Digit other){
+	@Override public Digit multiply(Digit other) {
 
 		if (this.compareToZero()==0 || other.compareToZero()==0) return new Digit(0);
 
@@ -1081,7 +1131,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	/**
 
-		Divides two {@code Digit} numbers logicly and sequentially with the presition set at {@code 128}. 
+		Divides two {@code Digit} numbers logicly and sequentially with the precision set at {@code 128}. 
 		Overriding the implemented function {@code divide} from {@code Operable} interface.
 
 		<br><br><b>Usage Example</b>
@@ -1097,7 +1147,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		The return value will be {@code result = 1.75}
 
 		@param other Digit instance.
-		@exception ArithmeticException if {@code Digit} other is zero.
+		@exception UndeterminedException if {@code Digit} other is zero.
 		@return Digit Result from the division of the two instance.
 		@see math.core.interfaces.Operable#divide(Object)
 		@see math.core.Digit#divide(Digit, long)
@@ -1105,7 +1155,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	@Override public Digit divide(Digit other){
+	@Override public Digit divide(Digit other) {
 
 		return this.divide(other, 128);
 
@@ -1128,8 +1178,8 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		The return value will be {@code result = 1.75}
 
 		@param other Digit instance.
-		@param presition Decimal presition.
-		@exception ArithmeticException if {@code Digit} other is zero.
+		@param precision Decimal precision.
+		@exception UndeterminedException if {@code Digit} other is zero.
 		@return Digit Result from the division of the two instance.
 		@see math.core.interfaces.Operable#divide(Object)
 		@see math.core.Notationer#trimZeros(String)
@@ -1139,9 +1189,9 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit divide(Digit other, long presition){
+	public Digit divide(Digit other, long precision) {
 
-		if (other.compareToZero()==0) throw new ArithmeticException("Cannot divide by zero.");
+		if (other.compareToZero()==0) throw new UndeterminedException("Division by zero is undetermine.");
 
 		int decimalLeft = - this.decimalPart.length() + other.decimalPart.length();
 
@@ -1158,7 +1208,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		}
 
-		String[] result = this.operationManager.division(dividend, divisor, presition);
+		String[] result = this.operationManager.division(dividend, divisor, precision);
 
 		return new Digit(result[0], result[1], this.isNegative!=other.isNegative, this.notation);
 
@@ -1185,7 +1235,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		The return value will be {@code result = 0}
 
 		@param other Digit instance.
-		@exception ArithmeticException if {@code Digit} other is zero.
+		@exception UndeterminedException if {@code Digit} other is zero.
 		@return Digit Result from the module of the firts instance given the second instance.
 		@see math.core.Digit#abs()
 		@see math.core.Digit#subtract(Digit)
@@ -1196,9 +1246,9 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit module(Digit other){
+	public Digit module(Digit other) {
 
-		if (other.compareToZero()==0) throw new ArithmeticException("Cannot divide by zero.");
+		if (other.compareToZero()==0) throw new UndeterminedException("Moduling by zero is undetermine.");
 
 		Digit thisAbsolute = this.abs();
 		Digit otherAbsolute = other.abs();
@@ -1246,7 +1296,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	*/
 
-	public Digit setScale(int scale, RoundingMode mode){
+	public Digit setScale(int scale, RoundingMode mode) {
 
 		if (this.decimalPart.isEmpty()){
 
@@ -1306,7 +1356,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	}
 
-	private Digit RoundingEven(int scale, boolean even){
+	private Digit RoundingEven(int scale, boolean even) {
 
 		int isPointFive = this.operationManager.compareDecimalParts(this.decimalPart, "5");
 

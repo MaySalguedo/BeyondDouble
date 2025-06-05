@@ -1,3 +1,4 @@
 math.core
+math.core.exceptions
 math.core.interfaces
 math.taylor

@@ -1,5 +1,6 @@
 package math.core;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,14 +10,31 @@ import java.util.ArrayList;
 /**
 
 	Manages the operations and results of the four basic mathemathic operations. 
-	Intended to be only used as a stakeholder manager for its functions.
+	Intended to be only used as a stakeholder manager for its functions.<br><br>
 
-	<br><br><b>Usage Example</b>
+	Provides core arithmetic operations for arbitrary-precision integer arithmetic using string-based number representation.
+	This class implements fundamental mathematical operations (addition, subtraction, multiplication, division) with
+	support for precision control, comparison utilities, and zero-padding/trimming operations.
+
+	<p><b>Key Features:</b></p>
+	<ul>
+
+		<li><b>Arbitrary-Precision Arithmetic</b> - Handles string-based integer numbers of any size limited only by memory</li>
+		<li><b>Full Operation Suite</b> - Addition, subtraction, multiplication, and division with configurable precision</li>
+		<li><b>Comparison Utilities</b> - Specialized methods for comparing integer and decimal components</li>
+		<li><b>Zero Management</b> - Padding (left/right) and trimming (left/right) operations for number normalization</li>
+		<li><b>Asynchronous Processing</b> - Parallel computation for large-number operations</li>
+		<li><b>Increment/Decrement Operations</b> - Efficient string-based number modification</li>
+		<li><b>Division Utilities</b> - Quotient/remainder calculation and decimal expansion with precision control</li>
+
+	</ul>
+
+	<p><b>Usage Example:</b></p>
 	<pre>{@code
 
 		public class MyClass{
 
-			public Operationer operationManager = new Operationer();
+			private Operationer operationManager = new Operationer();
 
 		}
 
@@ -302,41 +320,31 @@ public class Operationer{
 
 	*/
 
-	protected String asyncAddition(String[] integers){
+	protected String asyncAddition(String[] integers) {
 
-		try {
+		int arrayLength = integers.length;
 
-			int arrayLength = integers.length;
+		if (arrayLength==1){
 
-			if (arrayLength==1){
+			return integers[0];
 
-				return integers[0];
+		}else if (arrayLength==2){
 
-			}else if (arrayLength==2){
+			return this.addTwoTogether(integers[0], integers[1], true);
 
-				return this.addTwoTogether(integers[0], integers[1], true);
+		}else if (arrayLength==3){
 
-			}else if (arrayLength==3){
+			return this.addTwoTogether(this.addTwoTogether(
 
-				return this.addTwoTogether(this.addTwoTogether(
+				integers[0],
+				integers[1],
+				true
 
-					integers[0],
-					integers[1],
-					true
+			), integers[2], true);
 
-				), integers[2], true);
+		}else{
 
-			}else{
-
-				return asyncAdditionRecursive(integers).get();
-
-			}
-
-		}catch(Exception e){
-
-			e.printStackTrace();
-
-			return "0";
+			return asyncAdditionRecursive(integers).join();
 
 		}
 
@@ -488,7 +496,7 @@ public class Operationer{
 
 	*/
 
-	protected String multiplication(String thisInteger, String otherInteger){
+	protected String multiplication(String thisInteger, String otherInteger) {
 
 		int arrayLength = otherInteger.length();
 
@@ -513,7 +521,7 @@ public class Operationer{
 
 		@param dividend Positive integer dividend as {@code String}.
 		@param divisor Positive integer divisor as {@code String}.
-		@param presition Decimal presition as {@code long}.
+		@param precision Decimal precision as {@code long}.
 
 		@return String[] Two length array which conatains the result from the division of the 
 		integers, index {@code 0} contains the integer part and index {@code 1} the decimal part.
@@ -526,7 +534,7 @@ public class Operationer{
 
 	*/
 
-	protected String[] division(String dividend, String divisor, long presition){
+	protected String[] division(String dividend, String divisor, long precision) {
 
 		if (dividend.matches("0")) return new String[] {"0", ""};
 
@@ -542,13 +550,13 @@ public class Operationer{
 
 			}else{
 
-				return new String[] {quotient[0], this.calculateDecimalPartForDivision(quotient[1]+"0", divisor, presition)};
+				return new String[] {quotient[0], this.calculateDecimalPartForDivision(quotient[1]+"0", divisor, precision)};
 
 			}
 
 		}else{
 
-			return new String[] {"0", this.calculateDecimalPartForDivision(dividend+"0", divisor, presition)};
+			return new String[] {"0", this.calculateDecimalPartForDivision(dividend+"0", divisor, precision)};
 
 		}
 
@@ -582,7 +590,7 @@ public class Operationer{
 
 	*/
 
-	protected String[] quotient(String dividend, String divisor){
+	protected String[] quotient(String dividend, String divisor) {
 
 		int index = 3 * (dividend.length() - divisor.length());
 
@@ -659,7 +667,7 @@ public class Operationer{
 
 		@param remainder Integer remainder as {@code String}.
 		@param divisor Integer Divisor as {@code String}.
-		@param presition Decimal presition as {@code long}.
+		@param precision Decimal precision as {@code long}.
 
 		@return String Decimal part for the division.
 
@@ -671,11 +679,11 @@ public class Operationer{
 
 	*/
 
-	private String calculateDecimalPartForDivision(String remainder, String divisor, long presition){
+	private String calculateDecimalPartForDivision(String remainder, String divisor, long precision){
 
 		StringBuilder result = new StringBuilder("");
 
-		for (long i=0; i<presition; i++){
+		for (long i=0; i<precision; i++){
 
 			int isGreaterThanDividend = this.compareIntegerParts(remainder, divisor);
 
@@ -741,31 +749,23 @@ public class Operationer{
 
 		return CompletableFuture.allOf(futures).thenCompose(v -> {
 
-			try {
+			String[] results = new String[pairs + (integers.length % 2)];
 
-				String[] results = new String[pairs + (integers.length % 2)];
+			for (int i=0; i<pairs; i++){
 
-				for (int i=0; i<pairs; i++){
-
-					results[i] = futures[i].get();
-
-				}
-
-				if (integers.length%2!=0){
-
-					results[pairs] = integers[integers.length - 1];
-
-				}
-
-				executor.shutdown();
-
-				return asyncAdditionRecursive(results);
-
-			} catch (Exception e){
-
-				throw new RuntimeException(e);
+				results[i] = futures[i].join();
 
 			}
+
+			if (integers.length%2!=0){
+
+				results[pairs] = integers[integers.length - 1];
+
+			}
+
+			executor.shutdown();
+
+			return asyncAdditionRecursive(results);
 
 		});
 	}

@@ -6,7 +6,16 @@ import math.core.interfaces.Operable;
 
 	Abstractes the enhanced arithmatic math operations.
 
-	<br><br><b>Usage Example</b>
+	<p><b>Key Features:</b></p>
+	<ul>
+
+		<li>Adds multiplicative inverse operation</li>
+		<li>Provides multiplicative identity</li>
+		<li>Maintains all basic operations from {@link math.core.interfaces.Operable}</li>
+
+	</ul>
+
+	<p><b>Usage Example:</b></p>
 	<pre>{@code
 
 		public class MyClass implements EnhancedOperable<MyClass>{
