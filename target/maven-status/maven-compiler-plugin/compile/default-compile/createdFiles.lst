@@ -1,0 +1,5 @@
+math\core\package-info.class
+math\core\exceptions\package-info.class
+math\core\interfaces\package-info.class
+math\taylor\package-info.class
+BeyondDouble\App.class
