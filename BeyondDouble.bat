@@ -3,7 +3,7 @@ cls
 
 	setlocal enabledelayedexpansion
 
-	javac -d target\classes -Xlint:unchecked -Xlint:deprecation ".\src\main\java\math\core\interfaces\*.java" ".\src\main\java\math\core\exceptions\*.java" ".\src\main\java\math\core\*.java" ".\src\main\java\math\taylor\*.java" ".\src\main\java\Mechanics\Main\*.java"
+	javac -d target\classes -Xlint:unchecked -Xlint:deprecation ".\src\main\java\math\core\interfaces\*.java" ".\src\main\java\math\core\exceptions\*.java" ".\src\main\java\math\core\*.java" ".\src\main\java\math\taylor\*.java" ".\src\main\java\BeyondDouble\*.java"
 
 	echo Runtime started:
 
@@ -19,7 +19,7 @@ cls
 
 	)
 
-	java -cp target\classes; Mechanics.Main.MainRunnable
+	java -cp target\classes; BeyondDouble.App
 
 	for /f "tokens=2 delims==" %%a in ('wmic os get localdatetime /value 2^>NUL') do set "end_datetime=%%a"
 	if not defined end_datetime (

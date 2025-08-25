@@ -23,13 +23,13 @@ f(x) = f(a) + f'(a)(x-a)/1! + f''(a)(x-a)²/2! + f'''(a)(x-a)³/3! + ... + fⁿ(
 
 ```bash
 
-	// Various construction methods
-	Digit a = new Digit("123.456");          // From string
-	Digit b = new Digit(123.456);            // From double
-	Digit c = new Digit("123", "456", true); // From parts with notation
+// Various construction methods
+Digit a = new Digit("123.456");          // From string
+Digit b = new Digit(123.456);            // From double
+Digit c = new Digit("123", "456", true); // From parts with notation
 
-	// Arithmetic operations
-	Digit result = a.add(b).multiply(c).divide(new Digit("2"), 64); // 64 decimal places precision
+// Arithmetic operations
+Digit result = a.add(b).multiply(c).divide(new Digit("2"), 64); // 64 decimal places precision
 
 ```
 

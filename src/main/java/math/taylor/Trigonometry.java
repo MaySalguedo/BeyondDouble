@@ -44,7 +44,13 @@ import math.core.Digit;
 
 public class Trigonometry extends Util{
 
-	private static Digit pi = null;
+	/**
+
+		The {@code Digit pi} contant stores a π value up to 38 decimals.
+
+	*/
+
+	public static final Digit pi = new Digit("3.1415926535897932384626433832795028841972");
 
 	/**
 
@@ -78,26 +84,18 @@ public class Trigonometry extends Util{
 
 	public static final Digit PI() {
 
-		if (pi!=null){
-
-			return pi;
-
-		}
-
-		Trigonometry.pi = asyncPI(27, 40).join();
-
-		return Trigonometry.pi;
+		return asyncPI(27, 40).join();
 
 	}
 
-	/*
+	/**
 
 		Computes the sine of an angle using Taylor series expansion.
 
 		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
 		<ul>
 
-		  <li>{@code sin(x) = x - x³/3! + x⁵/5! - x⁷/7! + ...}</li>
+			<li>{@code sin(x) = x - x³/3! + x⁵/5! - x⁷/7! + ...}</li>
 
 		</ul>
 
@@ -111,26 +109,349 @@ public class Trigonometry extends Util{
 		@param x Angle in radians as a {@link Digit} instance
 		@return Sine value as a {@link Digit} object
 
-	*
+	*/
 
 	public static Digit sin(Digit x) {
 
 		return asyncSin(x, 11, 29).join();
 
-	}/**/
+	}
 
-	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncSin(Digit x, int iteration, int precision) {
+	/**
+
+		Computes the cosine of an angle using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code cos(x) = x - x²/2! + x⁴/4! - x⁶/6! + ...}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit cos = Trigonometry.cos(Trigonometry.PI()); // -1
+
+		}</pre>
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Cosine value as a {@link Digit} object
+
+	*/
+
+	public static Digit cos(Digit x) {
+
+		return asyncCos(x, 11, 29).join();
+
+	}
+
+	/**
+
+		Computes the tangent of an angle using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code tan(x) = sin(x)/cos(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit tan = Trigonometry.tan(Trigonometry.PI()); // 0
+
+		}</pre>
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Tangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit tan(Digit x) {
+
+		return asyncTanOrCot(x, 11, 29, true).join();
+
+	}
+
+	/**
+
+		Computes the cosecant of an angle using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code csc(x) = 1/cos(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit csc = Trigonometry.csc(new Digit("0.52359877559829887307710723054658")); // 2
+
+		}</pre>
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Cosecant value as a {@link Digit} object
+
+	*/
+
+	public static Digit csc(Digit x) {
+
+		return asyncSin(x, 11, 29).join().inverse(29);
+
+	}
+
+	/**
+
+		Computes the secant of an angle using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code sec(x) = 1/sin(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit sec = Trigonometry.sin(new Digit("0.52359877559829887307710723054658")); // 2
+
+		}</pre>
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Secant value as a {@link Digit} object
+
+	*/
+
+	public static Digit sec(Digit x) {
+
+		return asyncCos(x, 11, 29).join().inverse();
+
+	}
+
+	/**
+
+		Computes the cotangent of an angle using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code cot(x) = cos(x)/sin(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit cot = Trigonometry.cot(new Digit("0.78539816339744830961566084581988")); // 1
+
+		}</pre>
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Cotangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit cot(Digit x) {
+
+		return asyncTanOrCot(x, 11, 29, false).join();
+
+	}
+
+	/**
+		Computes the arcsine of a value using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code arcsin(x) = x + (1/2)(x³/3) + (1*3)/(2*4)(x⁵/5) + (1*3*5)/(2*4*6)(x⁷/7) + ...}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit arcsin = Trigonometry.arcsin(new Digit("0.5")); // π/6 ≈ 0.5235987755982989
+
+		}</pre>
+
+		@param x Value between -1 and 1 as a {@link Digit} instance
+		@return Arcsine value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arcsin(Digit x) {
+
+		return asyncArcsin(x, 15, 30).join();
+
+	}
+
+	/**
+		Computes the arccosine of a value using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code arccos(x) = π/2 - arcsin(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit arccos = Trigonometry.arccos(new Digit("0")); // 1
+
+		}</pre>
+
+		@param x Value in radians as a {@link Digit} instance
+		@return Arccosine value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arccos(Digit x) {
+
+		return Trigonometry.pi.divide(2, 38).subtract(asyncArcsin(x, 15, 30).join());
+
+	}
+
+	/**
+
+		Computes the arctangent of a tan(x) value using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code arctan(x) = x - x³/3 + x⁵/5 - x⁷/7 + ...}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit arctan = Trigonometry.arctan(0); // 0
+
+		}</pre>
+
+		@param x Vlue in radians as a {@link Digit} instance
+		@return Arctangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit arctan(Digit x) {
+
+		if (x.abs().compareToOne()>0){
+
+			Digit result = asyncActan_v2(x.abs(), 11, 29).join();
+
+			return x.isNegative ? result.negate() : result;
+
+		}
+
+		return asyncArctan(x, 11, 29).join();
+
+	}
+
+	/**
+		Computes the arccosecant of a value using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code arccsc(x) = 1/arcsin(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit arccsc = Trigonometry.arcsin(new Digit("0.5")); // 6/π ≈ 1.909859317102
+
+		}</pre>
+
+		@param x Value between -1 and 1 as a {@link Digit} instance
+		@return Arccsc value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arccsc(Digit x) {
+
+		return asyncArcsin(x, 15, 30).join().inverse();
+
+	}
+
+	/**
+		Computes the arcsecant of a value using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code arcsec(x) = 1/arccos(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit arccos = Trigonometry.arcsec(new Digit("0")); // 2/π ≈ 0.63631977236758
+
+		}</pre>
+
+		@param x Value in radians as a {@link Digit} instance
+		@return Arcsec value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arcsec(Digit x) {
+
+		return Trigonometry.pi.divide(2, 38).subtract(asyncArcsin(x, 15, 30).join()).inverse();
+
+	}
+
+	/**
+
+		Computes the arctangent of a tan(x) value using Taylor series expansion.
+
+		<p>The calculation is parallelized across available CPU cores and uses Taylor series:
+		<ul>
+
+			<li>{@code arccot(x) = arccos(x)/arcsin(x)}</li>
+
+		</ul>
+
+		<p><b>Usage Example:</b></p>
+		<pre>{@code
+
+			Digit arctan = Trigonometry.arctan(0); // 0
+
+		}</pre>
+
+		@param x Value in radians as a {@link Digit} instance
+		@return Arccotangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit arccot(Digit x) {
+
+		return arccos(x).divide(arcsin(x), 38);
+
+	}
+
+	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncArcsin(Digit x, int iteration, int precision) {
 
 		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());
 		ExecutorService executor = Executors.newFixedThreadPool(cores);
 
 		CompletableFuture<Digit>[] futures = new CompletableFuture[iteration];
 
-		for (int n=0; n<iteration; n++) {
+		for (int n = 0; n < iteration; n++) {
 
 			final int nth_term = n;
 
-			futures[n] = CompletableFuture.supplyAsync(() -> computeSinTerm(x, nth_term, precision), executor);
+			futures[n] = CompletableFuture.supplyAsync(() -> computeArcsinTerm(x, nth_term, precision), executor);
 
 		}
 
@@ -143,7 +464,106 @@ public class Trigonometry extends Util{
 
 	}
 
-	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncArrayAddition(CompletableFuture<Digit>[] futures, int start, int end){
+	private static CompletableFuture<Digit> asyncActan_v2(Digit x, int iteration, int precision){
+
+		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());
+		ExecutorService executor = Executors.newFixedThreadPool(cores);
+
+		CompletableFuture<Digit> halfPi = CompletableFuture.supplyAsync(() -> Trigonometry.pi.divide(2, 38), executor);
+		CompletableFuture<Digit> inverse = CompletableFuture.supplyAsync(() -> x.inverse(38), executor);
+
+		return halfPi.thenCombineAsync(inverse, (a, b) -> a.subtract(arctan(b)));
+
+	}
+
+	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncArctan(Digit x, int iteration, int precision) {
+
+		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());
+		ExecutorService executor = Executors.newFixedThreadPool(cores);
+
+		CompletableFuture<Digit>[] futures = new CompletableFuture[iteration];
+
+		for (int n=0; n<iteration; n++) {
+
+			final int nth_term = n;
+
+			futures[n] = CompletableFuture.supplyAsync(() -> computeArctanTerm(x, nth_term, precision), executor);
+
+		}
+
+		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -> {
+
+			executor.shutdown();
+			return result;
+
+		}, executor);
+
+	}
+
+	private static CompletableFuture<Digit> asyncTanOrCot(Digit x, int iteration, int precision, boolean isTanOrCot){
+
+		CompletableFuture<Digit> sin = asyncSin(x, iteration, precision);
+		CompletableFuture<Digit> cos = asyncCos(x, iteration, precision);
+
+		if (!isTanOrCot){
+
+			return cos.thenCombineAsync(sin, (a, b) -> a.divide(b, precision));
+
+		}
+
+		return sin.thenCombineAsync(cos, (a, b) -> a.divide(b, precision));
+
+	}
+
+	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncCos(Digit x, int iteration, int precision) {
+
+		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());
+		ExecutorService executor = Executors.newFixedThreadPool(cores);
+
+		CompletableFuture<Digit>[] futures = new CompletableFuture[iteration];
+
+		for (int n=0; n<iteration; n++) {
+
+			final int nth_term = n;
+
+			futures[n] = CompletableFuture.supplyAsync(() -> computeSinOrCosTerm(x, nth_term, precision, false), executor);
+
+		}
+
+		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -> {
+
+			executor.shutdown();
+			return result;
+
+		}, executor);
+
+	}
+
+	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncSin(Digit x, int iteration, int precision) {
+
+		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());
+		ExecutorService executor = Executors.newFixedThreadPool(cores);
+
+		CompletableFuture<Digit>[] futures = new CompletableFuture[iteration];
+
+		for (int n=0; n<iteration; n++) {
+
+			final int nth_term = n;
+
+			futures[n] = CompletableFuture.supplyAsync(() -> computeSinOrCosTerm(x, nth_term, precision, true), executor);
+
+		}
+
+		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -> {
+
+			executor.shutdown();
+			return result;
+
+		}, executor);
+
+	}
+
+	private static CompletableFuture<Digit> asyncArrayAddition(CompletableFuture<Digit>[] futures, int start, int end){
 
 		final int intervalue = end - start + 1;
 
@@ -166,9 +586,9 @@ public class Trigonometry extends Util{
 
 	}
 
-	private static Digit computeSinTerm(Digit x, int nth_term, int precision) {
+	private static Digit computeSinOrCosTerm(Digit x, int nth_term, int precision, boolean isSinOrCos) {
 
-		int exponent = 2 * nth_term + 1;
+		int exponent = 2 * nth_term + (isSinOrCos ? 1 : 0);
 
 		CompletableFuture<Digit> futurePower = CompletableFuture.supplyAsync(() -> power(x, exponent));
 
@@ -182,7 +602,69 @@ public class Trigonometry extends Util{
 
 	}
 
-	@SuppressWarnings("unchecked") private static CompletableFuture<Digit> asyncPI(int iteration, int precision) {
+	/*private static Digit computeArcsinTerm(Digit x, int nth_term, int precision, ExecutorService executor) {
+
+		// 2*n + 1
+		int exponent = 2 * nth_term + 1;
+
+		// (2n)!
+		CompletableFuture<Digit> futureFactorial = CompletableFuture.supplyAsync(() -> factorial(2*nth_term));
+
+		// 4^n
+		CompletableFuture<Digit> future4thPower = CompletableFuture.supplyAsync(() -> power(new Digit(4), exponent));
+
+		// (n!)^2
+		CompletableFuture<Digit> futurePowerFactorial = CompletableFuture.supplyAsync(() -> power(factorial(nth_term), 2));
+
+		// x^(2*n + 1)
+		CompletableFuture<Digit> futurePower = CompletableFuture.supplyAsync(() -> power(x, exponent));
+
+		CompletableFuture<Digit> coefficient = futureFactorial.thenCombineAsync(futurePower, (a, b) ->  a.multiply(b), executor);
+
+		CompletableFuture<Digit> denominator = future4thPower.thenCombineAsync(futurePowerFactorial, (a, b) ->  a.multiply(b.multiply(exponent)), executor);
+
+		return coefficient.thenCombineAsync(denominator, (a, b) ->  a.divide(b, precision), executor).join();
+
+	}/**/
+
+	private static Digit computeArcsinTerm(Digit x, int nth_term, int precision) {
+
+		int exponent = 2 * nth_term + 1;
+
+		// (2n)! / (4^n * (n!)^2)
+		CompletableFuture<Digit> futureCoefficient = CompletableFuture.supplyAsync(() -> {
+
+			Digit numerator = factorial(2 * nth_term);
+			Digit denominator = power(new Digit(4), nth_term).multiply(power(factorial(nth_term), 2));
+
+			return numerator.divide(denominator, precision);
+
+		});
+
+		// x^(2*n + 1)
+		CompletableFuture<Digit> futurePower = CompletableFuture.supplyAsync(() -> power(x, exponent));
+
+		return futureCoefficient.thenCombineAsync(futurePower, (coefficient, powerTerm) ->  coefficient.multiply(powerTerm).divide(new Digit(exponent), precision)).join();
+
+	}/**/
+
+	private static Digit computeArctanTerm(Digit x, int nth_term, int precision) {
+
+		int exponent = 2 * nth_term + 1 ;
+
+		CompletableFuture<Digit> futurePower = CompletableFuture.supplyAsync(() -> power(x, exponent));
+
+		CompletableFuture<Digit> divident = CompletableFuture.supplyAsync(() -> new Digit(exponent));
+
+		return futurePower.thenCombineAsync(divident, (powerTerm, dividentTerm) -> {
+
+			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(dividentTerm, precision));
+
+		}).join();
+
+	}
+
+	private static CompletableFuture<Digit> asyncPI(int iteration, int precision) {
 
 		int cores = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(cores);

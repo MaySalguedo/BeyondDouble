@@ -665,7 +665,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	public int compareToOne(){
 
-		if (this.isNegative || (this.integerPart.matches("0") && !this.decimalPart.isEmpty())) return -1;
+		if (this.isNegative || this.integerPart.matches("0")) return -1;
 
 		if (this.integerPart.matches("1") && this.decimalPart.isEmpty()) return 0;
 
