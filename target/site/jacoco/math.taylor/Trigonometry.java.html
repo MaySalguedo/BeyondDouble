@@ -50,7 +50,7 @@ public class Trigonometry extends Util{
 
 	*/
 
-<span class="nc" id="L53">	public static final Digit pi = new Digit(&quot;3.1415926535897932384626433832795028841972&quot;);</span>
+<span class="fc" id="L53">	public static final Digit pi = new Digit(&quot;3.1415926535897932384626433832795028841972&quot;);</span>
 
 	/**
 
@@ -58,7 +58,7 @@ public class Trigonometry extends Util{
 
 	*/
 
-<span class="nc" id="L61">	public Trigonometry(){}</span>
+<span class="fc" id="L61">	public Trigonometry(){}</span>
 
 	/**
 		Returns the mathematical constant π (pi) with arbitrary precision.
@@ -84,7 +84,7 @@ public class Trigonometry extends Util{
 
 	public static final Digit PI() {
 
-<span class="nc" id="L87">		return asyncPI(27, 40).join();</span>
+<span class="fc" id="L87">		return asyncPI(27, 40).join();</span>
 
 	}
 
@@ -113,7 +113,7 @@ public class Trigonometry extends Util{
 
 	public static Digit sin(Digit x) {
 
-<span class="nc" id="L116">		return asyncSin(x, 11, 29).join();</span>
+<span class="fc" id="L116">		return asyncSin(x, 11, 29).join();</span>
 
 	}
 
@@ -142,7 +142,7 @@ public class Trigonometry extends Util{
 
 	public static Digit cos(Digit x) {
 
-<span class="nc" id="L145">		return asyncCos(x, 11, 29).join();</span>
+<span class="fc" id="L145">		return asyncCos(x, 11, 29).join();</span>
 
 	}
 
@@ -171,7 +171,7 @@ public class Trigonometry extends Util{
 
 	public static Digit tan(Digit x) {
 
-<span class="nc" id="L174">		return asyncTanOrCot(x, 11, 29, true).join();</span>
+<span class="fc" id="L174">		return asyncTanOrCot(x, 11, 29, true).join();</span>
 
 	}
 
@@ -200,7 +200,7 @@ public class Trigonometry extends Util{
 
 	public static Digit csc(Digit x) {
 
-<span class="nc" id="L203">		return asyncSin(x, 11, 29).join().inverse(29);</span>
+<span class="fc" id="L203">		return asyncSin(x, 11, 29).join().inverse(29);</span>
 
 	}
 
@@ -229,7 +229,7 @@ public class Trigonometry extends Util{
 
 	public static Digit sec(Digit x) {
 
-<span class="nc" id="L232">		return asyncCos(x, 11, 29).join().inverse();</span>
+<span class="fc" id="L232">		return asyncCos(x, 11, 29).join().inverse();</span>
 
 	}
 
@@ -258,7 +258,7 @@ public class Trigonometry extends Util{
 
 	public static Digit cot(Digit x) {
 
-<span class="nc" id="L261">		return asyncTanOrCot(x, 11, 29, false).join();</span>
+<span class="fc" id="L261">		return asyncTanOrCot(x, 11, 29, false).join();</span>
 
 	}
 
@@ -286,7 +286,7 @@ public class Trigonometry extends Util{
 
 	public static Digit arcsin(Digit x) {
 
-<span class="nc" id="L289">		return asyncArcsin(x, 15, 30).join();</span>
+<span class="fc" id="L289">		return asyncArcsin(x, 15, 30).join();</span>
 
 	}
 
@@ -314,7 +314,7 @@ public class Trigonometry extends Util{
 
 	public static Digit arccos(Digit x) {
 
-<span class="nc" id="L317">		return Trigonometry.pi.divide(2, 38).subtract(asyncArcsin(x, 15, 30).join());</span>
+<span class="fc" id="L317">		return Trigonometry.pi.divide(2, 38).subtract(asyncArcsin(x, 15, 30).join());</span>
 
 	}
 
@@ -343,15 +343,15 @@ public class Trigonometry extends Util{
 
 	public static Digit arctan(Digit x) {
 
-<span class="nc bnc" id="L346" title="All 2 branches missed.">		if (x.abs().compareToOne()&gt;0){</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">		if (x.abs().compareToOne()&gt;0){</span>
 
-<span class="nc" id="L348">			Digit result = asyncActan_v2(x.abs(), 11, 29).join();</span>
+<span class="fc" id="L348">			Digit result = asyncActan_v2(x.abs(), 11, 29).join();</span>
 
-<span class="nc bnc" id="L350" title="All 2 branches missed.">			return x.isNegative ? result.negate() : result;</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">			return x.isNegative ? result.negate() : result;</span>
 
 		}
 
-<span class="nc" id="L354">		return asyncArctan(x, 11, 29).join();</span>
+<span class="fc" id="L354">		return asyncArctan(x, 11, 29).join();</span>
 
 	}
 
@@ -442,23 +442,23 @@ public class Trigonometry extends Util{
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncArcsin(Digit x, int iteration, int precision) {
 
-<span class="nc" id="L445">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
-<span class="nc" id="L446">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+<span class="fc" id="L445">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="fc" id="L446">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
 
-<span class="nc" id="L448">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+<span class="fc" id="L448">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
 
-<span class="nc bnc" id="L450" title="All 2 branches missed.">		for (int n = 0; n &lt; iteration; n++) {</span>
+<span class="fc bfc" id="L450" title="All 2 branches covered.">		for (int n = 0; n &lt; iteration; n++) {</span>
 
-<span class="nc" id="L452">			final int nth_term = n;</span>
+<span class="fc" id="L452">			final int nth_term = n;</span>
 
-<span class="nc" id="L454">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeArcsinTerm(x, nth_term, precision), executor);</span>
+<span class="fc" id="L454">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeArcsinTerm(x, nth_term, precision), executor);</span>
 
 		}
 
-<span class="nc" id="L458">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+<span class="fc" id="L458">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
 
-<span class="nc" id="L460">			executor.shutdown();</span>
-<span class="nc" id="L461">			return result;</span>
+<span class="fc" id="L460">			executor.shutdown();</span>
+<span class="fc" id="L461">			return result;</span>
 
 		}, executor);
 
@@ -466,35 +466,35 @@ public class Trigonometry extends Util{
 
 	private static CompletableFuture&lt;Digit&gt; asyncActan_v2(Digit x, int iteration, int precision){
 
-<span class="nc" id="L469">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
-<span class="nc" id="L470">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+<span class="fc" id="L469">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="fc" id="L470">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
 
-<span class="nc" id="L472">		CompletableFuture&lt;Digit&gt; halfPi = CompletableFuture.supplyAsync(() -&gt; Trigonometry.pi.divide(2, 38), executor);</span>
-<span class="nc" id="L473">		CompletableFuture&lt;Digit&gt; inverse = CompletableFuture.supplyAsync(() -&gt; x.inverse(38), executor);</span>
+<span class="fc" id="L472">		CompletableFuture&lt;Digit&gt; halfPi = CompletableFuture.supplyAsync(() -&gt; Trigonometry.pi.divide(2, 38), executor);</span>
+<span class="fc" id="L473">		CompletableFuture&lt;Digit&gt; inverse = CompletableFuture.supplyAsync(() -&gt; x.inverse(38), executor);</span>
 
-<span class="nc" id="L475">		return halfPi.thenCombineAsync(inverse, (a, b) -&gt; a.subtract(arctan(b)));</span>
+<span class="fc" id="L475">		return halfPi.thenCombineAsync(inverse, (a, b) -&gt; a.subtract(arctan(b)));</span>
 
 	}
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncArctan(Digit x, int iteration, int precision) {
 
-<span class="nc" id="L481">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
-<span class="nc" id="L482">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+<span class="fc" id="L481">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="fc" id="L482">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
 
-<span class="nc" id="L484">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+<span class="fc" id="L484">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
 
-<span class="nc bnc" id="L486" title="All 2 branches missed.">		for (int n=0; n&lt;iteration; n++) {</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		for (int n=0; n&lt;iteration; n++) {</span>
 
-<span class="nc" id="L488">			final int nth_term = n;</span>
+<span class="fc" id="L488">			final int nth_term = n;</span>
 
-<span class="nc" id="L490">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeArctanTerm(x, nth_term, precision), executor);</span>
+<span class="fc" id="L490">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeArctanTerm(x, nth_term, precision), executor);</span>
 
 		}
 
-<span class="nc" id="L494">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+<span class="fc" id="L494">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
 
-<span class="nc" id="L496">			executor.shutdown();</span>
-<span class="nc" id="L497">			return result;</span>
+<span class="fc" id="L496">			executor.shutdown();</span>
+<span class="fc" id="L497">			return result;</span>
 
 		}, executor);
 
@@ -502,38 +502,38 @@ public class Trigonometry extends Util{
 
 	private static CompletableFuture&lt;Digit&gt; asyncTanOrCot(Digit x, int iteration, int precision, boolean isTanOrCot){
 
-<span class="nc" id="L505">		CompletableFuture&lt;Digit&gt; sin = asyncSin(x, iteration, precision);</span>
-<span class="nc" id="L506">		CompletableFuture&lt;Digit&gt; cos = asyncCos(x, iteration, precision);</span>
+<span class="fc" id="L505">		CompletableFuture&lt;Digit&gt; sin = asyncSin(x, iteration, precision);</span>
+<span class="fc" id="L506">		CompletableFuture&lt;Digit&gt; cos = asyncCos(x, iteration, precision);</span>
 
-<span class="nc bnc" id="L508" title="All 2 branches missed.">		if (!isTanOrCot){</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">		if (!isTanOrCot){</span>
 
-<span class="nc" id="L510">			return cos.thenCombineAsync(sin, (a, b) -&gt; a.divide(b, precision));</span>
+<span class="fc" id="L510">			return cos.thenCombineAsync(sin, (a, b) -&gt; a.divide(b, precision));</span>
 
 		}
 
-<span class="nc" id="L514">		return sin.thenCombineAsync(cos, (a, b) -&gt; a.divide(b, precision));</span>
+<span class="fc" id="L514">		return sin.thenCombineAsync(cos, (a, b) -&gt; a.divide(b, precision));</span>
 
 	}
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncCos(Digit x, int iteration, int precision) {
 
-<span class="nc" id="L520">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
-<span class="nc" id="L521">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+<span class="fc" id="L520">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="fc" id="L521">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
 
-<span class="nc" id="L523">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+<span class="fc" id="L523">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
 
-<span class="nc bnc" id="L525" title="All 2 branches missed.">		for (int n=0; n&lt;iteration; n++) {</span>
+<span class="fc bfc" id="L525" title="All 2 branches covered.">		for (int n=0; n&lt;iteration; n++) {</span>
 
-<span class="nc" id="L527">			final int nth_term = n;</span>
+<span class="fc" id="L527">			final int nth_term = n;</span>
 
-<span class="nc" id="L529">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeSinOrCosTerm(x, nth_term, precision, false), executor);</span>
+<span class="fc" id="L529">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeSinOrCosTerm(x, nth_term, precision, false), executor);</span>
 
 		}
 
-<span class="nc" id="L533">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+<span class="fc" id="L533">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
 
-<span class="nc" id="L535">			executor.shutdown();</span>
-<span class="nc" id="L536">			return result;</span>
+<span class="fc" id="L535">			executor.shutdown();</span>
+<span class="fc" id="L536">			return result;</span>
 
 		}, executor);
 
@@ -541,23 +541,23 @@ public class Trigonometry extends Util{
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncSin(Digit x, int iteration, int precision) {
 
-<span class="nc" id="L544">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
-<span class="nc" id="L545">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+<span class="fc" id="L544">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="fc" id="L545">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
 
-<span class="nc" id="L547">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+<span class="fc" id="L547">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
 
-<span class="nc bnc" id="L549" title="All 2 branches missed.">		for (int n=0; n&lt;iteration; n++) {</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">		for (int n=0; n&lt;iteration; n++) {</span>
 
-<span class="nc" id="L551">			final int nth_term = n;</span>
+<span class="fc" id="L551">			final int nth_term = n;</span>
 
-<span class="nc" id="L553">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeSinOrCosTerm(x, nth_term, precision, true), executor);</span>
+<span class="fc" id="L553">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeSinOrCosTerm(x, nth_term, precision, true), executor);</span>
 
 		}
 
-<span class="nc" id="L557">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+<span class="fc" id="L557">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
 
-<span class="nc" id="L559">			executor.shutdown();</span>
-<span class="nc" id="L560">			return result;</span>
+<span class="fc" id="L559">			executor.shutdown();</span>
+<span class="fc" id="L560">			return result;</span>
 
 		}, executor);
 
@@ -565,40 +565,40 @@ public class Trigonometry extends Util{
 
 	private static CompletableFuture&lt;Digit&gt; asyncArrayAddition(CompletableFuture&lt;Digit&gt;[] futures, int start, int end){
 
-<span class="nc" id="L568">		final int intervalue = end - start + 1;</span>
+<span class="fc" id="L568">		final int intervalue = end - start + 1;</span>
 
-<span class="nc bnc" id="L570" title="All 2 branches missed.">		if (intervalue==1){</span>
+<span class="fc bfc" id="L570" title="All 2 branches covered.">		if (intervalue==1){</span>
 
-<span class="nc" id="L572">			return futures[start];</span>
+<span class="fc" id="L572">			return futures[start];</span>
 
-<span class="nc bnc" id="L574" title="All 2 branches missed.">		}else if (intervalue==2){</span>
+<span class="fc bfc" id="L574" title="All 2 branches covered.">		}else if (intervalue==2){</span>
 
-<span class="nc" id="L576">			return futures[start].thenCombine(futures[end], (a, b) -&gt; a.add(b));</span>
+<span class="fc" id="L576">			return futures[start].thenCombine(futures[end], (a, b) -&gt; a.add(b));</span>
 
 		}
 
-<span class="nc" id="L580">		final int mid = (start + end) / 2;</span>
+<span class="fc" id="L580">		final int mid = (start + end) / 2;</span>
 
-<span class="nc" id="L582">		CompletableFuture&lt;Digit&gt; left = asyncArrayAddition(futures, start, mid);</span>
-<span class="nc" id="L583">		CompletableFuture&lt;Digit&gt; right = asyncArrayAddition(futures, mid + 1, end);</span>
+<span class="fc" id="L582">		CompletableFuture&lt;Digit&gt; left = asyncArrayAddition(futures, start, mid);</span>
+<span class="fc" id="L583">		CompletableFuture&lt;Digit&gt; right = asyncArrayAddition(futures, mid + 1, end);</span>
 
-<span class="nc" id="L585">		return left.thenCombineAsync(right, (a, b) -&gt; a.add(b));</span>
+<span class="fc" id="L585">		return left.thenCombineAsync(right, (a, b) -&gt; a.add(b));</span>
 
 	}
 
 	private static Digit computeSinOrCosTerm(Digit x, int nth_term, int precision, boolean isSinOrCos) {
 
-<span class="nc bnc" id="L591" title="All 2 branches missed.">		int exponent = 2 * nth_term + (isSinOrCos ? 1 : 0);</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">		int exponent = 2 * nth_term + (isSinOrCos ? 1 : 0);</span>
 
-<span class="nc" id="L593">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
+<span class="fc" id="L593">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
 
-<span class="nc" id="L595">		CompletableFuture&lt;Digit&gt; futureFactorial = CompletableFuture.supplyAsync(() -&gt; factorial(exponent));</span>
+<span class="fc" id="L595">		CompletableFuture&lt;Digit&gt; futureFactorial = CompletableFuture.supplyAsync(() -&gt; factorial(exponent));</span>
 
-<span class="nc" id="L597">		return futurePower.thenCombineAsync(futureFactorial, (powerTerm, factorialTerm) -&gt; {</span>
+<span class="fc" id="L597">		return futurePower.thenCombineAsync(futureFactorial, (powerTerm, factorialTerm) -&gt; {</span>
 
-<span class="nc bnc" id="L599" title="All 2 branches missed.">			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(factorialTerm, precision));</span>
+<span class="fc bfc" id="L599" title="All 2 branches covered.">			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(factorialTerm, precision));</span>
 
-<span class="nc" id="L601">		}).join();</span>
+<span class="fc" id="L601">		}).join();</span>
 
 	}
 
@@ -629,61 +629,61 @@ public class Trigonometry extends Util{
 
 	private static Digit computeArcsinTerm(Digit x, int nth_term, int precision) {
 
-<span class="nc" id="L632">		int exponent = 2 * nth_term + 1;</span>
+<span class="fc" id="L632">		int exponent = 2 * nth_term + 1;</span>
 
 		// (2n)! / (4^n * (n!)^2)
-<span class="nc" id="L635">		CompletableFuture&lt;Digit&gt; futureCoefficient = CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="fc" id="L635">		CompletableFuture&lt;Digit&gt; futureCoefficient = CompletableFuture.supplyAsync(() -&gt; {</span>
 
-<span class="nc" id="L637">			Digit numerator = factorial(2 * nth_term);</span>
-<span class="nc" id="L638">			Digit denominator = power(new Digit(4), nth_term).multiply(power(factorial(nth_term), 2));</span>
+<span class="fc" id="L637">			Digit numerator = factorial(2 * nth_term);</span>
+<span class="fc" id="L638">			Digit denominator = power(new Digit(4), nth_term).multiply(power(factorial(nth_term), 2));</span>
 
-<span class="nc" id="L640">			return numerator.divide(denominator, precision);</span>
+<span class="fc" id="L640">			return numerator.divide(denominator, precision);</span>
 
 		});
 
 		// x^(2*n + 1)
-<span class="nc" id="L645">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
+<span class="fc" id="L645">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
 
-<span class="nc" id="L647">		return futureCoefficient.thenCombineAsync(futurePower, (coefficient, powerTerm) -&gt;  coefficient.multiply(powerTerm).divide(new Digit(exponent), precision)).join();</span>
+<span class="fc" id="L647">		return futureCoefficient.thenCombineAsync(futurePower, (coefficient, powerTerm) -&gt;  coefficient.multiply(powerTerm).divide(new Digit(exponent), precision)).join();</span>
 
 	}/**/
 
 	private static Digit computeArctanTerm(Digit x, int nth_term, int precision) {
 
-<span class="nc" id="L653">		int exponent = 2 * nth_term + 1 ;</span>
+<span class="fc" id="L653">		int exponent = 2 * nth_term + 1 ;</span>
 
-<span class="nc" id="L655">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
+<span class="fc" id="L655">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
 
-<span class="nc" id="L657">		CompletableFuture&lt;Digit&gt; divident = CompletableFuture.supplyAsync(() -&gt; new Digit(exponent));</span>
+<span class="fc" id="L657">		CompletableFuture&lt;Digit&gt; divident = CompletableFuture.supplyAsync(() -&gt; new Digit(exponent));</span>
 
-<span class="nc" id="L659">		return futurePower.thenCombineAsync(divident, (powerTerm, dividentTerm) -&gt; {</span>
+<span class="fc" id="L659">		return futurePower.thenCombineAsync(divident, (powerTerm, dividentTerm) -&gt; {</span>
 
-<span class="nc bnc" id="L661" title="All 2 branches missed.">			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(dividentTerm, precision));</span>
+<span class="fc bfc" id="L661" title="All 2 branches covered.">			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(dividentTerm, precision));</span>
 
-<span class="nc" id="L663">		}).join();</span>
+<span class="fc" id="L663">		}).join();</span>
 
 	}
 
 	private static CompletableFuture&lt;Digit&gt; asyncPI(int iteration, int precision) {
 
-<span class="nc" id="L669">		int cores = Runtime.getRuntime().availableProcessors();</span>
-<span class="nc" id="L670">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+<span class="fc" id="L669">		int cores = Runtime.getRuntime().availableProcessors();</span>
+<span class="fc" id="L670">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
 
-<span class="nc" id="L672">		Digit sign = new Digit(1);</span>
+<span class="fc" id="L672">		Digit sign = new Digit(1);</span>
 
-<span class="nc" id="L674">		CompletableFuture&lt;Digit&gt; arctan1_5 = CompletableFuture.supplyAsync(() -&gt; parallelArctan(5, iteration, sign, precision, executor), executor);</span>
+<span class="fc" id="L674">		CompletableFuture&lt;Digit&gt; arctan1_5 = CompletableFuture.supplyAsync(() -&gt; parallelArctan(5, iteration, sign, precision, executor), executor);</span>
 
-<span class="nc" id="L676">		CompletableFuture&lt;Digit&gt; arctan1_239 = CompletableFuture.supplyAsync(() -&gt; parallelArctan(239, 11, sign, precision, executor), executor);</span>
+<span class="fc" id="L676">		CompletableFuture&lt;Digit&gt; arctan1_239 = CompletableFuture.supplyAsync(() -&gt; parallelArctan(239, 11, sign, precision, executor), executor);</span>
 
-<span class="nc" id="L678">		return arctan1_5.thenCombineAsync(arctan1_239, (a, b) -&gt; {</span>
+<span class="fc" id="L678">		return arctan1_5.thenCombineAsync(arctan1_239, (a, b) -&gt; {</span>
 
-<span class="nc" id="L680">			executor.shutdown();</span>
+<span class="fc" id="L680">			executor.shutdown();</span>
 
-<span class="nc" id="L682">			final Digit four = new Digit(4);</span>
+<span class="fc" id="L682">			final Digit four = new Digit(4);</span>
 
-<span class="nc" id="L684">			return four.multiply(</span>
+<span class="fc" id="L684">			return four.multiply(</span>
 
-<span class="nc" id="L686">				four.multiply(a).subtract(b)</span>
+<span class="fc" id="L686">				four.multiply(a).subtract(b)</span>
 
 			);
 
@@ -693,9 +693,9 @@ public class Trigonometry extends Util{
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static Digit parallelArctan(int x, int iterations, Digit sign, int precision, ExecutorService executor) {
 
-<span class="nc bnc" id="L696" title="All 2 branches missed.">		if (iterations &lt;= 30) {</span>
+<span class="pc bpc" id="L696" title="1 of 2 branches missed.">		if (iterations &lt;= 30) {</span>
 
-<span class="nc" id="L698">			return computePartialArctan(x, 0, iterations, sign, precision);</span>
+<span class="fc" id="L698">			return computePartialArctan(x, 0, iterations, sign, precision);</span>
 
 		}/**/
 
@@ -749,31 +749,31 @@ public class Trigonometry extends Util{
 
 	private static Digit computePartialArctan(int x, int start, int end, Digit initialSign, int precision) {
 
-<span class="nc bnc" id="L752" title="All 2 branches missed.">		if (start &gt;= end) {</span>
+<span class="pc bpc" id="L752" title="1 of 2 branches missed.">		if (start &gt;= end) {</span>
 
 <span class="nc" id="L754">			return new Digit(0);</span>
 
 		}
 
-<span class="nc" id="L758">		Digit partial = new Digit(0);</span>
-<span class="nc" id="L759">		Digit termSign = initialSign;</span>
-<span class="nc" id="L760">		Digit oneOverX = new Digit(1).divide(new Digit(x), precision);</span>
-<span class="nc" id="L761">		Digit oneOverXSquared = oneOverX.multiply(oneOverX);</span>
-<span class="nc" id="L762">		Digit currentTerm = power(oneOverX, 2 * start + 1);</span>
+<span class="fc" id="L758">		Digit partial = new Digit(0);</span>
+<span class="fc" id="L759">		Digit termSign = initialSign;</span>
+<span class="fc" id="L760">		Digit oneOverX = new Digit(1).divide(new Digit(x), precision);</span>
+<span class="fc" id="L761">		Digit oneOverXSquared = oneOverX.multiply(oneOverX);</span>
+<span class="fc" id="L762">		Digit currentTerm = power(oneOverX, 2 * start + 1);</span>
 
-<span class="nc bnc" id="L764" title="All 2 branches missed.">		for (int n = start; n &lt; end; n++) {</span>
+<span class="fc bfc" id="L764" title="All 2 branches covered.">		for (int n = start; n &lt; end; n++) {</span>
 
-<span class="nc" id="L766">			int denominator = 2 * n + 1;</span>
-<span class="nc" id="L767">			Digit term = currentTerm.divide(new Digit(denominator), precision);</span>
-<span class="nc" id="L768">			term = term.multiply(termSign);</span>
-<span class="nc" id="L769">			partial = partial.add(term);</span>
+<span class="fc" id="L766">			int denominator = 2 * n + 1;</span>
+<span class="fc" id="L767">			Digit term = currentTerm.divide(new Digit(denominator), precision);</span>
+<span class="fc" id="L768">			term = term.multiply(termSign);</span>
+<span class="fc" id="L769">			partial = partial.add(term);</span>
 			
-<span class="nc" id="L771">			currentTerm = currentTerm.multiply(oneOverXSquared);</span>
-<span class="nc" id="L772">			termSign = termSign.negate();</span>
+<span class="fc" id="L771">			currentTerm = currentTerm.multiply(oneOverXSquared);</span>
+<span class="fc" id="L772">			termSign = termSign.negate();</span>
 
 		}
 
-<span class="nc" id="L776">		return partial;</span>
+<span class="fc" id="L776">		return partial;</span>
 
 	}
 

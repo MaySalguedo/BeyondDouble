@@ -149,9 +149,9 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 <span class="fc" id="L149">		StringBuilder number = new StringBuilder(n);</span>
 
 <span class="fc bfc" id="L151" title="All 2 branches covered.">		boolean isNegativeBackUp = number.charAt(0)=='-';</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		boolean isPositiveBackUp = number.charAt(0)=='+';</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		boolean isPositiveBackUp = number.charAt(0)=='+';</span>
 
-<span class="pc bpc" id="L154" title="1 of 4 branches missed.">		if (isNegativeBackUp || isPositiveBackUp){</span>
+<span class="fc bfc" id="L154" title="All 4 branches covered.">		if (isNegativeBackUp || isPositiveBackUp){</span>
 
 <span class="fc" id="L156">			number.deleteCharAt(0);</span>
 
@@ -213,11 +213,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit(double n, boolean notation){
 
-<span class="nc" id="L216">		this(n);</span>
+<span class="fc" id="L216">		this(n);</span>
 
-<span class="nc" id="L218">		this.notation = notation;</span>
+<span class="fc" id="L218">		this.notation = notation;</span>
 
-<span class="nc" id="L220">	}</span>
+<span class="fc" id="L220">	}</span>
 
 	/**
 
@@ -250,11 +250,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit(String integerPart, String decimalPart, boolean notation){
 
-<span class="nc" id="L253">		this(integerPart, decimalPart);</span>
+<span class="fc" id="L253">		this(integerPart, decimalPart);</span>
 
-<span class="nc" id="L255">		this.notation = notation;</span>
+<span class="fc" id="L255">		this.notation = notation;</span>
 
-<span class="nc" id="L257">	}</span>
+<span class="fc" id="L257">	}</span>
 
 	/**
 
@@ -287,11 +287,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit(long integerPart, long decimalPart, boolean notation){
 
-<span class="nc" id="L290">		this(integerPart, decimalPart);</span>
+<span class="fc" id="L290">		this(integerPart, decimalPart);</span>
 
-<span class="nc" id="L292">		this.notation = notation;</span>
+<span class="fc" id="L292">		this.notation = notation;</span>
 
-<span class="nc" id="L294">	}</span>
+<span class="fc" id="L294">	}</span>
 
 	/**
 
@@ -335,7 +335,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 <span class="fc" id="L336">		this.integerPart = integerPart;</span>
 <span class="fc" id="L337">		this.decimalPart = &quot;&quot;;</span>
-<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		this.isNegative = this.integerPart.matches(&quot;0&quot;) ? false : isNegative;</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">		this.isNegative = this.integerPart.matches(&quot;0&quot;) ? false : isNegative;</span>
 <span class="fc" id="L339">		this.notation = notation;</span>
 
 <span class="fc" id="L341">	}</span>
@@ -373,7 +373,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public byte byteValue() throws IllegalNumberFormatException{
 
-<span class="fc" id="L376">		return Byte.parseByte(this.integerPart);</span>
+<span class="fc bfc" id="L376" title="All 2 branches covered.">		return Byte.parseByte((this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart);</span>
 
 	}
 
@@ -390,9 +390,9 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public double doubleValue() throws IllegalNumberFormatException{
 
-<span class="fc" id="L393">		return Double.parseDouble(this.integerPart+(</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">		return Double.parseDouble((this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart + (</span>
 
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
 
 		));
 
@@ -411,9 +411,9 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public float floatValue() throws IllegalNumberFormatException{
 
-<span class="fc" id="L414">		return Float.parseFloat(this.integerPart+(</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">		return Float.parseFloat((this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart + (</span>
 
-<span class="pc bpc" id="L416" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
 
 		));
 
@@ -432,7 +432,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public int intValue() throws IllegalNumberFormatException{
 
-<span class="fc" id="L435">		return Integer.parseInt(this.integerPart);</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">		return Integer.parseInt((this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart);</span>
 
 	}
 
@@ -449,7 +449,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public long longValue() throws IllegalNumberFormatException{
 
-<span class="fc" id="L452">		return Long.parseLong(this.integerPart);</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">		return Long.parseLong((this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart);</span>
 
 	}
 
@@ -466,11 +466,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public short shortValue() throws IllegalNumberFormatException{
 
-<span class="fc" id="L469">		return Short.parseShort(this.integerPart+(</span>
-
-<span class="pc bpc" id="L471" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
-
-		));
+<span class="fc bfc" id="L469" title="All 2 branches covered.">		return Short.parseShort((this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart);</span>
 
 	}
 
@@ -485,9 +481,9 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public String stringValue(){
 
-<span class="fc" id="L488">		return this.integerPart+(</span>
+<span class="fc bfc" id="L484" title="All 2 branches covered.">		return (this.isNegative ? &quot;-&quot; : &quot;&quot;) + this.integerPart + (</span>
 
-<span class="pc bpc" id="L490" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
 
 		);
 
@@ -519,11 +515,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public boolean equals(Object obj) {
 
-<span class="pc bpc" id="L522" title="1 of 2 branches missed.">		if (this == obj) return true;</span>
-<span class="pc bpc" id="L523" title="2 of 4 branches missed.">		if (obj == null || getClass() != obj.getClass()) return false;</span>
+<span class="fc bfc" id="L518" title="All 2 branches covered.">		if (this == obj) return true;</span>
+<span class="pc bpc" id="L519" title="2 of 4 branches missed.">		if (obj == null || getClass() != obj.getClass()) return false;</span>
 		
-<span class="fc" id="L525">		Digit other = (Digit) obj;</span>
-<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		return this.compareTo(other)==0;</span>
+<span class="fc" id="L521">		Digit other = (Digit) obj;</span>
+<span class="fc bfc" id="L522" title="All 2 branches covered.">		return this.compareTo(other)==0;</span>
 
 	}
 
@@ -556,20 +552,20 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 	@Override public int compareTo(Digit n){
 
 		//Case 2: Either both negative or positive
-<span class="fc bfc" id="L559" title="All 2 branches covered.">		int multiplier = this.isNegative ? -1 : 1;</span>
+<span class="fc bfc" id="L555" title="All 2 branches covered.">		int multiplier = this.isNegative ? -1 : 1;</span>
 
 		//Case 1: Diferent Signs
-<span class="pc bpc" id="L562" title="1 of 2 branches missed.">		if (this.isNegative!=n.isNegative) return multiplier;</span>
+<span class="fc bfc" id="L558" title="All 2 branches covered.">		if (this.isNegative!=n.isNegative) return multiplier;</span>
 
-<span class="fc" id="L564">		int integersCompared = this.operationManager.compareIntegerParts(this.integerPart, n.integerPart);</span>
+<span class="fc" id="L560">		int integersCompared = this.operationManager.compareIntegerParts(this.integerPart, n.integerPart);</span>
 
-<span class="fc bfc" id="L566" title="All 2 branches covered.">		if (integersCompared!=0) return multiplier * integersCompared;</span>
+<span class="fc bfc" id="L562" title="All 2 branches covered.">		if (integersCompared!=0) return multiplier * integersCompared;</span>
 
-<span class="fc" id="L568">		int decimalsCompared = this.operationManager.compareDecimalParts(this.decimalPart, n.decimalPart);</span>
+<span class="fc" id="L564">		int decimalsCompared = this.operationManager.compareDecimalParts(this.decimalPart, n.decimalPart);</span>
 
-<span class="pc bpc" id="L570" title="1 of 2 branches missed.">		if (decimalsCompared!=0) return multiplier * decimalsCompared;</span>
+<span class="fc bfc" id="L566" title="All 2 branches covered.">		if (decimalsCompared!=0) return multiplier * decimalsCompared;</span>
 
-<span class="fc" id="L572">		return 0;</span>
+<span class="fc" id="L568">		return 0;</span>
 
 	}
 
@@ -588,7 +584,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public int compareTo(double n){
 
-<span class="nc" id="L591">		return this.compareTo(new Digit(n));</span>
+<span class="fc" id="L587">		return this.compareTo(new Digit(n));</span>
 
 	}
 
@@ -607,7 +603,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public int compareTo(int n){
 
-<span class="nc" id="L610">		return this.compareTo(new Digit(n+&quot;&quot;, this.isNegative, this.notation));</span>
+<span class="fc" id="L606">		return this.compareTo(new Digit(n+&quot;&quot;, this.isNegative, this.notation));</span>
 
 	}
 
@@ -634,11 +630,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public int compareToZero(){
 
-<span class="fc bfc" id="L637" title="All 2 branches covered.">		if (this.isNegative) return -1;</span>
+<span class="fc bfc" id="L633" title="All 2 branches covered.">		if (this.isNegative) return -1;</span>
 
-<span class="fc bfc" id="L639" title="All 4 branches covered.">		if (this.integerPart.matches(&quot;0&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
+<span class="fc bfc" id="L635" title="All 4 branches covered.">		if (this.integerPart.matches(&quot;0&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
 
-<span class="fc" id="L641">		return 1;</span>
+<span class="fc" id="L637">		return 1;</span>
 
 	}
 
@@ -665,11 +661,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public int compareToOne(){
 
-<span class="fc bfc" id="L668" title="All 4 branches covered.">		if (this.isNegative || this.integerPart.matches(&quot;0&quot;)) return -1;</span>
+<span class="fc bfc" id="L664" title="All 4 branches covered.">		if (this.isNegative || this.integerPart.matches(&quot;0&quot;)) return -1;</span>
 
-<span class="pc bpc" id="L670" title="1 of 4 branches missed.">		if (this.integerPart.matches(&quot;1&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
+<span class="fc bfc" id="L666" title="All 4 branches covered.">		if (this.integerPart.matches(&quot;1&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
 
-<span class="fc" id="L672">		return 1;</span>
+<span class="fc" id="L668">		return 1;</span>
 
 	}
 
@@ -696,11 +692,11 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public int compareToMinusOne(){
 
-<span class="pc bpc" id="L699" title="3 of 6 branches missed.">		if (!this.isNegative || (this.integerPart.matches(&quot;0&quot;) &amp;&amp; !this.decimalPart.isEmpty())) return 1;</span>
+<span class="pc bpc" id="L695" title="1 of 6 branches missed.">		if (!this.isNegative || (this.integerPart.matches(&quot;0&quot;) &amp;&amp; !this.decimalPart.isEmpty())) return 1;</span>
 
-<span class="pc bpc" id="L701" title="1 of 4 branches missed.">		if (this.integerPart.matches(&quot;1&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
+<span class="pc bpc" id="L697" title="1 of 4 branches missed.">		if (this.integerPart.matches(&quot;1&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
 
-<span class="fc" id="L703">		return -1;</span>
+<span class="fc" id="L699">		return -1;</span>
 
 	}
 
@@ -726,19 +722,19 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit increase(){
 
-<span class="pc bpc" id="L729" title="2 of 4 branches missed.">		boolean isBetween = this.compareToMinusOne() &gt; 0 &amp;&amp; this.compareToZero() &lt; 0;</span>
+<span class="fc bfc" id="L725" title="All 4 branches covered.">		boolean isBetween = this.compareToMinusOne() &gt; 0 &amp;&amp; this.compareToZero() &lt; 0;</span>
 
-<span class="pc bpc" id="L731" title="1 of 2 branches missed.">		if (isBetween){</span>
+<span class="fc bfc" id="L727" title="All 2 branches covered.">		if (isBetween){</span>
 
-<span class="nc" id="L733">			return this.negate();</span>
+<span class="fc" id="L729">			return this.negate();</span>
 
-<span class="pc bpc" id="L735" title="1 of 2 branches missed.">		}else if (!this.isNegative){</span>
+<span class="fc bfc" id="L731" title="All 2 branches covered.">		}else if (!this.isNegative){</span>
 
-<span class="fc" id="L737">			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+<span class="fc" id="L733">			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
 
 		}else{
 
-<span class="nc" id="L741">			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+<span class="fc" id="L737">			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
 
 		}
 
@@ -766,19 +762,19 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit decrease(){
 
-<span class="pc bpc" id="L769" title="2 of 4 branches missed.">		boolean isBetween = this.compareToOne() &lt; 0 &amp;&amp; this.compareToZero() &gt; 0;</span>
+<span class="fc bfc" id="L765" title="All 4 branches covered.">		boolean isBetween = this.compareToOne() &lt; 0 &amp;&amp; this.compareToZero() &gt; 0;</span>
 
-<span class="pc bpc" id="L771" title="1 of 2 branches missed.">		if (isBetween){</span>
+<span class="fc bfc" id="L767" title="All 2 branches covered.">		if (isBetween){</span>
 
-<span class="fc" id="L773">			return this.negate();</span>
+<span class="fc" id="L769">			return this.negate();</span>
 
-<span class="nc bnc" id="L775" title="All 2 branches missed.">		}else if (this.isNegative){</span>
+<span class="fc bfc" id="L771" title="All 2 branches covered.">		}else if (this.isNegative){</span>
 
-<span class="nc" id="L777">			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+<span class="fc" id="L773">			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
 
 		}else{
 
-<span class="nc" id="L781">			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+<span class="fc" id="L777">			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
 
 		}
 
@@ -806,7 +802,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit negate(){
 
-<span class="fc bfc" id="L809" title="All 2 branches covered.">		return new Digit(this.integerPart, this.decimalPart, !this.isNegative, this.notation);</span>
+<span class="fc bfc" id="L805" title="All 2 branches covered.">		return new Digit(this.integerPart, this.decimalPart, !this.isNegative, this.notation);</span>
 
 	}
 
@@ -832,7 +828,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit abs(){
 
-<span class="fc" id="L835">		return new Digit(this.integerPart, this.decimalPart, false, this.notation);</span>
+<span class="fc" id="L831">		return new Digit(this.integerPart, this.decimalPart, false, this.notation);</span>
 
 	}
 
@@ -860,7 +856,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit inverse(long precision) {
 
-<span class="nc" id="L863">		return new Digit(&quot;1&quot;, false, this.notation).divide(this, precision);</span>
+<span class="fc" id="L859">		return new Digit(&quot;1&quot;, false, this.notation).divide(this, precision);</span>
 
 	}
 
@@ -887,7 +883,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public Digit inverse() {
 
-<span class="nc" id="L890">		return this.inverse(128);</span>
+<span class="fc" id="L886">		return this.inverse(128);</span>
 
 	}
 
@@ -913,7 +909,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public Digit unity(){
 
-<span class="nc" id="L916">		return new Digit(&quot;1&quot;, false, this.notation);</span>
+<span class="fc" id="L912">		return new Digit(&quot;1&quot;, false, this.notation);</span>
 
 	}
 
@@ -930,7 +926,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit add(double other){
 
-<span class="nc" id="L933">		return this.add(new Digit(other));</span>
+<span class="fc" id="L929">		return this.add(new Digit(other));</span>
 
 	}
 
@@ -947,7 +943,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit subtract(double other){
 
-<span class="nc" id="L950">		return this.subtract(new Digit(other));</span>
+<span class="fc" id="L946">		return this.subtract(new Digit(other));</span>
 
 	}
 
@@ -964,7 +960,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit multiply(double other) {
 
-<span class="nc" id="L967">		return this.multiply(new Digit(other));</span>
+<span class="fc" id="L963">		return this.multiply(new Digit(other));</span>
 
 	}
 
@@ -982,7 +978,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit divide(double other, long precision) {
 
-<span class="nc" id="L985">		return this.divide(new Digit(other), precision);</span>
+<span class="fc" id="L981">		return this.divide(new Digit(other), precision);</span>
 
 	}
 
@@ -999,7 +995,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit divide(double other) {
 
-<span class="nc" id="L1002">		return this.divide(new Digit(other));</span>
+<span class="fc" id="L998">		return this.divide(new Digit(other));</span>
 
 	}
 
@@ -1016,7 +1012,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit module(double other) {
 
-<span class="nc" id="L1019">		return this.module(new Digit(other));</span>
+<span class="fc" id="L1015">		return this.module(new Digit(other));</span>
 
 	}
 
@@ -1049,41 +1045,43 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public Digit add(Digit other){
 
-<span class="fc" id="L1052">		int isThisZero = this.compareToZero();</span>
+<span class="fc" id="L1048">		int isThisZero = this.compareToZero();</span>
 
-<span class="pc bpc" id="L1054" title="1 of 2 branches missed.">		if (isThisZero==0) return other;</span>
+<span class="fc bfc" id="L1050" title="All 2 branches covered.">		if (isThisZero==0) return other;</span>
 
-<span class="fc" id="L1056">		int isOtherZero = other.compareToZero();</span>
+<span class="fc" id="L1052">		int isOtherZero = other.compareToZero();</span>
 
-<span class="pc bpc" id="L1058" title="1 of 2 branches missed.">		if (isOtherZero==0) return this;</span>
+<span class="fc bfc" id="L1054" title="All 2 branches covered.">		if (isOtherZero==0) return this;</span>
 
-<span class="fc" id="L1060">		Digit thisAbsolute = this.abs();</span>
-<span class="fc" id="L1061">		Digit otherAbsolute = other.abs();</span>
+<span class="fc" id="L1056">		Digit thisAbsolute = this.abs();</span>
+<span class="fc" id="L1057">		Digit otherAbsolute = other.abs();</span>
 
-<span class="pc bpc" id="L1063" title="3 of 4 branches missed.">		if (isThisZero&lt;0 &amp;&amp; isOtherZero&lt;0) return thisAbsolute.add(otherAbsolute).negate();</span>
+<span class="fc bfc" id="L1059" title="All 4 branches covered.">		if (isThisZero&lt;0 &amp;&amp; isOtherZero&lt;0) return thisAbsolute.add(otherAbsolute).negate();</span>
 
-<span class="fc" id="L1065">		int absolutesComapred = thisAbsolute.compareTo(otherAbsolute);</span>
+<span class="fc" id="L1061">		int absolutesComapred = thisAbsolute.compareTo(otherAbsolute);</span>
 
-<span class="pc bpc" id="L1067" title="1 of 2 branches missed.">		if (absolutesComapred&lt;0) return other.add(this);</span>
+<span class="fc bfc" id="L1063" title="All 2 branches covered.">		if (absolutesComapred&lt;0) return other.add(this);</span>
 
-<span class="pc bpc" id="L1069" title="3 of 4 branches missed.">		if (absolutesComapred&gt;0 &amp;&amp; (isThisZero&lt;isOtherZero)) return this.negate().add(other.negate()).negate();</span>
+<span class="fc bfc" id="L1065" title="All 4 branches covered.">		if (absolutesComapred&gt;0 &amp;&amp; (isThisZero&lt;isOtherZero)) return this.negate().add(other.negate()).negate();</span>
 
-<span class="pc bpc" id="L1071" title="1 of 2 branches missed.">		int maxDecimalLength = this.decimalPart.length()&gt;other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();</span>
+<span class="fc bfc" id="L1067" title="All 4 branches covered.">		if (absolutesComapred==0 &amp;&amp; this.isNegative!=other.isNegative) return new Digit(&quot;0&quot;, false, this.notation);</span>
 
-<span class="fc" id="L1073">		String fullResult = this.operationManager.addTwoTogether(</span>
+<span class="fc bfc" id="L1069" title="All 2 branches covered.">		int maxDecimalLength = this.decimalPart.length()&gt;other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();</span>
 
-<span class="fc" id="L1075">			this.integerPart + this.operationManager.padZerosRight(this.decimalPart, maxDecimalLength),</span>
-<span class="fc bfc" id="L1076" title="All 2 branches covered.">			other.integerPart + this.operationManager.padZerosRight(other.decimalPart, maxDecimalLength),</span>
+<span class="fc" id="L1071">		String fullResult = this.operationManager.addTwoTogether(</span>
+
+<span class="fc" id="L1073">			this.integerPart + this.operationManager.padZerosRight(this.decimalPart, maxDecimalLength),</span>
+<span class="fc bfc" id="L1074" title="All 2 branches covered.">			other.integerPart + this.operationManager.padZerosRight(other.decimalPart, maxDecimalLength),</span>
 			!other.isNegative
 
 		);
 
-<span class="fc" id="L1081">		int scale = fullResult.length() - maxDecimalLength;</span>
+<span class="fc" id="L1079">		int scale = fullResult.length() - maxDecimalLength;</span>
 
-<span class="pc bpc" id="L1083" title="1 of 2 branches missed.">		String integerResult = scale!=0 ? this.operationManager.trimZerosLeft(fullResult.substring(0, scale)) : &quot;0&quot;;</span>
-<span class="fc" id="L1084">		String decimalResult = fullResult.substring(scale);</span>
+<span class="pc bpc" id="L1081" title="1 of 2 branches missed.">		String integerResult = scale!=0 ? this.operationManager.trimZerosLeft(fullResult.substring(0, scale)) : &quot;0&quot;;</span>
+<span class="fc" id="L1082">		String decimalResult = fullResult.substring(scale);</span>
 
-<span class="fc" id="L1086">		return new Digit(integerResult, decimalResult, false, this.notation);</span>
+<span class="fc" id="L1084">		return new Digit(integerResult, decimalResult, false, this.notation);</span>
 
 	}
 
@@ -1101,7 +1099,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public Digit subtract(Digit other){
 
-<span class="fc" id="L1104">		return this.add(other.negate());</span>
+<span class="fc" id="L1102">		return this.add(other.negate());</span>
 
 	}
 
@@ -1132,34 +1130,34 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public Digit multiply(Digit other) {
 
-<span class="pc bpc" id="L1135" title="2 of 4 branches missed.">		if (this.compareToZero()==0 || other.compareToZero()==0) return new Digit(0);</span>
+<span class="fc bfc" id="L1133" title="All 4 branches covered.">		if (this.compareToZero()==0 || other.compareToZero()==0) return new Digit(0);</span>
 
-<span class="fc" id="L1137">		int isThisOne = this.compareToOne();</span>
+<span class="fc" id="L1135">		int isThisOne = this.compareToOne();</span>
 
-<span class="pc bpc" id="L1139" title="1 of 2 branches missed.">		if (isThisOne==0) return other;</span>
+<span class="fc bfc" id="L1137" title="All 2 branches covered.">		if (isThisOne==0) return other;</span>
 
-<span class="fc" id="L1141">		int isOtherOne = other.compareToOne();</span>
+<span class="fc" id="L1139">		int isOtherOne = other.compareToOne();</span>
 
-<span class="pc bpc" id="L1143" title="1 of 2 branches missed.">		if (isOtherOne==0) return this;</span>
+<span class="fc bfc" id="L1141" title="All 2 branches covered.">		if (isOtherOne==0) return this;</span>
 
-<span class="fc" id="L1145">		int isThisMinusOne = this.compareToMinusOne();</span>
+<span class="fc" id="L1143">		int isThisMinusOne = this.compareToMinusOne();</span>
 
-<span class="pc bpc" id="L1147" title="1 of 2 branches missed.">		if (isThisMinusOne==0) return other.negate();</span>
+<span class="fc bfc" id="L1145" title="All 2 branches covered.">		if (isThisMinusOne==0) return other.negate();</span>
 
-<span class="fc" id="L1149">		int isOtherMinusOne = other.compareToMinusOne();</span>
+<span class="fc" id="L1147">		int isOtherMinusOne = other.compareToMinusOne();</span>
 
-<span class="pc bpc" id="L1151" title="1 of 2 branches missed.">		if (isOtherMinusOne==0) return this.negate();</span>
+<span class="fc bfc" id="L1149" title="All 2 branches covered.">		if (isOtherMinusOne==0) return this.negate();</span>
 
-<span class="fc" id="L1153">		int maxDecimalLength = this.decimalPart.length() + other.decimalPart.length();</span>
+<span class="fc" id="L1151">		int maxDecimalLength = this.decimalPart.length() + other.decimalPart.length();</span>
 
-<span class="fc" id="L1155">		String fullResult = this.operationManager.multiplication(this.integerPart+this.decimalPart, other.integerPart+other.decimalPart);</span>
+<span class="fc" id="L1153">		String fullResult = this.operationManager.multiplication(this.integerPart+this.decimalPart, other.integerPart+other.decimalPart);</span>
 
-<span class="fc" id="L1157">		int length = fullResult.length();</span>
+<span class="fc" id="L1155">		int length = fullResult.length();</span>
 
-<span class="fc" id="L1159">		String integerResult = this.operationManager.trimZerosLeft(fullResult.substring(0, length - maxDecimalLength));</span>
-<span class="fc" id="L1160">		String decimalResult = fullResult.substring(length - maxDecimalLength);</span>
+<span class="fc" id="L1157">		String integerResult = this.operationManager.trimZerosLeft(fullResult.substring(0, length - maxDecimalLength));</span>
+<span class="fc" id="L1158">		String decimalResult = fullResult.substring(length - maxDecimalLength);</span>
 
-<span class="fc bfc" id="L1162" title="All 2 branches covered.">		return new Digit(integerResult, decimalResult, this.isNegative!=other.isNegative, this.notation);</span>
+<span class="fc bfc" id="L1160" title="All 2 branches covered.">		return new Digit(integerResult, decimalResult, this.isNegative!=other.isNegative, this.notation);</span>
 
 	}
 
@@ -1191,7 +1189,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	@Override public Digit divide(Digit other) {
 
-<span class="fc" id="L1194">		return this.divide(other, 128);</span>
+<span class="fc" id="L1192">		return this.divide(other, 128);</span>
 
 	}
 
@@ -1225,26 +1223,26 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit divide(Digit other, long precision) {
 
-<span class="fc bfc" id="L1228" title="All 2 branches covered.">		if (other.compareToZero()==0) throw new UndeterminedException(&quot;Division by zero is undetermine.&quot;);</span>
+<span class="fc bfc" id="L1226" title="All 2 branches covered.">		if (other.compareToZero()==0) throw new UndeterminedException(&quot;Division by zero is undetermine.&quot;);</span>
 
-<span class="fc" id="L1230">		int decimalLeft = - this.decimalPart.length() + other.decimalPart.length();</span>
+<span class="fc" id="L1228">		int decimalLeft = - this.decimalPart.length() + other.decimalPart.length();</span>
 
-<span class="fc" id="L1232">		String dividend = this.operationManager.trimZerosLeft(this.integerPart+this.decimalPart);</span>
-<span class="fc" id="L1233">		String divisor = this.operationManager.trimZerosLeft(other.integerPart+other.decimalPart);</span>
+<span class="fc" id="L1230">		String dividend = this.operationManager.trimZerosLeft(this.integerPart+this.decimalPart);</span>
+<span class="fc" id="L1231">		String divisor = this.operationManager.trimZerosLeft(other.integerPart+other.decimalPart);</span>
 
-<span class="fc bfc" id="L1235" title="All 2 branches covered.">		if (decimalLeft&gt;0){</span>
+<span class="fc bfc" id="L1233" title="All 2 branches covered.">		if (decimalLeft&gt;0){</span>
 
-<span class="fc" id="L1237">			dividend+= &quot;0&quot;.repeat(decimalLeft);</span>
+<span class="fc" id="L1235">			dividend+= &quot;0&quot;.repeat(decimalLeft);</span>
 
 		}else{
 
-<span class="fc" id="L1241">			divisor+= &quot;0&quot;.repeat(-decimalLeft);</span>
+<span class="fc" id="L1239">			divisor+= &quot;0&quot;.repeat(-decimalLeft);</span>
 
 		}
 
-<span class="fc" id="L1245">		String[] result = this.operationManager.division(dividend, divisor, precision);</span>
+<span class="fc" id="L1243">		String[] result = this.operationManager.division(dividend, divisor, precision);</span>
 
-<span class="pc bpc" id="L1247" title="1 of 2 branches missed.">		return new Digit(result[0], result[1], this.isNegative!=other.isNegative, this.notation);</span>
+<span class="fc bfc" id="L1245" title="All 2 branches covered.">		return new Digit(result[0], result[1], this.isNegative!=other.isNegative, this.notation);</span>
 
 	}
 
@@ -1282,16 +1280,16 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit module(Digit other) {
 
-<span class="pc bpc" id="L1285" title="1 of 2 branches missed.">		if (other.compareToZero()==0) throw new UndeterminedException(&quot;Moduling by zero is undetermine.&quot;);</span>
+<span class="pc bpc" id="L1283" title="1 of 2 branches missed.">		if (other.compareToZero()==0) throw new UndeterminedException(&quot;Moduling by zero is undetermine.&quot;);</span>
 
-<span class="fc" id="L1287">		Digit thisAbsolute = this.abs();</span>
-<span class="fc" id="L1288">		Digit otherAbsolute = other.abs();</span>
+<span class="fc" id="L1285">		Digit thisAbsolute = this.abs();</span>
+<span class="fc" id="L1286">		Digit otherAbsolute = other.abs();</span>
 
-<span class="fc" id="L1290">		Digit result = thisAbsolute.subtract(</span>
+<span class="fc" id="L1288">		Digit result = thisAbsolute.subtract(</span>
 
-<span class="fc" id="L1292">			otherAbsolute.multiply(</span>
+<span class="fc" id="L1290">			otherAbsolute.multiply(</span>
 
-<span class="fc" id="L1294">				thisAbsolute.divide(</span>
+<span class="fc" id="L1292">				thisAbsolute.divide(</span>
 
 					otherAbsolute, 0
 
@@ -1301,7 +1299,7 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 		);// a - b * FLOOR(a/b)
 
-<span class="pc bpc" id="L1304" title="1 of 2 branches missed.">		return this.isNegative ? result.negate() : result;</span>
+<span class="fc bfc" id="L1302" title="All 2 branches covered.">		return this.isNegative ? result.negate() : result;</span>
 
 	}/**/
 
@@ -1332,45 +1330,49 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	public Digit setScale(int scale, RoundingMode mode) {
 
-<span class="pc bpc" id="L1335" title="1 of 2 branches missed.">		if (this.decimalPart.isEmpty()){</span>
+<span class="fc bfc" id="L1333" title="All 2 branches covered.">		if (mode == RoundingMode.UNNECESSARY) {</span>
 
-<span class="nc" id="L1337">			return this;</span>
+<span class="fc" id="L1335">			throw new ArithmeticException(&quot;Rounding necessary&quot;);</span>
 
-<span class="fc bfc" id="L1339" title="All 2 branches covered.">		}else if (scale&lt;=0){</span>
+<span class="fc bfc" id="L1337" title="All 2 branches covered.">		}else if (this.decimalPart.isEmpty()){</span>
 
-<span class="fc" id="L1341">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
+<span class="fc" id="L1339">			return this;</span>
 
-<span class="pc bpc" id="L1343" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.CEILING){</span>
+<span class="fc bfc" id="L1341" title="All 2 branches covered.">		}else if (mode==RoundingMode.CEILING){</span>
 
-<span class="nc bnc" id="L1345" title="All 2 branches missed.">			return this.RoundingOrTrunk(!this.isNegative);</span>
+<span class="pc bpc" id="L1343" title="1 of 2 branches missed.">			return this.RoundingOrTrunk(!this.isNegative);</span>
 
-<span class="pc bpc" id="L1347" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.FLOOR){</span>
+<span class="fc bfc" id="L1345" title="All 2 branches covered.">		}else if (scale&lt;=0){</span>
 
-<span class="nc" id="L1349">			return this.RoundingOrTrunk(this.isNegative);</span>
+<span class="fc" id="L1347">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
 
-<span class="pc bpc" id="L1351" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.DOWN){</span>
+<span class="pc bpc" id="L1349" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.FLOOR){</span>
 
-<span class="nc" id="L1353">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
+<span class="nc" id="L1351">			return this.RoundingOrTrunk(this.isNegative);</span>
 
-<span class="pc bpc" id="L1355" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.UP){</span>
+<span class="pc bpc" id="L1353" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.DOWN){</span>
 
-<span class="nc" id="L1357">			return RoundingOrTrunk(true);</span>
+<span class="nc" id="L1355">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
 
-<span class="pc bpc" id="L1359" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.HALF_UP){</span>
+<span class="pc bpc" id="L1357" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.UP){</span>
 
-<span class="fc" id="L1361">			return this.RoundingHalf(scale, true);</span>
+<span class="nc" id="L1359">			return RoundingOrTrunk(true);</span>
 
-<span class="nc bnc" id="L1363" title="All 2 branches missed.">		}else if (mode==RoundingMode.HALF_DOWN){</span>
+<span class="pc bpc" id="L1361" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.HALF_UP){</span>
 
-<span class="nc" id="L1365">			return this.RoundingHalf(scale, false);</span>
+<span class="fc" id="L1363">			return this.RoundingHalf(scale, true);</span>
 
-<span class="nc bnc" id="L1367" title="All 2 branches missed.">		}else if (mode==RoundingMode.HALF_EVEN){</span>
+<span class="nc bnc" id="L1365" title="All 2 branches missed.">		}else if (mode==RoundingMode.HALF_DOWN){</span>
 
-<span class="nc" id="L1369">			return this.RoundingEven(scale, true);</span>
+<span class="nc" id="L1367">			return this.RoundingHalf(scale, false);</span>
 
-		}else{
+<span class="nc bnc" id="L1369" title="All 2 branches missed.">		}else if (mode==RoundingMode.HALF_EVEN){</span>
 
-<span class="nc" id="L1373">			throw new ArithmeticException(&quot;Invalid RoundingMode&quot;);</span>
+<span class="nc" id="L1371">			return this.RoundingEven(scale, true);</span>
+
+		} else {
+
+<span class="nc" id="L1375">			throw new ArithmeticException(&quot;Invalid RoundingMode&quot;);</span>
 
 		}
 
@@ -1378,13 +1380,13 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	private Digit RoundingOrTrunk(boolean rounding){
 
-<span class="nc bnc" id="L1381" title="All 2 branches missed.">		if (rounding){</span>
+<span class="pc bpc" id="L1383" title="2 of 4 branches missed.">		if (rounding &amp;&amp; !this.decimalPart.isEmpty()){</span>
 
-<span class="nc" id="L1383">			return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
+<span class="fc" id="L1385">			return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
 
 		}else{
 
-<span class="nc" id="L1387">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
+<span class="nc" id="L1389">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
 
 		}
 
@@ -1392,27 +1394,27 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	private Digit RoundingEven(int scale, boolean even) {
 
-<span class="nc" id="L1395">		int isPointFive = this.operationManager.compareDecimalParts(this.decimalPart, &quot;5&quot;);</span>
+<span class="nc" id="L1397">		int isPointFive = this.operationManager.compareDecimalParts(this.decimalPart, &quot;5&quot;);</span>
 
-<span class="nc" id="L1397">		Digit Even = new Digit(this.integerPart, this.isNegative, this.notation);</span>
+<span class="nc" id="L1399">		Digit Even = new Digit(this.integerPart, this.isNegative, this.notation);</span>
 
-<span class="nc" id="L1399">		int isEven = Even.module(new Digit(&quot;2&quot;, false, true)).compareToZero();</span>
+<span class="nc" id="L1401">		int isEven = Even.module(new Digit(&quot;2&quot;, false, true)).compareToZero();</span>
 
-<span class="nc bnc" id="L1401" title="All 2 branches missed.">		if (isPointFive==0){</span>
+<span class="nc bnc" id="L1403" title="All 2 branches missed.">		if (isPointFive==0){</span>
 
-<span class="nc bnc" id="L1403" title="All 2 branches missed.">			if (isEven==0){</span>
+<span class="nc bnc" id="L1405" title="All 2 branches missed.">			if (isEven==0){</span>
 
-<span class="nc" id="L1405">				return Even;</span>
+<span class="nc" id="L1407">				return Even;</span>
 
 			}else{
 
-<span class="nc" id="L1409">				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
+<span class="nc" id="L1411">				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
 
 			}
 
 		}else{
 
-<span class="nc" id="L1415">			return this.RoundingHalf(scale, even);</span>
+<span class="nc" id="L1417">			return this.RoundingHalf(scale, even);</span>
 
 		}
 
@@ -1420,31 +1422,31 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	private Digit RoundingHalf(int scale, boolean even){
 
-<span class="fc" id="L1423">		int decimalLength = this.decimalPart.length();</span>
+<span class="fc" id="L1425">		int decimalLength = this.decimalPart.length();</span>
 
-<span class="pc bpc" id="L1425" title="1 of 2 branches missed.">		if (decimalLength&lt;=scale) return this;</span>
+<span class="pc bpc" id="L1427" title="1 of 2 branches missed.">		if (decimalLength&lt;=scale) return this;</span>
 
-<span class="fc" id="L1427">		int carry = this.carry(this.decimalPart.substring(scale), even);</span>
+<span class="fc" id="L1429">		int carry = this.carry(this.decimalPart.substring(scale), even);</span>
 
-<span class="fc" id="L1429">		String newDecimalPart = this.decimalPart.substring(0, scale);</span>
+<span class="fc" id="L1431">		String newDecimalPart = this.decimalPart.substring(0, scale);</span>
 
-<span class="pc bpc" id="L1431" title="1 of 2 branches missed.">		if (carry==1){</span>
+<span class="pc bpc" id="L1433" title="1 of 2 branches missed.">		if (carry==1){</span>
 
-<span class="nc" id="L1433">			String roundedPart = this.operationManager.increase(newDecimalPart);</span>
+<span class="nc" id="L1435">			String roundedPart = this.operationManager.increase(newDecimalPart);</span>
 
-<span class="nc bnc" id="L1435" title="All 2 branches missed.">			if (roundedPart.length()==newDecimalPart.length()){</span>
+<span class="nc bnc" id="L1437" title="All 2 branches missed.">			if (roundedPart.length()==newDecimalPart.length()){</span>
 
-<span class="nc" id="L1437">				return new Digit(this.integerPart, this.operationManager.trimZerosRight(roundedPart), this.isNegative, this.notation);</span>
+<span class="nc" id="L1439">				return new Digit(this.integerPart, this.operationManager.trimZerosRight(roundedPart), this.isNegative, this.notation);</span>
 
 			}else{
 
-<span class="nc" id="L1441">				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
+<span class="nc" id="L1443">				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
 
 			}
 
 		}else{
 
-<span class="fc" id="L1447">			return new Digit(this.integerPart, newDecimalPart, this.isNegative, this.notation);</span>
+<span class="fc" id="L1449">			return new Digit(this.integerPart, newDecimalPart, this.isNegative, this.notation);</span>
 
 		}
 
@@ -1452,25 +1454,25 @@ public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
 
 	private int carry(String number, boolean even){
 
-<span class="fc" id="L1455">		int carry = 0;</span>
+<span class="fc" id="L1457">		int carry = 0;</span>
 
-<span class="fc bfc" id="L1457" title="All 2 branches covered.">		if (number.length()!=1){</span>
+<span class="fc bfc" id="L1459" title="All 2 branches covered.">		if (number.length()!=1){</span>
 
-<span class="fc" id="L1459">			carry = this.carry(number.substring(1), even);</span>
-
-		}
-
-<span class="fc" id="L1463">		int n = number.charAt(0) - '0' + carry;</span>
-
-<span class="fc" id="L1465">		carry = 0;</span>
-
-<span class="pc bpc" id="L1467" title="3 of 6 branches missed.">		if (even ? n&gt;=5 : n&gt;5){</span>
-
-<span class="fc" id="L1469">			carry = 1;</span>
+<span class="fc" id="L1461">			carry = this.carry(number.substring(1), even);</span>
 
 		}
 
-<span class="fc" id="L1473">		return carry;</span>
+<span class="fc" id="L1465">		int n = number.charAt(0) - '0' + carry;</span>
+
+<span class="fc" id="L1467">		carry = 0;</span>
+
+<span class="pc bpc" id="L1469" title="3 of 6 branches missed.">		if (even ? n&gt;=5 : n&gt;5){</span>
+
+<span class="fc" id="L1471">			carry = 1;</span>
+
+		}
+
+<span class="fc" id="L1475">		return carry;</span>
 
 	}
 

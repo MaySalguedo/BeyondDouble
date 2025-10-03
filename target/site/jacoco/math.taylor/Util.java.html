@@ -76,7 +76,7 @@ public class Util{
 
 	));*/
 
-<span class="nc" id="L79">	private static final ForkJoinPool factorialPool = new ForkJoinPool();</span>
+<span class="fc" id="L79">	private static final ForkJoinPool factorialPool = new ForkJoinPool();</span>
 	private static final int SEQUENTIAL_THRESHOLD = 3;
 
 	/**
@@ -85,7 +85,7 @@ public class Util{
 
 	*/
 
-<span class="nc" id="L88">	public Util(){}</span>
+<span class="fc" id="L88">	public Util(){}</span>
 
 	/**
 
@@ -116,21 +116,21 @@ public class Util{
 
 	protected static Digit power(Digit base, int exponent) {
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (exponent&lt;0){</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (exponent&lt;0){</span>
 
 <span class="nc" id="L121">			return Util.power(base, -exponent).inverse();</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		}else if (exponent==0){</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		}else if (exponent==0){</span>
 
-<span class="nc" id="L125">			return base.unity();</span>
+<span class="fc" id="L125">			return base.unity();</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		}else if (exponent==1){</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		}else if (exponent==1){</span>
 
-<span class="nc" id="L129">			return base;</span>
+<span class="fc" id="L129">			return base;</span>
 
 		}
 
-<span class="nc" id="L133">		return asyncBinaryPower(base, exponent).join();</span>
+<span class="fc" id="L133">		return asyncBinaryPower(base, exponent).join();</span>
 
 	}
 
@@ -157,33 +157,33 @@ public class Util{
 
 	protected static Digit factorial(long index) {
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (index &lt;= 1) {</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		if (index &lt;= 1) {</span>
 
-<span class="nc" id="L162">			return new Digit(1);</span>
+<span class="fc" id="L162">			return new Digit(1);</span>
 
 		}
 
-<span class="nc" id="L166">		return asyncFactorialRange(1, index).join();</span>
+<span class="fc" id="L166">		return asyncFactorialRange(1, index).join();</span>
 
 	}
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncFactorialRange(long start, long end) {
 
-<span class="nc" id="L172">		return CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="fc" id="L172">		return CompletableFuture.supplyAsync(() -&gt; {</span>
 
-<span class="nc" id="L174">			long range = end - start + 1;</span>
+<span class="fc" id="L174">			long range = end - start + 1;</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (range &lt;= SEQUENTIAL_THRESHOLD) {</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">			if (range &lt;= SEQUENTIAL_THRESHOLD) {</span>
 
-<span class="nc" id="L178">				return sequentialProduct(start, end);</span>
+<span class="fc" id="L178">				return sequentialProduct(start, end);</span>
 
 			}
 
-<span class="nc" id="L182">			long mid = (start + end) / 2;</span>
-<span class="nc" id="L183">			CompletableFuture&lt;Digit&gt; left = asyncFactorialRange(start, mid);</span>
-<span class="nc" id="L184">			CompletableFuture&lt;Digit&gt; right = asyncFactorialRange(mid + 1, end);</span>
+<span class="fc" id="L182">			long mid = (start + end) / 2;</span>
+<span class="fc" id="L183">			CompletableFuture&lt;Digit&gt; left = asyncFactorialRange(start, mid);</span>
+<span class="fc" id="L184">			CompletableFuture&lt;Digit&gt; right = asyncFactorialRange(mid + 1, end);</span>
 
-<span class="nc" id="L186">			return left.thenCombine(right, (l, r) -&gt; l.multiply(r)).join();</span>
+<span class="fc" id="L186">			return left.thenCombine(right, (l, r) -&gt; l.multiply(r)).join();</span>
 
 		}, factorialPool);
 
@@ -191,46 +191,46 @@ public class Util{
 
 	private static Digit sequentialProduct(long start, long end) {
 
-<span class="nc" id="L194">		Digit product = new Digit(1);</span>
+<span class="fc" id="L194">		Digit product = new Digit(1);</span>
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (long i = start; i &lt;= end; i++) {</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (long i = start; i &lt;= end; i++) {</span>
 
-<span class="nc" id="L198">			product = product.multiply(new Digit(i));</span>
+<span class="fc" id="L198">			product = product.multiply(new Digit(i));</span>
 
 		}
 
-<span class="nc" id="L202">		return product;</span>
+<span class="fc" id="L202">		return product;</span>
 
 	}
 
 	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncBinaryPower(Digit base, int exponent) {
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (exponent&lt;=2) {</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		if (exponent&lt;=2) {</span>
 
-<span class="nc" id="L210">			return CompletableFuture.completedFuture(</span>
+<span class="fc" id="L210">			return CompletableFuture.completedFuture(</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">				exponent == 2 ? base.multiply(base) : base</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">				exponent == 2 ? base.multiply(base) : base</span>
 
 			);
 
 		}
 		
-<span class="nc" id="L218">		int halfExponent = exponent / 2;</span>
-<span class="nc" id="L219">		int extra = exponent % 2;</span>
+<span class="fc" id="L218">		int halfExponent = exponent / 2;</span>
+<span class="fc" id="L219">		int extra = exponent % 2;</span>
 		
-<span class="nc" id="L221">		CompletableFuture&lt;Digit&gt; halfPower = CompletableFuture.supplyAsync(() -&gt; asyncBinaryPower(base, halfExponent).join());</span>
+<span class="fc" id="L221">		CompletableFuture&lt;Digit&gt; halfPower = CompletableFuture.supplyAsync(() -&gt; asyncBinaryPower(base, halfExponent).join());</span>
 		
-<span class="nc" id="L223">		return halfPower.thenComposeAsync(half -&gt; {</span>
+<span class="fc" id="L223">		return halfPower.thenComposeAsync(half -&gt; {</span>
 
-<span class="nc" id="L225">			Digit squared = half.multiply(half);</span>
+<span class="fc" id="L225">			Digit squared = half.multiply(half);</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">			if (extra == 1) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			if (extra == 1) {</span>
 
-<span class="nc" id="L229">				return CompletableFuture.completedFuture(squared.multiply(base));</span>
+<span class="fc" id="L229">				return CompletableFuture.completedFuture(squared.multiply(base));</span>
 
 			}
 
-<span class="nc" id="L233">			return CompletableFuture.completedFuture(squared);</span>
+<span class="fc" id="L233">			return CompletableFuture.completedFuture(squared);</span>
 
 		});
 

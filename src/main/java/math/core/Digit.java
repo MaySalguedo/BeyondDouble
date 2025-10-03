@@ -373,7 +373,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	@Override public byte byteValue() throws IllegalNumberFormatException{
 
-		return Byte.parseByte(this.integerPart);
+		return Byte.parseByte((this.isNegative ? "-" : "") + this.integerPart);
 
 	}
 
@@ -390,7 +390,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	@Override public double doubleValue() throws IllegalNumberFormatException{
 
-		return Double.parseDouble(this.integerPart+(
+		return Double.parseDouble((this.isNegative ? "-" : "") + this.integerPart + (
 
 			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
 
@@ -411,7 +411,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	@Override public float floatValue() throws IllegalNumberFormatException{
 
-		return Float.parseFloat(this.integerPart+(
+		return Float.parseFloat((this.isNegative ? "-" : "") + this.integerPart + (
 
 			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
 
@@ -432,7 +432,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	@Override public int intValue() throws IllegalNumberFormatException{
 
-		return Integer.parseInt(this.integerPart);
+		return Integer.parseInt((this.isNegative ? "-" : "") + this.integerPart);
 
 	}
 
@@ -449,7 +449,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	@Override public long longValue() throws IllegalNumberFormatException{
 
-		return Long.parseLong(this.integerPart);
+		return Long.parseLong((this.isNegative ? "-" : "") + this.integerPart);
 
 	}
 
@@ -466,11 +466,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	@Override public short shortValue() throws IllegalNumberFormatException{
 
-		return Short.parseShort(this.integerPart+(
-
-			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
-
-		));
+		return Short.parseShort((this.isNegative ? "-" : "") + this.integerPart);
 
 	}
 
@@ -485,7 +481,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	public String stringValue(){
 
-		return this.integerPart+(
+		return (this.isNegative ? "-" : "") + this.integerPart + (
 
 			!this.decimalPart.isEmpty() ? "."+this.decimalPart : ""
 
@@ -1068,6 +1064,8 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		if (absolutesComapred>0 && (isThisZero<isOtherZero)) return this.negate().add(other.negate()).negate();
 
+		if (absolutesComapred==0 && this.isNegative!=other.isNegative) return new Digit("0", false, this.notation);
+
 		int maxDecimalLength = this.decimalPart.length()>other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();
 
 		String fullResult = this.operationManager.addTwoTogether(
@@ -1332,17 +1330,21 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	public Digit setScale(int scale, RoundingMode mode) {
 
-		if (this.decimalPart.isEmpty()){
+		if (mode == RoundingMode.UNNECESSARY) {
+
+			throw new ArithmeticException("Rounding necessary");
+
+		}else if (this.decimalPart.isEmpty()){
 
 			return this;
-
-		}else if (scale<=0){
-
-			return new Digit(this.integerPart, this.isNegative, this.notation);
 
 		}else if (mode==RoundingMode.CEILING){
 
 			return this.RoundingOrTrunk(!this.isNegative);
+
+		}else if (scale<=0){
+
+			return new Digit(this.integerPart, this.isNegative, this.notation);
 
 		}else if (mode==RoundingMode.FLOOR){
 
@@ -1368,7 +1370,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 			return this.RoundingEven(scale, true);
 
-		}else{
+		} else {
 
 			throw new ArithmeticException("Invalid RoundingMode");
 
@@ -1378,7 +1380,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 	private Digit RoundingOrTrunk(boolean rounding){
 
-		if (rounding){
+		if (rounding && !this.decimalPart.isEmpty()){
 
 			return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);
 

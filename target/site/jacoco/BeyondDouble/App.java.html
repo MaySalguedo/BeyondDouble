@@ -15,24 +15,36 @@ import math.taylor.*;
 
 */
 
-<span class="nc" id="L18">public class App extends Util {</span>
+public class App extends Util {
 
-	public static void main(String[] abc) throws InterruptedException, ExecutionException{
+	public App() {
 
-<span class="nc" id="L22">		System.out.print(&quot;\n\n&quot;);</span>
+<span class="fc" id="L22">		super();</span>
+
+<span class="fc" id="L24">	}</span>
+
+	public static void main(String[] abc) {
+
+<span class="fc" id="L28">		System.out.print(&quot;\n\n&quot;);</span>
 
 		//Digit x = new Digit(&quot;0.5&quot;);//(&quot;0.52359877559829887307710723054658&quot;);
 
 		//System.out.println(Trigonometry.PI());
 		//System.out.print(&quot;arcsin(&quot;+x+&quot;) = &quot;+Trigonometry.arcsin(x));
 
-		//taylor_util_test();
+<span class="fc" id="L35">		core_digit_test();</span>
 
-<span class="nc" id="L31">		trigonometry_test();</span>
+<span class="fc" id="L37">		taylor_util_test();</span>
 
-<span class="nc" id="L33">		System.out.print(&quot;\n\n&quot;);</span>
+<span class="fc" id="L39">		trigonometry_test();</span>
 
-<span class="nc" id="L35">	}</span>
+		//Digit n = new Digit(&quot;123E-4&quot;);
+
+		//System.out.print(n);
+
+<span class="fc" id="L45">		System.out.print(&quot;\n\n&quot;);</span>
+
+<span class="fc" id="L47">	}</span>
 
 	private static void trigonometry_test() {
 
@@ -105,40 +117,40 @@ import math.taylor.*;
 
 		}/**/
 
-<span class="nc" id="L108">	}</span>
+<span class="fc" id="L120">	}</span>
 
-	private static void taylor_util_test() throws InterruptedException, ExecutionException{
+	private static void taylor_util_test() {
 
-<span class="nc" id="L112">		double a = 245;</span>
-<span class="nc" id="L113">		int b = 400;</span>
+<span class="fc" id="L124">		double a = 245;</span>
+<span class="fc" id="L125">		int b = 400;</span>
 
-<span class="nc" id="L115">		Digit n = new Digit(a);</span>
+<span class="fc" id="L127">		Digit n = new Digit(a);</span>
 
-<span class="nc" id="L117">		System.out.println(n+&quot;^&quot;+b+&quot; = &quot;+Util.power(n, b)+&quot;\n&quot;);</span>
-<span class="nc" id="L118">		System.out.println(1000+&quot;! = &quot;+Util.factorial(1000));</span>
+<span class="fc" id="L129">		System.out.println(n+&quot;^&quot;+b+&quot; = &quot;+Util.power(n, b)+&quot;\n&quot;);</span>
+<span class="fc" id="L130">		System.out.println(1000+&quot;! = &quot;+Util.factorial(1000));</span>
 
-		/*for(int i=0; i&lt;=100; i++){
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for(int i=0; i&lt;=100; i++){</span>
 
-			System.out.println(i+&quot;! = &quot;+Util.factorial(i));
+<span class="fc" id="L134">			System.out.println(i+&quot;! = &quot;+Util.factorial(i));</span>
 
 		}/**/
 
-<span class="nc" id="L126">	}</span>
+<span class="fc" id="L138">	}</span>
 
-	private static void core_digit_test() throws InterruptedException, ExecutionException{
+	private static void core_digit_test() {
 
-<span class="nc" id="L130">		double a = 2156;</span>
-<span class="nc" id="L131">		double b = 0.0023;</span>
+<span class="fc" id="L142">		double a = 2156;</span>
+<span class="fc" id="L143">		double b = 0.0023;</span>
 
-<span class="nc" id="L133">		Digit n = new Digit(a);</span>
+<span class="fc" id="L145">		Digit n = new Digit(a);</span>
 
-<span class="nc" id="L135">		System.out.print(a+&quot; + &quot;+b+&quot; = &quot;+(a + b)+&quot; | &quot;+n.add(b)+&quot;\n&quot;);</span>
-<span class="nc" id="L136">		System.out.print(a+&quot; - &quot;+b+&quot; = &quot;+(a - b)+&quot; | &quot;+n.subtract(b)+&quot;\n&quot;);</span>
-<span class="nc" id="L137">		System.out.print(a+&quot; * &quot;+b+&quot; = &quot;+(a * b)+&quot; | &quot;+n.multiply(b)+&quot;\n&quot;);</span>
-<span class="nc" id="L138">		System.out.print(a+&quot; / &quot;+b+&quot; = &quot;+(a / b)+&quot; | &quot;+n.divide(b, 20)+&quot;\n&quot;);</span>
-<span class="nc" id="L139">		System.out.print(a+&quot; % &quot;+b+&quot; = &quot;+(a % b)+&quot; | &quot;+n.module(b));</span>
+<span class="fc" id="L147">		System.out.print(a+&quot; + &quot;+b+&quot; = &quot;+(a + b)+&quot; | &quot;+n.add(b)+&quot;\n&quot;);</span>
+<span class="fc" id="L148">		System.out.print(a+&quot; - &quot;+b+&quot; = &quot;+(a - b)+&quot; | &quot;+n.subtract(b)+&quot;\n&quot;);</span>
+<span class="fc" id="L149">		System.out.print(a+&quot; * &quot;+b+&quot; = &quot;+(a * b)+&quot; | &quot;+n.multiply(b)+&quot;\n&quot;);</span>
+<span class="fc" id="L150">		System.out.print(a+&quot; / &quot;+b+&quot; = &quot;+(a / b)+&quot; | &quot;+n.divide(b, 20)+&quot;\n&quot;);</span>
+<span class="fc" id="L151">		System.out.print(a+&quot; % &quot;+b+&quot; = &quot;+(a % b)+&quot; | &quot;+n.module(b));/**/</span>
 
-<span class="nc" id="L141">	}</span>
+<span class="fc" id="L153">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

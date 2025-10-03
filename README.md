@@ -1,3 +1,5 @@
+[![Maven](https://img.shields.io/badge/Apache-Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org)
+
 # BeyondDouble: Arbitrary-Precision Arithmetic based on Taylor Series
 BeyondDouble is a Java library that provides arbitrary-precision decimal arithmetic operations using 
 Taylor series approximations for complex mathematical functions. This implementation allows for 
@@ -55,8 +57,8 @@ mvn clean package
 
 ```bash
 
-mvn test & mvn surefire-report:report
+mvn clean verify jacoco:report
 
-#Report folder located at .\target\reports\surefire.html
+#Coverage report folder located at .\target\site\jacoco\index.html
 
 ```

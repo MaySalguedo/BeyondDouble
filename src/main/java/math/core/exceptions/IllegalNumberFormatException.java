@@ -38,22 +38,6 @@ public class IllegalNumberFormatException extends NumberFormatException{
 
 	/**
 
-		Constructs an IllegalNumberFormatException with no detail message.
-
-		<p>Recommended for cases where the specific error context is provided through other means.</p>
-
-		@since v0.0.1
-
-	*/
-
-	public IllegalNumberFormatException(){
-
-		super();
-
-	}
-
-	/**
-
 		Constructs an IllegalNumberFormatException with the specified detail message.
 
 		<p>The message should clearly describe the format violation and, where possible, include the invalid input string.</p>

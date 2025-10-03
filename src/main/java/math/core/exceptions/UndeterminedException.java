@@ -39,22 +39,6 @@ public class UndeterminedException extends ArithmeticException {
 
 	/**
 
-		Constructs an UndeterminedException with no detail message.
-
-		<p>Recommended for cases where the specific error context is provided through other means.</p>
-
-		@since v0.0.1
-
-	*/
-
-	public UndeterminedException(){
-
-		super();
-
-	}
-
-	/**
-
 		Constructs an UndeterminedException with the specified detail message.
 
 		<p>The message should clearly describe the format violation and, where possible, include the invalid input.</p>

@@ -17,7 +17,13 @@ import math.taylor.*;
 
 public class App extends Util {
 
-	public static void main(String[] abc) throws InterruptedException, ExecutionException{
+	public App() {
+
+		super();
+
+	}
+
+	public static void main(String[] abc) {
 
 		System.out.print("\n\n");
 
@@ -26,9 +32,15 @@ public class App extends Util {
 		//System.out.println(Trigonometry.PI());
 		//System.out.print("arcsin("+x+") = "+Trigonometry.arcsin(x));
 
-		//taylor_util_test();
+		core_digit_test();
+
+		taylor_util_test();
 
 		trigonometry_test();
+
+		//Digit n = new Digit("123E-4");
+
+		//System.out.print(n);
 
 		System.out.print("\n\n");
 
@@ -107,7 +119,7 @@ public class App extends Util {
 
 	}
 
-	private static void taylor_util_test() throws InterruptedException, ExecutionException{
+	private static void taylor_util_test() {
 
 		double a = 245;
 		int b = 400;
@@ -117,7 +129,7 @@ public class App extends Util {
 		System.out.println(n+"^"+b+" = "+Util.power(n, b)+"\n");
 		System.out.println(1000+"! = "+Util.factorial(1000));
 
-		/*for(int i=0; i<=100; i++){
+		for(int i=0; i<=100; i++){
 
 			System.out.println(i+"! = "+Util.factorial(i));
 
@@ -125,7 +137,7 @@ public class App extends Util {
 
 	}
 
-	private static void core_digit_test() throws InterruptedException, ExecutionException{
+	private static void core_digit_test() {
 
 		double a = 2156;
 		double b = 0.0023;
@@ -136,7 +148,7 @@ public class App extends Util {
 		System.out.print(a+" - "+b+" = "+(a - b)+" | "+n.subtract(b)+"\n");
 		System.out.print(a+" * "+b+" = "+(a * b)+" | "+n.multiply(b)+"\n");
 		System.out.print(a+" / "+b+" = "+(a / b)+" | "+n.divide(b, 20)+"\n");
-		System.out.print(a+" % "+b+" = "+(a % b)+" | "+n.module(b));
+		System.out.print(a+" % "+b+" = "+(a % b)+" | "+n.module(b));/**/
 
 	}
 

@@ -84,7 +84,7 @@ public class Operationer{
 <span class="fc" id="L84">		int bLength = b.length();</span>
 
 		//Case 1: Diferent length
-<span class="pc bpc" id="L87" title="1 of 4 branches missed.">		if (aLength!=bLength) return aLength&gt;bLength ? 1 : -1;</span>
+<span class="fc bfc" id="L87" title="All 4 branches covered.">		if (aLength!=bLength) return aLength&gt;bLength ? 1 : -1;</span>
 
 		//Case 2: Same length
 
@@ -128,20 +128,20 @@ public class Operationer{
 <span class="fc" id="L128">		int aLength = a.length();</span>
 <span class="fc" id="L129">		int bLength = b.length();</span>
 
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		int minLength = aLength&lt;bLength ? aLength : bLength;</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		int minLength = aLength&lt;bLength ? aLength : bLength;</span>
 
 <span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i=0; i&lt;minLength; i++){</span>
 
 <span class="fc" id="L135">			char c1 = a.charAt(i);</span>
 <span class="fc" id="L136">			char c2 = b.charAt(i);</span>
 
-<span class="pc bpc" id="L138" title="3 of 4 branches missed.">			if (c1!=c2) return c1&gt;c2 ? 1 : -1;</span>
+<span class="fc bfc" id="L138" title="All 4 branches covered.">			if (c1!=c2) return c1&gt;c2 ? 1 : -1;</span>
 
 		}
 
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (aLength==bLength) return 0;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		if (aLength==bLength) return 0;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		return aLength&gt;bLength ? 1 : -1;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		return aLength&gt;bLength ? 1 : -1;</span>
 
 	}
 
@@ -170,13 +170,13 @@ public class Operationer{
 
 <span class="fc" id="L171">		int strLength = str.length();</span>
 
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if (strLength&gt;=length){</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		if (strLength&gt;=length){</span>
 
 <span class="fc" id="L175">			return str;</span>
 
 		}
 
-<span class="nc" id="L179">		return new StringBuilder(str).append(&quot;0&quot;.repeat(length-strLength)).toString();</span>
+<span class="fc" id="L179">		return new StringBuilder(str).append(&quot;0&quot;.repeat(length-strLength)).toString();</span>
 
 	}
 
@@ -289,7 +289,7 @@ public class Operationer{
 
 	protected String trimAllZerosLeft(String str){
 
-<span class="nc" id="L292">		return str.replaceAll(&quot;^[0]+&quot;, &quot;&quot;);</span>
+<span class="fc" id="L292">		return str.replaceAll(&quot;^[0]+&quot;, &quot;&quot;);</span>
 
 	}
 
@@ -324,17 +324,17 @@ public class Operationer{
 
 <span class="fc" id="L325">		int arrayLength = integers.length;</span>
 
-<span class="pc bpc" id="L327" title="1 of 2 branches missed.">		if (arrayLength==1){</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">		if (arrayLength==1){</span>
 
 <span class="fc" id="L329">			return integers[0];</span>
 
-<span class="nc bnc" id="L331" title="All 2 branches missed.">		}else if (arrayLength==2){</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		}else if (arrayLength==2){</span>
 
-<span class="nc" id="L333">			return this.addTwoTogether(integers[0], integers[1], true);</span>
+<span class="fc" id="L333">			return this.addTwoTogether(integers[0], integers[1], true);</span>
 
-<span class="nc bnc" id="L335" title="All 2 branches missed.">		}else if (arrayLength==3){</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">		}else if (arrayLength==3){</span>
 
-<span class="nc" id="L337">			return this.addTwoTogether(this.addTwoTogether(</span>
+<span class="fc" id="L337">			return this.addTwoTogether(this.addTwoTogether(</span>
 
 				integers[0],
 				integers[1],
@@ -344,7 +344,7 @@ public class Operationer{
 
 		}else{
 
-<span class="nc" id="L347">			return asyncAdditionRecursive(integers).join();</span>
+<span class="fc" id="L347">			return asyncAdditionRecursive(integers).join();</span>
 
 		}
 
@@ -464,13 +464,13 @@ public class Operationer{
 
 	protected String decrease(String thisInteger){
 
-<span class="nc" id="L467">		int length = thisInteger.length() - 1;</span>
+<span class="fc" id="L467">		int length = thisInteger.length() - 1;</span>
 
-<span class="nc" id="L469">		String paddedOne = &quot;0&quot;.repeat(length) + &quot;1&quot;;</span>
+<span class="fc" id="L469">		String paddedOne = &quot;0&quot;.repeat(length) + &quot;1&quot;;</span>
 
-<span class="nc" id="L471">		StringBuilder result = this.addTwoTogether(new StringBuilder(), thisInteger, paddedOne, 0, 0, length, length - 1, false);</span>
+<span class="fc" id="L471">		StringBuilder result = this.addTwoTogether(new StringBuilder(), thisInteger, paddedOne, 0, 0, length, length - 1, false);</span>
 
-<span class="nc" id="L473">		return this.trimZerosLeft(result.toString());</span>
+<span class="fc" id="L473">		return this.trimZerosLeft(result.toString());</span>
 
 	}
 
@@ -536,7 +536,7 @@ public class Operationer{
 
 	protected String[] division(String dividend, String divisor, long precision) {
 
-<span class="pc bpc" id="L539" title="1 of 2 branches missed.">		if (dividend.matches(&quot;0&quot;)) return new String[] {&quot;0&quot;, &quot;&quot;};</span>
+<span class="fc bfc" id="L539" title="All 2 branches covered.">		if (dividend.matches(&quot;0&quot;)) return new String[] {&quot;0&quot;, &quot;&quot;};</span>
 
 <span class="fc" id="L541">		int isGreaterThanDividend = this.compareIntegerParts(dividend, divisor);</span>
 
@@ -544,13 +544,13 @@ public class Operationer{
 
 <span class="fc" id="L545">			String[] quotient = this.quotient(dividend, divisor);</span>
 
-<span class="pc bpc" id="L547" title="1 of 2 branches missed.">			if (quotient[1].isEmpty()){</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">			if (quotient[1].isEmpty()){</span>
 
 <span class="fc" id="L549">				return new String[] {quotient[0], &quot;&quot;};</span>
 
 			}else{
 
-<span class="nc" id="L553">				return new String[] {quotient[0], this.calculateDecimalPartForDivision(quotient[1]+&quot;0&quot;, divisor, precision)};</span>
+<span class="fc" id="L553">				return new String[] {quotient[0], this.calculateDecimalPartForDivision(quotient[1]+&quot;0&quot;, divisor, precision)};</span>
 
 			}
 
@@ -619,12 +619,12 @@ public class Operationer{
 
 <span class="fc bfc" id="L620" title="All 2 branches covered.">			if (isGreaterThanProduct!=0){</span>
 
-<span class="pc bpc" id="L622" title="1 of 2 branches missed.">				lastLower = isGreaterThanProduct&lt;0;</span>
+<span class="fc bfc" id="L622" title="All 2 branches covered.">				lastLower = isGreaterThanProduct&lt;0;</span>
 
-<span class="pc bpc" id="L624" title="1 of 2 branches missed.">				if (lastLower){</span>
+<span class="fc bfc" id="L624" title="All 2 branches covered.">				if (lastLower){</span>
 
-<span class="nc" id="L626">					lastFactor = factor;</span>
-<span class="nc" id="L627">					lastProduct = product;</span>
+<span class="fc" id="L626">					lastFactor = factor;</span>
+<span class="fc" id="L627">					lastProduct = product;</span>
 
 				}
 
@@ -639,16 +639,16 @@ public class Operationer{
 <span class="fc" id="L639">			product = this.multiplication(factor, divisor);</span>
 <span class="fc" id="L640">			isGreaterThanProduct = this.compareIntegerParts(product, dividend);</span>
 
-<span class="pc bpc" id="L642" title="1 of 2 branches missed.">		}while(index&gt;0);</span>
+<span class="fc bfc" id="L642" title="All 2 branches covered.">		}while(index&gt;0);</span>
 
-<span class="nc bnc" id="L644" title="All 2 branches missed.">		if (isGreaterThanProduct&gt;0){</span>
+<span class="fc bfc" id="L644" title="All 2 branches covered.">		if (isGreaterThanProduct&gt;0){</span>
 
-<span class="nc" id="L646">			factor = lastFactor;</span>
-<span class="nc" id="L647">			product = lastProduct;</span>
+<span class="fc" id="L646">			factor = lastFactor;</span>
+<span class="fc" id="L647">			product = lastProduct;</span>
 
 		}
 
-<span class="nc" id="L651">		return new String[] {factor, this.trimAllZerosLeft(this.addTwoTogether(dividend, product, false))};</span>
+<span class="fc" id="L651">		return new String[] {factor, this.trimAllZerosLeft(this.addTwoTogether(dividend, product, false))};</span>
 
 	}
 
@@ -683,7 +683,7 @@ public class Operationer{
 
 <span class="fc" id="L684">		StringBuilder result = new StringBuilder(&quot;&quot;);</span>
 
-<span class="pc bpc" id="L686" title="1 of 2 branches missed.">		for (long i=0; i&lt;precision; i++){</span>
+<span class="fc bfc" id="L686" title="All 2 branches covered.">		for (long i=0; i&lt;precision; i++){</span>
 
 <span class="fc" id="L688">			int isGreaterThanDividend = this.compareIntegerParts(remainder, divisor);</span>
 
@@ -699,10 +699,10 @@ public class Operationer{
 
 			}
 
-<span class="pc bpc" id="L702" title="1 of 2 branches missed.">			if (!remainder.matches(&quot;0&quot;)){</span>
+<span class="fc bfc" id="L702" title="All 2 branches covered.">			if (!remainder.matches(&quot;0&quot;)){</span>
 
-<span class="nc" id="L704">				result.append(counter);</span>
-<span class="nc" id="L705">				remainder+= &quot;0&quot;;</span>
+<span class="fc" id="L704">				result.append(counter);</span>
+<span class="fc" id="L705">				remainder+= &quot;0&quot;;</span>
 
 			}else{
 
@@ -722,50 +722,50 @@ public class Operationer{
 
 		}
 
-<span class="nc" id="L725">		return result.toString();</span>
+<span class="fc" id="L725">		return result.toString();</span>
 
 	}
 
 	@SuppressWarnings(&quot;unchecked&quot;) private CompletableFuture&lt;String&gt; asyncAdditionRecursive(String[] integers) {
 
-<span class="nc bnc" id="L731" title="All 2 branches missed.">		if (integers.length==1){</span>
+<span class="fc bfc" id="L731" title="All 2 branches covered.">		if (integers.length==1){</span>
 
-<span class="nc" id="L733">			return CompletableFuture.completedFuture(integers[0]);</span>
-
-		}
-
-<span class="nc" id="L737">		int pairs = integers.length / 2;</span>
-
-<span class="nc" id="L739">		CompletableFuture&lt;String&gt;[] futures = new CompletableFuture[pairs];</span>
-<span class="nc" id="L740">		ExecutorService executor = Executors.newFixedThreadPool(pairs);</span>
-
-<span class="nc bnc" id="L742" title="All 2 branches missed.">		for (int i=0; i&lt;pairs; i++){</span>
-
-<span class="nc" id="L744">			int index = i * 2;</span>
-
-<span class="nc" id="L746">			futures[i] = CompletableFuture.supplyAsync(() -&gt; this.addTwoTogether(integers[index], integers[index + 1], true), executor);</span>
+<span class="fc" id="L733">			return CompletableFuture.completedFuture(integers[0]);</span>
 
 		}
 
-<span class="nc" id="L750">		return CompletableFuture.allOf(futures).thenCompose(v -&gt; {</span>
+<span class="fc" id="L737">		int pairs = integers.length / 2;</span>
 
-<span class="nc" id="L752">			String[] results = new String[pairs + (integers.length % 2)];</span>
+<span class="fc" id="L739">		CompletableFuture&lt;String&gt;[] futures = new CompletableFuture[pairs];</span>
+<span class="fc" id="L740">		ExecutorService executor = Executors.newFixedThreadPool(pairs);</span>
 
-<span class="nc bnc" id="L754" title="All 2 branches missed.">			for (int i=0; i&lt;pairs; i++){</span>
+<span class="fc bfc" id="L742" title="All 2 branches covered.">		for (int i=0; i&lt;pairs; i++){</span>
 
-<span class="nc" id="L756">				results[i] = futures[i].join();</span>
+<span class="fc" id="L744">			int index = i * 2;</span>
+
+<span class="fc" id="L746">			futures[i] = CompletableFuture.supplyAsync(() -&gt; this.addTwoTogether(integers[index], integers[index + 1], true), executor);</span>
+
+		}
+
+<span class="fc" id="L750">		return CompletableFuture.allOf(futures).thenCompose(v -&gt; {</span>
+
+<span class="fc" id="L752">			String[] results = new String[pairs + (integers.length % 2)];</span>
+
+<span class="fc bfc" id="L754" title="All 2 branches covered.">			for (int i=0; i&lt;pairs; i++){</span>
+
+<span class="fc" id="L756">				results[i] = futures[i].join();</span>
 
 			}
 
-<span class="nc bnc" id="L760" title="All 2 branches missed.">			if (integers.length%2!=0){</span>
+<span class="fc bfc" id="L760" title="All 2 branches covered.">			if (integers.length%2!=0){</span>
 
-<span class="nc" id="L762">				results[pairs] = integers[integers.length - 1];</span>
+<span class="fc" id="L762">				results[pairs] = integers[integers.length - 1];</span>
 
 			}
 
-<span class="nc" id="L766">			executor.shutdown();</span>
+<span class="fc" id="L766">			executor.shutdown();</span>
 
-<span class="nc" id="L768">			return asyncAdditionRecursive(results);</span>
+<span class="fc" id="L768">			return asyncAdditionRecursive(results);</span>
 
 		});
 	}
@@ -775,11 +775,11 @@ public class Operationer{
 <span class="fc" id="L775">		int thisDigit = (thisFullNumber.charAt(index) - '0') - carryOut;</span>
 <span class="fc" id="L776">		int otherDigit = otherFullNumber.charAt(index) - '0';</span>
 
-<span class="pc bpc" id="L778" title="4 of 8 branches missed.">		if (index&lt;=paddedIndex &amp;&amp; (isAddition ? carryIn==0 : carryOut==0)){</span>
+<span class="fc bfc" id="L778" title="All 8 branches covered.">		if (index&lt;=paddedIndex &amp;&amp; (isAddition ? carryIn==0 : carryOut==0)){</span>
 
-<span class="nc" id="L780">			result.insert(0, thisFullNumber.substring(0, index+1));</span>
+<span class="fc" id="L780">			result.insert(0, thisFullNumber.substring(0, index+1));</span>
 
-<span class="nc" id="L782">			return result;</span>
+<span class="fc" id="L782">			return result;</span>
 
 		}
 
@@ -811,9 +811,9 @@ public class Operationer{
 
 <span class="fc bfc" id="L812" title="All 2 branches covered.">		if (index==0){</span>
 
-<span class="pc bpc" id="L814" title="1 of 2 branches missed.">			if (carryIn&gt;0){</span>
+<span class="fc bfc" id="L814" title="All 2 branches covered.">			if (carryIn&gt;0){</span>
 
-<span class="nc" id="L816">				result.insert(0, carryIn);</span>
+<span class="fc" id="L816">				result.insert(0, carryIn);</span>
 
 			}
 
@@ -838,15 +838,15 @@ public class Operationer{
 
 <span class="fc" id="L839">		integerRows[index] = result.toString();</span>
 
-<span class="pc bpc" id="L841" title="1 of 2 branches missed.">		if (index==0){</span>
+<span class="fc bfc" id="L841" title="All 2 branches covered.">		if (index==0){</span>
 
 <span class="fc" id="L843">			return integerRows;</span>
 
 		}else{
 
-<span class="nc" id="L847">			index--;</span>
+<span class="fc" id="L847">			index--;</span>
 
-<span class="nc" id="L849">			return this.multiplication(integerRows, zero, thisInteger, otherInteger, index);</span>
+<span class="fc" id="L849">			return this.multiplication(integerRows, zero, thisInteger, otherInteger, index);</span>
 
 		}
 
@@ -861,7 +861,7 @@ public class Operationer{
 
 <span class="fc" id="L862">		result.insert(0, multi%10);</span>
 
-<span class="pc bpc" id="L864" title="1 of 2 branches missed.">		if (index==0){</span>
+<span class="fc bfc" id="L864" title="All 2 branches covered.">		if (index==0){</span>
 
 <span class="fc bfc" id="L866" title="All 2 branches covered.">			if (carryIn&gt;0){</span>
 
@@ -873,9 +873,9 @@ public class Operationer{
 
 		}else{
 
-<span class="nc" id="L876">			index--;</span>
+<span class="fc" id="L876">			index--;</span>
 
-<span class="nc" id="L878">			return this.multiplication(result, thisInteger, otherDigit, carryIn, index);</span>
+<span class="fc" id="L878">			return this.multiplication(result, thisInteger, otherDigit, carryIn, index);</span>
 
 		}
 

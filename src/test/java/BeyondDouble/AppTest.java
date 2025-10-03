@@ -1,19 +1,20 @@
 package BeyondDouble;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import BeyondDouble.App;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest {
 
-    /**
-     * Rigorous Test :-)
-     */
-    @Test
+    @Test @DisplayName("Main method test")
     public void shouldAnswerWithTrue() {
-        assertTrue(true);
+
+        assertDoesNotThrow(() -> App.main(null));
+        assertDoesNotThrow(() -> new App());
+
     }
+
 }

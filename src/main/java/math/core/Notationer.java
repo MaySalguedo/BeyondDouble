@@ -273,11 +273,15 @@ public class Notationer{
 
 		int originalDotIndex = parts[0].indexOf('.');
 		int numbersAfterDot = originalDotIndex==-1 ? 0 : parts[0].length() - originalDotIndex - 1;
-		int numbersBeforeDot = originalDotIndex==-1 ? 0 : originalDotIndex;
+		int numbersBeforeDot = originalDotIndex==-1 ? parts[0].length() : originalDotIndex;
 		
 		StringBuilder result = new StringBuilder(parts[0].replace(".", ""));
 
-		if (exponent>0){
+		if (exponent==0){
+
+			return new StringBuilder(parts[0]);
+
+		}else if (exponent>0){
 
 			if (exponent>numbersAfterDot){
 
@@ -301,11 +305,11 @@ public class Notationer{
 
 			if (-exponent>numbersBeforeDot){
 
-				//Example: either 1.23456E-7 -> 0.00000123456 or 123456E-7 -> 0.000000123456
+				//Example: either 1.23456E-7 -> 0.00000123456 or 123456E-7 -> 0.0123456
 
 				result.insert(0, "0." + "0".repeat(
 
-					- exponent - (numbersBeforeDot!=0 ? numbersBeforeDot : 1)
+					- exponent - (numbersBeforeDot!=0 ? numbersBeforeDot : numbersAfterDot)
 
 				));
 				

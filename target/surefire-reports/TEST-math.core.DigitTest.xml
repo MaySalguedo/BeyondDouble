@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="math.core.DigitTest" time="0.154" tests="13" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="math.core.DigitTest" time="0.328" tests="83" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="24"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="CO"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-24\bin"/>
-    <property name="sun.java.command" value="C:\Users\pc\AppData\Local\Temp\surefire4879407682954823570\surefirebooter-20251003105028985_3.jar C:\Users\pc\AppData\Local\Temp\surefire4879407682954823570 2025-10-03T10-50-28_461-jvmRun1 surefire-20251003105028985_1tmp surefire_0-20251003105028985_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\pc\AppData\Local\Temp\surefire15799669179410172154\surefirebooter-20251003173353169_3.jar C:\Users\pc\AppData\Local\Temp\surefire15799669179410172154 2025-10-03T17-33-52_943-jvmRun1 surefire-20251003173353169_1tmp surefire_0-20251003173353169_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\pc\Documents\BeyondDouble\target\test-classes;C:\Users\pc\Documents\BeyondDouble\target\classes;C:\Users\pc\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\pc\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\pc\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\pc\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\pc\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\pc\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.11.0\junit-jupiter-engine-5.11.0.jar;C:\Users\pc\.m2\repository\org\junit\platform\junit-platform-engine\1.11.0\junit-platform-engine-1.11.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\pc\AppData\Local\Temp\surefire4879407682954823570\surefirebooter-20251003105028985_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\pc\AppData\Local\Temp\surefire15799669179410172154\surefirebooter-20251003173353169_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="24.0.2+12-54"/>
@@ -59,17 +59,87 @@
     <property name="java.class.version" value="68.0"/>
     <property name="jacoco-agent.destfile" value="target/jacoco.exec"/>
   </properties>
-  <testcase name="testToString" classname="math.core.DigitTest" time="0.028"/>
-  <testcase name="testConstructors" classname="math.core.DigitTest" time="0.007"/>
-  <testcase name="testParametricNumberCreation(String, String)[1]" classname="math.core.DigitTest" time="0.015"/>
-  <testcase name="testParametricNumberCreation(String, String)[2]" classname="math.core.DigitTest" time="0.002"/>
-  <testcase name="testParametricNumberCreation(String, String)[3]" classname="math.core.DigitTest" time="0.001"/>
-  <testcase name="testParametricNumberCreation(String, String)[4]" classname="math.core.DigitTest" time="0.003"/>
-  <testcase name="testInvalidConstructor" classname="math.core.DigitTest" time="0.005"/>
-  <testcase name="testRounding" classname="math.core.DigitTest" time="0.003"/>
-  <testcase name="testDivisionByZero" classname="math.core.DigitTest" time="0.002"/>
-  <testcase name="testComparations" classname="math.core.DigitTest" time="0.002"/>
-  <testcase name="testConversionMethods" classname="math.core.DigitTest" time="0.002"/>
-  <testcase name="testEnhancedOperations" classname="math.core.DigitTest" time="0.003"/>
-  <testcase name="testArithmeticOperations" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testPerformance" classname="math.core.DigitTest" time="0.011"/>
+  <testcase name="testScientificNotationWithTrailingZeros" classname="math.core.DigitTest" time="0.006"/>
+  <testcase name="testInvalidScientificNotation(String)[1]" classname="math.core.DigitTest" time="0.013"/>
+  <testcase name="testInvalidScientificNotation(String)[2]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidScientificNotation(String)[3]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidScientificNotation(String)[4]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testInvalidScientificNotation(String)[5]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidScientificNotation(String)[6]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidScientificNotation(String)[7]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testLowercaseScientificNotation" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testScientificNotationPrecision" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testToStringWithNotations" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testScientificNotationDifferentConstructors" classname="math.core.DigitTest" time="0.004"/>
+  <testcase name="testVeryLargeScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testPositiveExponentScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testSignHandling" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testRoundingUnnecessary" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testParameterizedMultiplication(String, String, String)[1]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedMultiplication(String, String, String)[2]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedMultiplication(String, String, String)[3]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedMultiplication(String, String, String)[4]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testParameterizedMultiplication(String, String, String)[5]" classname="math.core.DigitTest" time="0.004"/>
+  <testcase name="testParameterizedMultiplication(String, String, String)[6]" classname="math.core.DigitTest" time="0.0"/>
+  <testcase name="testExtremeNumbers" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedNumberCreation(String, String)[1]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testParameterizedNumberCreation(String, String)[2]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedNumberCreation(String, String)[3]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedNumberCreation(String, String)[4]" classname="math.core.DigitTest" time="0.0"/>
+  <testcase name="testParameterizedNumberCreation(String, String)[5]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedNumberCreation(String, String)[6]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testMultiplication" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testAddition" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedAddition(String, String, String)[1]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testParameterizedAddition(String, String, String)[2]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedAddition(String, String, String)[3]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedAddition(String, String, String)[4]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testScientificNotationWithLeadingZeros" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testDoubleConstructor" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testInvalidConstructor(String)[1]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testInvalidConstructor(String)[2]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidConstructor(String)[3]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidConstructor(String)[4]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidConstructor(String)[5]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testInvalidConstructor(String)[6]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testInvalidConstructor(String)[7]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testInvalidConstructor(String)[8]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testPositiveSignScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testCompareToComprehensive" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testAllRoundingModes" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testEdgeCaseScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testDivisionByZero" classname="math.core.DigitTest" time="0.006"/>
+  <testcase name="testStringConstructor" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[1]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[2]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[3]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[4]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[5]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[6]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[7]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[8]" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[9]" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testParameterizedScientificNotation(String, String)[10]" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testStringPartsConstructor" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testDivision" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testScientificNotationComparisons" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testIncreaseDecrease" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testScientificNotationWithArithmetic" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testAllConversions" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testEqualsAndHashCode" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testNegativeExponentScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testConversionEdgeCases" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testMixedCaseScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testScientificNotationWithNotationParameter" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testNumberNormalization" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testLongConstructor" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testRoundingEdgeCases" classname="math.core.DigitTest" time="0.0"/>
+  <testcase name="testScientificNotationNoDecimal" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testNegativeScientificNotation" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testSubtraction" classname="math.core.DigitTest" time="0.003"/>
+  <testcase name="testDoubleConstructorWithScientificRange" classname="math.core.DigitTest" time="0.001"/>
+  <testcase name="testEnhancedOperations" classname="math.core.DigitTest" time="0.002"/>
+  <testcase name="testToStringEdgeCases" classname="math.core.DigitTest" time="0.0"/>
+  <testcase name="testSpecialComparisons" classname="math.core.DigitTest" time="0.0"/>
 </testsuite>

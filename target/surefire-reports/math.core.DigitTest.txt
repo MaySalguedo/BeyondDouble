@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: math.core.DigitTest
 -------------------------------------------------------------------------------
-Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.154 s -- in math.core.DigitTest
+Tests run: 83, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.328 s -- in math.core.DigitTest

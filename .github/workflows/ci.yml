@@ -44,19 +44,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          mvn clean test jacoco:report
-          mvn jacoco:check
-
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: target/site/jacoco/
-
-      - name: Verify coverage threshold
-        run: |
-          echo "Verifying coverage at least 90%..."
-          mvn jacoco:check
+          mvn clean verify jacoco:report
 
   build:
     name: Build Package

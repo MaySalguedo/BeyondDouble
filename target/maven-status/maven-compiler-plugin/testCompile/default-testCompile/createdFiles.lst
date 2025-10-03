@@ -1,2 +1,3 @@
 BeyondDouble\AppTest.class
 math\core\DigitTest.class
+math\taylor\TrigonometryTest.class

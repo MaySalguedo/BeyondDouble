@@ -156,6 +156,7 @@
           <!-- Verifica que se cumpla la cobertura mínima -->
           <execution>
             <id>check</id>
+			<phase>verify</phase>
             <goals>
               <goal>check</goal>
             </goals>
