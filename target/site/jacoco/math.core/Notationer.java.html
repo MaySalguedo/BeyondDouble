@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Notationer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">math.core</a> &gt; <span class="el_source">Notationer.java</span></div><h1>Notationer.java</h1><pre class="source lang-java linenums">package math.core;
+
+/**
+
+	Manages the format and convertion between differents numeric notations. 
+	Intended to be used only as a stakeholder manager for its functions.&lt;br&gt;&lt;br&gt;
+
+	Provides comprehensive number formatting, validation, and conversion utilities for different numeric notations.
+	This class handles conversion between scientific notation and standard form, manages thousands separators
+	and decimal points, cleans non-numeric characters, and splits numbers into integer/decimal components.
+
+	&lt;p&gt;&lt;b&gt;Key Features:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;&lt;b&gt;Scientific Notation Expansion&lt;/b&gt; - Converts exponential format ({@code 1.23E4}) to standard form ({@code 12300})&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Number Validation and Cleaning&lt;/b&gt; - Removes invalid characters and normalizes number formats&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Multi-Notation Support&lt;/b&gt; - Formats numbers using either decimal point ({@code 1,234.56}) or comma ({@code 1.234,56}) notation&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Component Separation&lt;/b&gt; - Splits numbers into integer and decimal parts&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Zero Trimming&lt;/b&gt; - Removes insignificant leading/trailing zeros&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Thousands Formatting&lt;/b&gt; - Adds appropriate separators for readability&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Use Cases:&lt;/b&gt;&lt;/p&gt;
+	&lt;ol&gt;
+
+		&lt;li&gt;Normalizing user-input numbers with mixed formats&lt;/li&gt;
+		&lt;li&gt;Converting scientific notation for display purposes&lt;/li&gt;
+		&lt;li&gt;Formatting large numbers with proper thousands separators&lt;/li&gt;
+		&lt;li&gt;Preparing numbers for arithmetic operations by standardizing formats&lt;/li&gt;
+		&lt;li&gt;Cleaning malformed numeric strings from external sources&lt;/li&gt;
+
+	&lt;/ol&gt;
+
+	&lt;table border=&quot;1&quot;&gt;
+
+		&lt;caption&gt;&lt;b&gt;Notation Systems Supported:&lt;/b&gt;&lt;/caption&gt;
+
+		&lt;tr&gt;&lt;th&gt;System&lt;/th&gt;&lt;th&gt;Integer Separator&lt;/th&gt;&lt;th&gt;Decimal Separator&lt;/th&gt;&lt;th&gt;Example&lt;/th&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Decimal Point Notation&lt;/td&gt;&lt;td&gt;Comma ({@code ,})&lt;/td&gt;&lt;td&gt;Period ({@code .})&lt;/td&gt;&lt;td&gt;{@code 1,234.56}&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Decimal Comma Notation&lt;/td&gt;&lt;td&gt;Period ({@code .})&lt;/td&gt;&lt;td&gt;Comma ({@code ,})&lt;/td&gt;&lt;td&gt;{@code 1.234,56}&lt;/td&gt;&lt;/tr&gt;
+
+	&lt;/table&gt;
+
+	&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+	&lt;pre&gt;{@code
+
+		public class MyClass{
+
+			private Notationer notationManager = new Notationer();
+
+		}
+
+	}&lt;/pre&gt;
+
+	@author Dandelion
+	@version v0.0.6
+	@since v0.0.1
+
+*/
+
+public class Notationer{
+
+	/**
+
+		The {@code char DECIMAL_POINT} with value {@code '.'} represents the decimal point for the decimal point notation.
+
+	*/
+
+<span class="fc" id="L70">	public char DECIMAL_POINT = '.';</span>
+
+	/**
+
+		The {@code char THOUSANDS_SEPARATOR} with value {@code ','} represents the thousands separator for the decimal point notation.
+
+	*/
+
+<span class="fc" id="L78">	public char THOUSANDS_SEPARATOR = ',';</span>
+
+	/**
+
+		Empty constructor.
+
+	*/
+
+<span class="fc" id="L86">	public Notationer(){}</span>
+
+	/**
+
+		Recieves a {@code String} parameter and validates if it is a real number.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			boolean isValid = this.notationManager.isValidNumber(&quot;1.234E-5&quot;);
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code isValid = true}
+
+		@param number Number as a {@code String}.
+		@return boolean Returns either {@code true} if it is a valid number or {@code false} if it is not.
+		@since v0.0.6
+
+	*/
+
+	public boolean isValidNumber(String number){
+
+<span class="fc bfc" id="L109" title="All 4 branches covered.">		if (number!=null ? number.isEmpty() : true) return false;</span>
+
+<span class="fc" id="L111">		return number.matches(&quot;^[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][-+]?\\d+)?$&quot;);</span>
+
+	}
+
+	/**
+
+		Recieves a number as a {@code StringBuilder} parameter and normalizes it to make it readable in case it is not on a standard notation.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			String[] parts = this.notationManager.validateAndNormalize(new StringBuilder(
+
+				&quot;1234.56&quot;
+
+			));
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code parts[0] = 1234} and {@code parts[1] = 56}
+
+		@param number Number as a {@code StringBuilder}.
+		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
+		@see math.core.Notationer#expandScientificNotation(StringBuilder)
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Notationer#cleanNonNumericCharacters(String, boolean)
+		@see math.core.Notationer#splitIntoIntegerAndDecimalParts(String)
+		@since v0.0.6
+
+	*/
+
+	public String[] Normalize(StringBuilder number){
+
+<span class="fc" id="L144">		String normalized = expandScientificNotation(number).toString();</span>
+
+<span class="fc" id="L146">		String cleaned = cleanNonNumericCharacters(trimZeros(normalized), true).toString();</span>
+
+<span class="fc" id="L148">		return splitIntoIntegerAndDecimalParts(cleaned);</span>
+
+	}
+
+	/**
+
+		Recieves a number as a {@code StringBuilder} parameter, validates it to make sure it is infact a number and normalizes it 
+		to make it readable in case it is not on a standard notation.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			String[] parts = this.notationManager.validateAndNormalize(new StringBuilder(
+
+				&quot;1234.56&quot;
+
+			));
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code parts[0] = 1234} and {@code parts[1] = 56}
+
+		@param number Number as a {@code StringBuilder}.
+		@return String[] Returns a {@code String} array with the integer part and the decimal part of the number.
+		@exception IllegalArgumentException if {@code StringBuilder number} is either {@code null} or empty.
+		@see math.core.Notationer#expandScientificNotation(StringBuilder)
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Notationer#cleanNonNumericCharacters(String, boolean)
+		@see math.core.Notationer#splitIntoIntegerAndDecimalParts(String)
+		@since v0.0.1
+
+	*/
+
+	protected String[] validateAndNormalize(StringBuilder number){
+
+<span class="nc bnc" id="L183" title="All 4 branches missed.">		if (number!=null ? number.isEmpty() : true){</span>
+
+<span class="nc" id="L185">			throw new IllegalArgumentException(&quot;Invalid Number&quot;);</span>
+
+		}
+
+<span class="nc" id="L189">		String normalized = expandScientificNotation(number).toString();</span>
+
+<span class="nc" id="L191">		String cleaned = cleanNonNumericCharacters(trimZeros(normalized), false).toString();</span>
+
+<span class="nc" id="L193">		return splitIntoIntegerAndDecimalParts(cleaned);</span>
+
+	}
+
+	/**
+
+		Recieves a number as two {@code String} parameters, one representing the integer part and the other representing its decimal part 
+		and a {@code boolean} parameter that tells if the number uses decimal point notation. This parameter is {@code true} if it does.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			String n = this.notationManager.format(&quot;1234&quot;, &quot;56&quot;);
+
+		}&lt;/pre&gt;
+		
+		The return values will be either {@code n = 1,234.56} in case the {@code boolean useDecimalPointNotation} parameter if {@code true} or 
+		{@code n = 1.234,56} in case is {@code false}.
+
+		@param integerPart Integer Part of a number as a {@code String}.
+		@param decimalPart Decimal Part of a number as a {@code String}.
+		@param useDecimalPointNotation Tells if it uses or not decimal point notation as a {@code boolean}.
+
+		@return String Returns a number as a {@code String} with the specified notation declared on the {@code boolean useDecimalPointNotation} parameter.
+		@see math.core.Notationer#formatIntegerPart(StringBuilder, String, char)
+		@since v0.0.1
+
+	*/
+
+	protected String format(String integerPart, String decimalPart, boolean useDecimalPointNotation){
+		
+<span class="fc" id="L224">		StringBuilder formatted = new StringBuilder();</span>
+		
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		char mainSeparator = !useDecimalPointNotation ? DECIMAL_POINT : THOUSANDS_SEPARATOR;</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">		char secondarySeparator = useDecimalPointNotation ? DECIMAL_POINT : THOUSANDS_SEPARATOR;</span>
+
+<span class="fc" id="L229">		formatIntegerPart(formatted, integerPart, mainSeparator);</span>
+
+<span class="pc bpc" id="L231" title="1 of 4 branches missed.">		if (!decimalPart.isEmpty() &amp;&amp; !decimalPart.matches(&quot;0+&quot;)){</span>
+
+<span class="fc" id="L233">			formatted.append(secondarySeparator);</span>
+<span class="fc" id="L234">			formatted.append(decimalPart);</span>
+
+		}
+
+<span class="fc" id="L238">		return formatted.toString();</span>
+
+	}
+
+	/**
+
+		Recieves a number as a {@code StringBuilder} parameter, validates it to make sure it is infact in scientific notation, if so 
+		it will return the number expanded, if not it will return itself.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			StringBuilder n = this.notationManager.expandScientificNotation(new StringBuilder(
+
+				&quot;1.23456E3&quot;
+
+			));
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code n = 1234.56}
+
+		@param scientificNumber Number in scientific notation as a {@code StringBuilder}.
+		@return StringBuilder Returns a {@code StringBuilder} with the number expanded.
+		@since v0.0.1
+
+	*/
+
+	protected StringBuilder expandScientificNotation(StringBuilder scientificNumber){
+
+<span class="fc" id="L268">		String[] parts = scientificNumber.toString().split(&quot;[Ee]&quot;);</span>
+
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">		if (parts.length!=2) return scientificNumber;</span>
+
+<span class="nc" id="L272">		int exponent = Integer.parseInt(parts[1]);</span>
+
+<span class="nc" id="L274">		int originalDotIndex = parts[0].indexOf('.');</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		int numbersAfterDot = originalDotIndex==-1 ? 0 : parts[0].length() - originalDotIndex - 1;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		int numbersBeforeDot = originalDotIndex==-1 ? 0 : originalDotIndex;</span>
+		
+<span class="nc" id="L278">		StringBuilder result = new StringBuilder(parts[0].replace(&quot;.&quot;, &quot;&quot;));</span>
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (exponent&gt;0){</span>
+
+<span class="nc bnc" id="L282" title="All 2 branches missed.">			if (exponent&gt;numbersAfterDot){</span>
+
+				//Example: 1.23456E7 -&gt; 12345600
+
+<span class="nc" id="L286">				result.append(&quot;0&quot;.repeat(exponent - numbersAfterDot));</span>
+				
+<span class="nc" id="L288">				return result;</span>
+
+			}else{
+
+				//Example: 1.23456E2 -&gt; 123.456
+
+<span class="nc" id="L294">				result.insert(numbersBeforeDot + exponent, &quot;.&quot;);</span>
+
+<span class="nc" id="L296">				return result;</span>
+
+			}
+
+		}else{
+
+<span class="nc bnc" id="L302" title="All 2 branches missed.">			if (-exponent&gt;numbersBeforeDot){</span>
+
+				//Example: either 1.23456E-7 -&gt; 0.00000123456 or 123456E-7 -&gt; 0.000000123456
+
+<span class="nc" id="L306">				result.insert(0, &quot;0.&quot; + &quot;0&quot;.repeat(</span>
+
+<span class="nc bnc" id="L308" title="All 2 branches missed.">					- exponent - (numbersBeforeDot!=0 ? numbersBeforeDot : 1)</span>
+
+				));
+				
+<span class="nc" id="L312">				return result;</span>
+
+			}else{
+
+				//Example: 123.456E-2 -&gt; 1.23456
+
+<span class="nc" id="L318">				result.insert(numbersBeforeDot + exponent, &quot;.&quot;);</span>
+
+<span class="nc" id="L320">				return result;</span>
+
+			}
+
+		}
+
+	}
+
+	/**
+
+		Recieves a number as a {@code String} parameter, validates its back and front, and then removes every non numeric characters.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			StringBuilder n = this.notationManager.cleanNonNumericCharacters(&quot;--.012++&quot;, false);
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code parts[0] = 0.0123}
+
+		@param number Number as a {@code String}.
+		@param hasBeenValidated {@code boolean} parameter indicating if it has already been validated for a numberic format.
+		@return StringBuilder Returns a {@code StringBuilder} number that is a full readable.
+		@since v0.0.1
+
+	*/
+
+	protected StringBuilder cleanNonNumericCharacters(String number, boolean hasBeenValidated){
+
+<span class="fc" id="L350">		StringBuilder cleaned = new StringBuilder(number);</span>
+
+<span class="fc" id="L352">		boolean decimalPointFound = false;</span>
+
+<span class="fc bfc" id="L354" title="All 2 branches covered.">		if (cleaned.charAt(0)=='.'){</span>
+
+<span class="fc" id="L356">			cleaned.insert(0, &quot;0&quot;);</span>
+
+		}
+
+<span class="fc" id="L360">		int length = cleaned.length();</span>
+
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		if (cleaned.charAt(length-1)=='.'){</span>
+
+<span class="nc" id="L364">			cleaned.deleteCharAt(length-1);</span>
+
+<span class="nc" id="L366">			length--;</span>
+
+		}
+
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		if (hasBeenValidated) return cleaned;</span>
+
+<span class="nc bnc" id="L372" title="All 2 branches missed.">		for (int i=length-1; i&gt;=0; i--){</span>
+
+<span class="nc bnc" id="L374" title="All 4 branches missed.">			if (!decimalPointFound &amp;&amp; cleaned.charAt(i)=='.') {</span>
+
+<span class="nc" id="L376">				decimalPointFound = true;</span>
+
+<span class="nc" id="L378">				continue;</span>
+
+			}
+
+<span class="nc bnc" id="L382" title="All 2 branches missed.">			if (!Character.isDigit(cleaned.charAt(i))){</span>
+
+<span class="nc" id="L384">				cleaned.deleteCharAt(i);</span>
+
+			}
+
+		}
+
+<span class="nc" id="L390">		return cleaned;</span>
+
+	}
+
+	/**
+
+		Recieves a number as a {@code String} parameter, validates if it has a decimal part, if not it will fills it with empty to make 
+		sure it always return a 2 length {@code String} array.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			String[] parts = this.notationManager.splitIntoIntegerAndDecimalParts(&quot;1234.56&quot;);
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code parts[0] = 1234} and {@code parts[1] = 56}
+
+		@param number Number as a {@code String}.
+		@return String[] Returns a {@code String} array with the integer and decimal part.
+		@since v0.0.1
+
+	*/
+
+	protected String[] splitIntoIntegerAndDecimalParts(String number){
+
+<span class="fc" id="L416">		String[] parts = number.split(&quot;\\.&quot;);</span>
+
+<span class="fc bfc" id="L418" title="All 2 branches covered.">		return parts.length==2 ? parts : new String[] {parts[0], &quot;&quot;};</span>
+
+	}
+
+	/**
+
+		Recieves a number as a {@code String} parameter, validates if it has a decimal point to extend the regrex statement to not trim 
+		the zeros at the end if it is not a decimal number.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			String n = this.notationManager.trimZeros(&quot;00000001234.56000000000&quot;);
+
+		}&lt;/pre&gt;
+		
+		The return values will be {@code n = 1234.56}
+
+		@param str Number as a {@code String}.
+		@return String Returns a {@code String} with the zeros trimed.
+		@since v0.0.1
+
+	*/
+
+	protected String trimZeros(String str){
+
+<span class="fc bfc" id="L444" title="All 2 branches covered.">		return str.replaceAll(&quot;^[0]+(?!$)&quot;+(str.contains(&quot;.&quot;) ? &quot;|[0]+$&quot; : &quot;&quot;), &quot;&quot;);</span>
+
+	}
+
+	/**
+
+		Recieves a empty {@code StringBuilder} recipient parameter, the integer part of a number as a {@code String} and {@code char} separator.
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			StringBuffer n = new StringBuilder();
+			char separator = ',';
+
+			this.notationManager.formatIntegerPart(n, &quot;1234&quot;, separator);
+
+		}&lt;/pre&gt;
+		
+		The new {@code n} value will be {@code 1,234}
+
+		@param formatted Empty recipient as a {@code StringBuilder}.
+		@param integerPart Integer part of a number as a {@code integerPart}.
+		@param separator Separator as a {@code char}.
+		
+		@since v0.0.1
+
+	*/
+
+	protected void formatIntegerPart(StringBuilder formatted, String integerPart, char separator){
+
+<span class="fc" id="L474">		int length = integerPart.length();</span>
+
+<span class="fc bfc" id="L476" title="All 2 branches covered.">		for (int i=0; i&lt;length; i++){</span>
+
+<span class="pc bpc" id="L478" title="1 of 4 branches missed.">			if (i&gt;0 &amp;&amp; (length - i)%3==0){</span>
+
+<span class="nc" id="L480">				formatted.append(separator);</span>
+
+			}
+
+<span class="fc" id="L484">			formatted.append(integerPart.charAt(i));</span>
+
+		}
+
+<span class="fc" id="L488">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

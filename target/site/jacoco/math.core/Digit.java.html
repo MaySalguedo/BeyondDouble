@@ -1,0 +1,1478 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Digit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">math.core</a> &gt; <span class="el_source">Digit.java</span></div><h1>Digit.java</h1><pre class="source lang-java linenums">package math.core;
+
+import java.lang.Number;
+import java.lang.NumberFormatException;
+
+import java.math.RoundingMode;
+
+import java.util.concurrent.ExecutionException;
+
+import math.core.interfaces.EnhancedOperable;
+import math.core.exceptions.IllegalNumberFormatException;
+import math.core.exceptions.UndeterminedException;
+import math.core.Notationer;
+import math.core.Operationer;
+
+/**
+
+	Turns any primitive given number or a real number as string into a full notationed readable number.&lt;br&gt;&lt;br&gt;
+
+	Represents arbitrary-precision decimal numbers with configurable notation formatting.
+	This class provides immutable numeric values that can exceed primitive type limits,
+	along with comprehensive arithmetic operations, comparisons, and formatting capabilities.
+	
+	&lt;p&gt;&lt;b&gt;Key Features:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;&lt;b&gt;Arbitrary Precision&lt;/b&gt; - Handles real numbers of virtually unlimited size (memory permitting)&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Multiple Notation Systems&lt;/b&gt; - Supports decimal point ({@code 1,234.56}) or comma ({@code 1.234,56}) formats&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Full Arithmetic Operations&lt;/b&gt; - Addition, subtraction, multiplication, division with precision control&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Advanced Mathematical Functions&lt;/b&gt; - Inverse, modulus, rounding, and sign operations&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Comparison Utilities&lt;/b&gt; - Specialized methods for comparing to zero, one, and minus one&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Type Conversion&lt;/b&gt; - Implements all {@code Number} primitive conversions&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Immutable Design&lt;/b&gt; - Thread-safe implementation with value semantics&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;table border=&quot;1&quot;&gt;
+
+		&lt;caption&gt;&lt;b&gt;Core Capabilities&lt;/b&gt;&lt;/caption&gt;
+
+		&lt;tr&gt;&lt;th&gt;Category&lt;/th&gt;&lt;th&gt;Methods&lt;/th&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Construction&lt;/td&gt;&lt;td&gt;From String, double, long pairs, or component parts&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Arithmetic&lt;/td&gt;&lt;td&gt;add, subtract, multiply, divide, inverse, module&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Comparison&lt;/td&gt;&lt;td&gt;compareTo, compareToZero, compareToOne, compareToMinusOne&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Sign Operations&lt;/td&gt;&lt;td&gt;negate, abs, increase, decrease&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Formatting&lt;/td&gt;&lt;td&gt;toString, stringValue&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;Precision Control&lt;/td&gt;&lt;td&gt;setScale (rounding modes), inverse (precision)&lt;/td&gt;&lt;/tr&gt;
+
+	&lt;/table&gt;
+	
+	&lt;p&gt;&lt;b&gt;Technical Implementation Notes:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;Numbers stored as separate integer and decimal string components&lt;/li&gt;
+		&lt;li&gt;Delegates arithmetic operations to {@link Operationer} utility&lt;/li&gt;
+		&lt;li&gt;Uses {@link Notationer} for number formatting and parsing&lt;/li&gt;
+		&lt;li&gt;Implements {@link EnhancedOperable} for advanced math operations&lt;/li&gt;
+		&lt;li&gt;Supports all standard rounding modes ({@link RoundingMode})&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+	&lt;pre&gt;{@code
+
+		Digit n = new Digit(1.23456E7);
+
+		System.out.print(n);//12,345,600
+
+	}&lt;/pre&gt;
+
+	@author Dandelion
+	@version v0.1.2
+	@since v0.0.1
+	@see Operationer
+	@see Notationer
+	@see EnhancedOperable
+	@see RoundingMode
+
+*/
+
+public class Digit extends Number implements EnhancedOperable&lt;Digit&gt;{
+
+	/**
+
+		The {@code String integerPart} represents the integer part of the number.
+
+	*/
+
+	public final String integerPart;
+
+	/**
+
+		The {@code String decimalPart} represents the decimal part of the number.
+
+	*/
+
+	public final String decimalPart;
+
+	/**
+
+		The {@code boolean isNegative} represents if the number is either negative 
+		or positive, {@code true} for negative, {@code false} for positive.
+
+	*/
+
+	public final boolean isNegative;
+
+	/**
+
+		The {@code boolean notation} represents if the number is either using the decimal point 
+		notation or the dot decimal notation, {@code true} for DPN, {@code false} for DDN.
+
+	*/
+
+	public boolean notation;
+
+	/**
+
+		Notation manager from class {@code Notationer}.
+
+	*/
+
+<span class="fc" id="L123">	protected final Notationer notationManager = new Notationer();</span>
+
+	/**
+
+		Operation manager from class {@code Operationer}.
+
+	*/
+
+<span class="fc" id="L131">	protected final Operationer operationManager = new Operationer();</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with a number value as a {@code String}.
+
+		@param n Real number as a {@code String}
+		@exception IllegalNumberFormatException if {@code String n} is either {@code null}, empty or not a valid real number.
+		@see math.core.Notationer#isValidNumber(String)
+		@see math.core.Notationer#Normalize(StringBuilder)
+		@since v0.0.1
+
+	*/
+
+<span class="fc" id="L145">	public Digit(String n){</span>
+
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		if (!this.notationManager.isValidNumber(n)) throw new IllegalNumberFormatException(n+&quot; is not a valid real Number&quot;);</span>
+
+<span class="fc" id="L149">		StringBuilder number = new StringBuilder(n);</span>
+
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		boolean isNegativeBackUp = number.charAt(0)=='-';</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		boolean isPositiveBackUp = number.charAt(0)=='+';</span>
+
+<span class="pc bpc" id="L154" title="1 of 4 branches missed.">		if (isNegativeBackUp || isPositiveBackUp){</span>
+
+<span class="fc" id="L156">			number.deleteCharAt(0);</span>
+
+		}
+
+<span class="fc" id="L160">		String[] parts = this.notationManager.Normalize(number);</span>
+<span class="fc" id="L161">		this.integerPart = parts[0];</span>
+<span class="fc" id="L162">		this.decimalPart = parts[1];</span>
+<span class="fc bfc" id="L163" title="All 4 branches covered.">		this.isNegative = (this.integerPart.matches(&quot;0&quot;) &amp;&amp; this.decimalPart.isEmpty()) ? false : isNegativeBackUp;</span>
+<span class="fc" id="L164">		this.notation = true;</span>
+
+<span class="fc" id="L166">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with a number value as a {@code String} and the notation type as {@code boolean}.
+
+		@param n Real number as a {@code String}
+		@param notation Digit notation
+		@see math.core.Digit#Digit(String)
+		@since v0.0.8
+
+	*/
+
+	public Digit(String n, boolean notation){
+
+<span class="fc" id="L181">		this(n);</span>
+
+<span class="fc" id="L183">		this.notation = notation;</span>
+
+<span class="fc" id="L185">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with a {@code double} value.
+
+		@param n Real number.
+		@see math.core.Digit#Digit(String)
+		@since v0.0.1
+
+	*/
+
+	public Digit(double n){
+
+<span class="fc" id="L199">		this(n+&quot;&quot;);</span>
+
+<span class="fc" id="L201">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with a {@code double} value and the notation type as {@code boolean}.
+
+		@param n Real number.
+		@param notation Digit notation
+		@see math.core.Digit#Digit(double)
+		@since v0.0.8
+
+	*/
+
+	public Digit(double n, boolean notation){
+
+<span class="nc" id="L216">		this(n);</span>
+
+<span class="nc" id="L218">		this.notation = notation;</span>
+
+<span class="nc" id="L220">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code String}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@see math.core.Digit#Digit(String)
+		@since v0.0.4
+
+	*/
+
+	public Digit(String integerPart, String decimalPart){
+
+<span class="fc" id="L235">		this(integerPart+&quot;.&quot;+decimalPart);</span>
+
+<span class="fc" id="L237">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code String} and the notation type as {@code boolean}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@param notation Digit notation
+		@see math.core.Digit#Digit(String, String)
+		@since v0.0.8
+
+	*/
+
+	public Digit(String integerPart, String decimalPart, boolean notation){
+
+<span class="nc" id="L253">		this(integerPart, decimalPart);</span>
+
+<span class="nc" id="L255">		this.notation = notation;</span>
+
+<span class="nc" id="L257">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code long}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@see math.core.Digit#Digit(String)
+		@since v0.0.8
+
+	*/
+
+	public Digit(long integerPart, long decimalPart){
+
+<span class="fc" id="L272">		this(integerPart+&quot;.&quot;+decimalPart);</span>
+
+<span class="fc" id="L274">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with two number values as {@code long} and the notation type as {@code boolean}.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@param notation Digit notation
+		@see math.core.Digit#Digit(long, long)
+		@since v0.0.8
+
+	*/
+
+	public Digit(long integerPart, long decimalPart, boolean notation){
+
+<span class="nc" id="L290">		this(integerPart, decimalPart);</span>
+
+<span class="nc" id="L292">		this.notation = notation;</span>
+
+<span class="nc" id="L294">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with all the attributes required.
+
+		@param integerPart Integer part of the number.
+		@param decimalPart Decimal part of the number.
+		@param isNegative The {@code boolean isNegative} represents if the number is either negative 
+		or positive.
+		@param notation The {@code boolean notation} represents if the number is either using the decimal point 
+		notation or the dot decimal notation.
+
+		@since v0.0.4
+
+	*/
+
+<span class="fc" id="L311">	protected Digit(String integerPart, String decimalPart, boolean isNegative, boolean notation){</span>
+
+<span class="fc" id="L313">		this.integerPart = integerPart;</span>
+<span class="fc" id="L314">		this.decimalPart = this.operationManager.trimZerosRight(decimalPart);</span>
+<span class="fc bfc" id="L315" title="All 4 branches covered.">		this.isNegative = (this.integerPart.matches(&quot;0&quot;) &amp;&amp; this.decimalPart.isEmpty()) ? false : isNegative;</span>
+<span class="fc" id="L316">		this.notation = notation;</span>
+
+<span class="fc" id="L318">	}</span>
+
+	/**
+
+		Creates an instance of {@code Digit} with all the attributes required except the decimal part.
+
+		@param integerPart Integer part of the number.
+		@param isNegative The {@code boolean isNegative} represents if the number is either negative 
+		or positive.
+		@param notation The {@code boolean notation} represents if the number is either using the decimal point 
+		notation or the dot decimal notation.
+		@see math.core.Notationer#trimZeros(String)
+		@since v0.0.6
+
+	*/
+
+<span class="fc" id="L334">	protected Digit(String integerPart, boolean isNegative, boolean notation){</span>
+
+<span class="fc" id="L336">		this.integerPart = integerPart;</span>
+<span class="fc" id="L337">		this.decimalPart = &quot;&quot;;</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		this.isNegative = this.integerPart.matches(&quot;0&quot;) ? false : isNegative;</span>
+<span class="fc" id="L339">		this.notation = notation;</span>
+
+<span class="fc" id="L341">	}</span>
+
+	/**
+
+		Implements the {@code String format()} function from extended class Notationer to print the number on a 
+		readable notation using the attributes {@code this.integerPart}, {@code this.decimalPart} and {@code this.notation} 
+		as parameters for such function.
+		
+		The return values will be either negative or positive depending on the state of the attribute {@code this.isNegative}.
+
+		@return String Returns a full notationed readable number.
+		@see math.core.Notationer#format(String, String, boolean)
+		@since v0.0.1
+
+	*/
+
+	@Override public String toString(){
+
+<span class="fc bfc" id="L359" title="All 2 branches covered.">		return (this.isNegative ? &quot;-&quot; : &quot;&quot;)+this.notationManager.format(this.integerPart, this.decimalPart, this.notation);</span>
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a byte. The numeric value represented by this object after conversion to type byte.
+
+		@exception IllegalNumberFormatException Throws by the method parseByte from class {@code Byte}.
+		@return The numeric value represented by this object after conversion to type byte.
+		@see java.lang.Number#byteValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public byte byteValue() throws IllegalNumberFormatException{
+
+<span class="fc" id="L376">		return Byte.parseByte(this.integerPart);</span>
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a double. The numeric value represented by this object after conversion to type double.
+
+		@exception IllegalNumberFormatException Throws by the method parseDouble from class {@code double}.
+		@return The numeric value represented by this object after conversion to type double.
+		@see java.lang.Number#doubleValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public double doubleValue() throws IllegalNumberFormatException{
+
+<span class="fc" id="L393">		return Double.parseDouble(this.integerPart+(</span>
+
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+
+		));
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a float. The numeric value represented by this object after conversion to type float.
+
+		@exception IllegalNumberFormatException Throws by the method parseFloat from class {@code float}.
+		@return The numeric value represented by this object after conversion to type float.
+		@see java.lang.Number#floatValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public float floatValue() throws IllegalNumberFormatException{
+
+<span class="fc" id="L414">		return Float.parseFloat(this.integerPart+(</span>
+
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+
+		));
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a int. The numeric value represented by this object after conversion to type int.
+
+		@exception IllegalNumberFormatException Throws by the method parseInt from class {@code Integer}.
+		@return The numeric value represented by this object after conversion to type int.
+		@see java.lang.Number#intValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public int intValue() throws IllegalNumberFormatException{
+
+<span class="fc" id="L435">		return Integer.parseInt(this.integerPart);</span>
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a long. The numeric value represented by this object after conversion to type long.
+
+		@exception IllegalNumberFormatException Throws by the method parseLong from class {@code Long}.
+		@return The numeric value represented by this object after conversion to type long.
+		@see java.lang.Number#longValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public long longValue() throws IllegalNumberFormatException{
+
+<span class="fc" id="L452">		return Long.parseLong(this.integerPart);</span>
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a short. The numeric value represented by this object after conversion to type short.
+
+		@exception IllegalNumberFormatException Throws by the method parseShort from class {@code Short}.
+		@return The numeric value represented by this object after conversion to type short.
+		@see java.lang.Number#shortValue()
+		@since v0.0.7
+
+	*/
+
+	@Override public short shortValue() throws IllegalNumberFormatException{
+
+<span class="fc" id="L469">		return Short.parseShort(this.integerPart+(</span>
+
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+
+		));
+
+	}
+
+	/**
+
+		Returns the value of the specified number as a String. The numeric value represented by this object after conversion to type String.
+
+		@return The numeric value represented by this object after conversion to type String.
+		@since v0.0.9
+
+	*/
+
+	public String stringValue(){
+
+<span class="fc" id="L488">		return this.integerPart+(</span>
+
+<span class="pc bpc" id="L490" title="1 of 2 branches missed.">			!this.decimalPart.isEmpty() ? &quot;.&quot;+this.decimalPart : &quot;&quot;</span>
+
+		);
+
+	}
+
+	/**
+
+		Implements the {@code boolean equals(Object)} function from extended class class {@link java.lang.Object} to compare the instances.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(1.23456E7);
+			Digit m = new Digit(&quot;89&quot;);
+
+			boolean result = n.equals(m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = false}
+
+		@param obj Object instance.
+		@return boolean Returns a boolean value where {@code true} means the instances are equal and {@code false} means they are not.
+		@see java.lang.Comparable#compareTo(Object)
+		@see java.lang.Object#equals(Object)
+		@since v0.0.17
+
+	*/
+
+	@Override public boolean equals(Object obj) {
+
+<span class="pc bpc" id="L522" title="1 of 2 branches missed.">		if (this == obj) return true;</span>
+<span class="pc bpc" id="L523" title="2 of 4 branches missed.">		if (obj == null || getClass() != obj.getClass()) return false;</span>
+		
+<span class="fc" id="L525">		Digit other = (Digit) obj;</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		return this.compareTo(other)==0;</span>
+
+	}
+
+	/**
+
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(1.23456E7);
+			Digit m = new Digit(&quot;89&quot;);
+
+			int result = n.compareTo(m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 1}
+
+		@param n Digit instance.
+		@return int Returns an x value ranging from {@literal -1&lt;x&lt;1} where x belongs to integers. Where {@literal 0} if both are 
+		equal, {@literal 1} if {@literal n&gt;m} and {@literal -1} if {@literal n&lt;m}.
+		@see java.lang.Comparable#compareTo(Object)
+		@see math.core.Operationer#compareIntegerParts(String, String)
+		@see math.core.Operationer#compareDecimalParts(String, String)
+		@since v0.0.3s
+
+	*/
+
+	@Override public int compareTo(Digit n){
+
+		//Case 2: Either both negative or positive
+<span class="fc bfc" id="L559" title="All 2 branches covered.">		int multiplier = this.isNegative ? -1 : 1;</span>
+
+		//Case 1: Diferent Signs
+<span class="pc bpc" id="L562" title="1 of 2 branches missed.">		if (this.isNegative!=n.isNegative) return multiplier;</span>
+
+<span class="fc" id="L564">		int integersCompared = this.operationManager.compareIntegerParts(this.integerPart, n.integerPart);</span>
+
+<span class="fc bfc" id="L566" title="All 2 branches covered.">		if (integersCompared!=0) return multiplier * integersCompared;</span>
+
+<span class="fc" id="L568">		int decimalsCompared = this.operationManager.compareDecimalParts(this.decimalPart, n.decimalPart);</span>
+
+<span class="pc bpc" id="L570" title="1 of 2 branches missed.">		if (decimalsCompared!=0) return multiplier * decimalsCompared;</span>
+
+<span class="fc" id="L572">		return 0;</span>
+
+	}
+
+	/**
+
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
+
+		@param n double value.
+		@return int Returns an x value ranging from {@literal -1&lt;x&lt;1} where x belongs to integers. Where {@literal 0} if both are 
+		equal, {@literal 1} if {@literal n&gt;m} and {@literal -1} if {@literal n&lt;m}.
+		@see java.lang.Comparable#compareTo(Object)
+		@see math.core.Digit#compareTo(Digit)
+		@since v0.0.4
+
+	*/
+
+	public int compareTo(double n){
+
+<span class="nc" id="L591">		return this.compareTo(new Digit(n));</span>
+
+	}
+
+	/**
+
+		Implements the {@code int compareTo(Object)} function from implemented class Comparable to compare the instances.
+
+		@param n int value.
+		@return int Returns an x value ranging from {@literal -1&lt;x&lt;1} where x belongs to integers. Where {@literal 0} if both are 
+		equal, {@literal 1} if {@literal n&gt;m} and {@literal -1} if {@literal n&lt;m}.
+		@see java.lang.Comparable#compareTo(Object)
+		@see math.core.Digit#compareTo(Digit)
+		@since v0.0.4
+
+	*/
+
+	public int compareTo(int n){
+
+<span class="nc" id="L610">		return this.compareTo(new Digit(n+&quot;&quot;, this.isNegative, this.notation));</span>
+
+	}
+
+	/**
+
+		Compares a {@code Digit} instance to zero.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(1);
+
+			int result = n.compareToZero();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 1}
+
+		@return int Returns an x value ranging from {@literal -1&lt;x&lt;1} where x belongs to integers. Where {@literal 0} if is equals to 
+		zero, {@literal 1} if {@literal n&gt;0} and {@literal -1} if {@literal n&lt;0}.
+		@since v0.0.5
+
+	*/
+
+	public int compareToZero(){
+
+<span class="fc bfc" id="L637" title="All 2 branches covered.">		if (this.isNegative) return -1;</span>
+
+<span class="fc bfc" id="L639" title="All 4 branches covered.">		if (this.integerPart.matches(&quot;0&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
+
+<span class="fc" id="L641">		return 1;</span>
+
+	}
+
+	/**
+
+		Compares a {@code Digit} instance to one.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(1);
+
+			int result = n.compareToOne();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 0}
+
+		@return int Returns an x value ranging from {@literal -1&lt;x&lt;1} where x belongs to integers. Where {@literal 0} if is equals to 
+		one, {@literal 1} if {@literal n&gt;1} and {@literal -1} if {@literal n&lt;1}.
+		@since v0.0.5
+
+	*/
+
+	public int compareToOne(){
+
+<span class="fc bfc" id="L668" title="All 4 branches covered.">		if (this.isNegative || this.integerPart.matches(&quot;0&quot;)) return -1;</span>
+
+<span class="pc bpc" id="L670" title="1 of 4 branches missed.">		if (this.integerPart.matches(&quot;1&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
+
+<span class="fc" id="L672">		return 1;</span>
+
+	}
+
+	/**
+
+		Compares a {@code Digit} instance to minus one.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(1);
+
+			int result = n.compareToMinusOne();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 1}
+
+		@return int Returns an x value ranging from {@literal -1&lt;x&lt;1} where x belongs to integers. Where {@literal 0} if is equals to 
+		minus one, {@literal 1} if {@literal n&gt;-1} and {@literal -1} if {@literal n&lt;-1}.
+		@since v0.0.5
+
+	*/
+
+	public int compareToMinusOne(){
+
+<span class="pc bpc" id="L699" title="3 of 6 branches missed.">		if (!this.isNegative || (this.integerPart.matches(&quot;0&quot;) &amp;&amp; !this.decimalPart.isEmpty())) return 1;</span>
+
+<span class="pc bpc" id="L701" title="1 of 4 branches missed.">		if (this.integerPart.matches(&quot;1&quot;) &amp;&amp; this.decimalPart.isEmpty()) return 0;</span>
+
+<span class="fc" id="L703">		return -1;</span>
+
+	}
+
+	/**
+
+		Increases the {@code Digit} instance's value by one.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(-0.5);
+
+			Digit result = n.increase();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 0.5}
+
+		@return Digit Intance increased by one.
+		@since v0.1.0
+
+	*/
+
+	public Digit increase(){
+
+<span class="pc bpc" id="L729" title="2 of 4 branches missed.">		boolean isBetween = this.compareToMinusOne() &gt; 0 &amp;&amp; this.compareToZero() &lt; 0;</span>
+
+<span class="pc bpc" id="L731" title="1 of 2 branches missed.">		if (isBetween){</span>
+
+<span class="nc" id="L733">			return this.negate();</span>
+
+<span class="pc bpc" id="L735" title="1 of 2 branches missed.">		}else if (!this.isNegative){</span>
+
+<span class="fc" id="L737">			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+
+		}else{
+
+<span class="nc" id="L741">			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+
+		}
+
+	}
+
+	/**
+
+		Decreases the {@code Digit} instance's value by one.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(0.5);
+
+			Digit result = n.increase();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = -0.5}
+
+		@return Digit Intance increased by one.
+		@since v0.1.0
+
+	*/
+
+	public Digit decrease(){
+
+<span class="pc bpc" id="L769" title="2 of 4 branches missed.">		boolean isBetween = this.compareToOne() &lt; 0 &amp;&amp; this.compareToZero() &gt; 0;</span>
+
+<span class="pc bpc" id="L771" title="1 of 2 branches missed.">		if (isBetween){</span>
+
+<span class="fc" id="L773">			return this.negate();</span>
+
+<span class="nc bnc" id="L775" title="All 2 branches missed.">		}else if (this.isNegative){</span>
+
+<span class="nc" id="L777">			return new Digit(this.operationManager.increase(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+
+		}else{
+
+<span class="nc" id="L781">			return new Digit(this.operationManager.decrease(this.integerPart), this.decimalPart, this.isNegative, this.notation);</span>
+
+		}
+
+	}
+
+	/**
+
+		Creates a Digit instance with the {@code boolean isNegative} attribute negated.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(1);
+			Digit m = n.negate();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code m = -1}
+
+		@return Digit Returns the negated value for the {@code Digit} instance.
+		@see math.core.Digit#Digit(String, String, boolean, boolean)
+		@since v0.0.4
+
+	*/
+
+	public Digit negate(){
+
+<span class="fc bfc" id="L809" title="All 2 branches covered.">		return new Digit(this.integerPart, this.decimalPart, !this.isNegative, this.notation);</span>
+
+	}
+
+	/**
+
+		Creates a Digit instance with the {@code boolean isNegative} attribute on false.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(-1);
+			Digit m = n.abs();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code m = 1}
+
+		@return Digit Returns the absolute value for the {@code Digit} instance.
+		@see math.core.Digit#Digit(String, String, boolean, boolean)
+		@since v0.0.4
+
+	*/
+
+	public Digit abs(){
+
+<span class="fc" id="L835">		return new Digit(this.integerPart, this.decimalPart, false, this.notation);</span>
+
+	}
+
+	/**
+
+		Calculates the {@code Digit} instance's inverse value.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(2);
+			Digit m = n.inverse(2);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code m = 0.5}
+
+		@param precision Decimal precision.
+		@return Digit Returns the inverse value for the {@code Digit} instance.
+		@see math.core.Digit#Digit(String, boolean, boolean)
+		@see math.core.Digit#divide(Digit, long)
+		@since v0.0.7
+
+	*/
+
+	public Digit inverse(long precision) {
+
+<span class="nc" id="L863">		return new Digit(&quot;1&quot;, false, this.notation).divide(this, precision);</span>
+
+	}
+
+	/**
+
+		Calculates the {@code Digit} instance's inverse value with the precision set at {@code 128}. Overriding the implemented function {@code inverse} from {@code Operable} interface.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(2);
+			Digit m = n.inverse();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code m = 0.5}
+
+		@return Digit Returns the inverse value for the {@code Digit} instance.
+		@see math.core.interfaces.EnhancedOperable#inverse()
+		@see math.core.Digit#inverse(long)
+		@since v0.0.7
+
+	*/
+
+	@Override public Digit inverse() {
+
+<span class="nc" id="L890">		return this.inverse(128);</span>
+
+	}
+
+	/**
+
+		Gets the {@code Digit} instance's unity value being ({@code 1}). Overriding the implemented function {@code unity} from {@code Operable} interface.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(2);
+			Digit m = n.unity();
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code m = 1}
+
+		@return Digit Returns the unity value {@code 1} regardless of the {@code Digit} instance.
+		@see math.core.interfaces.EnhancedOperable#unity()
+		@since v0.1.1
+
+	*/
+
+	@Override public Digit unity(){
+
+<span class="nc" id="L916">		return new Digit(&quot;1&quot;, false, this.notation);</span>
+
+	}
+
+	/**
+
+		Adds two numbers logicly and sequentially.
+
+		@param other double value.
+		@return Digit Result from the addition of the two values.
+		@see math.core.Digit#add(Digit)
+		@since v0.0.4
+
+	*/
+
+	public Digit add(double other){
+
+<span class="nc" id="L933">		return this.add(new Digit(other));</span>
+
+	}
+
+	/**
+
+		Subtracts two numbers logicly and sequentially.
+
+		@param other double value.
+		@return Digit Result from the subtraction of the two values.
+		@see math.core.Digit#add(Digit)
+		@since v0.0.4
+
+	*/
+
+	public Digit subtract(double other){
+
+<span class="nc" id="L950">		return this.subtract(new Digit(other));</span>
+
+	}
+
+	/**
+
+		Multiplies two numbers logicly and sequentially.
+
+		@param other double value.
+		@return Digit Result from the multiplication.
+		@see math.core.Digit#multiply(Digit)
+		@since v0.0.7
+
+	*/
+
+	public Digit multiply(double other) {
+
+<span class="nc" id="L967">		return this.multiply(new Digit(other));</span>
+
+	}
+
+	/**
+
+		Divides two numbers logicly and sequentially.
+
+		@param other double value.
+		@param precision Decimal precision.
+		@return Digit Result from the division.
+		@see math.core.Digit#divide(Digit, long)
+		@since v0.0.7
+
+	*/
+
+	public Digit divide(double other, long precision) {
+
+<span class="nc" id="L985">		return this.divide(new Digit(other), precision);</span>
+
+	}
+
+	/**
+
+		Divides two numbers logicly and sequentially with the precision set at {@code 128}.
+
+		@param other double value.
+		@return Digit Result from the division.
+		@see math.core.Digit#divide(Digit)
+		@since v0.1.1
+
+	*/
+
+	public Digit divide(double other) {
+
+<span class="nc" id="L1002">		return this.divide(new Digit(other));</span>
+
+	}
+
+	/**
+
+		Gets the module between two {@code Digit} numbers logicly and sequentially.
+
+		@param other double instance.
+		@return Digit Result from the module of the firts instance given the second instance.
+		@see math.core.Digit#module(Digit)
+		@since v0.0.8
+
+	*/
+
+	public Digit module(double other) {
+
+<span class="nc" id="L1019">		return this.module(new Digit(other));</span>
+
+	}
+
+	/**
+
+		Adds two {@code Digit} numbers logicly and sequentially. Overriding the implemented function {@code add} from {@code Operable} interface.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;-123.45&quot;);
+			Digit m = new Digit(678.9);
+
+			Digit result = n.add(m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 555.45}
+
+		@param other Digit instance.
+		@return Digit Result from the addition of the two instance.
+		@see math.core.Digit#negate()
+		@see math.core.Digit#abs()
+		@see math.core.interfaces.Operable#add(Object)
+		@see math.core.Operationer#padZerosRight(String, int)
+		@see math.core.Operationer#addTwoTogether(String, String, boolean)
+		@since v0.0.4
+
+	*/
+
+	@Override public Digit add(Digit other){
+
+<span class="fc" id="L1052">		int isThisZero = this.compareToZero();</span>
+
+<span class="pc bpc" id="L1054" title="1 of 2 branches missed.">		if (isThisZero==0) return other;</span>
+
+<span class="fc" id="L1056">		int isOtherZero = other.compareToZero();</span>
+
+<span class="pc bpc" id="L1058" title="1 of 2 branches missed.">		if (isOtherZero==0) return this;</span>
+
+<span class="fc" id="L1060">		Digit thisAbsolute = this.abs();</span>
+<span class="fc" id="L1061">		Digit otherAbsolute = other.abs();</span>
+
+<span class="pc bpc" id="L1063" title="3 of 4 branches missed.">		if (isThisZero&lt;0 &amp;&amp; isOtherZero&lt;0) return thisAbsolute.add(otherAbsolute).negate();</span>
+
+<span class="fc" id="L1065">		int absolutesComapred = thisAbsolute.compareTo(otherAbsolute);</span>
+
+<span class="pc bpc" id="L1067" title="1 of 2 branches missed.">		if (absolutesComapred&lt;0) return other.add(this);</span>
+
+<span class="pc bpc" id="L1069" title="3 of 4 branches missed.">		if (absolutesComapred&gt;0 &amp;&amp; (isThisZero&lt;isOtherZero)) return this.negate().add(other.negate()).negate();</span>
+
+<span class="pc bpc" id="L1071" title="1 of 2 branches missed.">		int maxDecimalLength = this.decimalPart.length()&gt;other.decimalPart.length() ? this.decimalPart.length() : other.decimalPart.length();</span>
+
+<span class="fc" id="L1073">		String fullResult = this.operationManager.addTwoTogether(</span>
+
+<span class="fc" id="L1075">			this.integerPart + this.operationManager.padZerosRight(this.decimalPart, maxDecimalLength),</span>
+<span class="fc bfc" id="L1076" title="All 2 branches covered.">			other.integerPart + this.operationManager.padZerosRight(other.decimalPart, maxDecimalLength),</span>
+			!other.isNegative
+
+		);
+
+<span class="fc" id="L1081">		int scale = fullResult.length() - maxDecimalLength;</span>
+
+<span class="pc bpc" id="L1083" title="1 of 2 branches missed.">		String integerResult = scale!=0 ? this.operationManager.trimZerosLeft(fullResult.substring(0, scale)) : &quot;0&quot;;</span>
+<span class="fc" id="L1084">		String decimalResult = fullResult.substring(scale);</span>
+
+<span class="fc" id="L1086">		return new Digit(integerResult, decimalResult, false, this.notation);</span>
+
+	}
+
+	/**
+
+		Subtracts two {@code Digit} numbers logicly and sequentially. Overriding the implemented function {@code subtract} from {@code Operable} interface.
+
+		@param other Digit instance.
+		@return Digit Result from the subtraction of the two intance.
+		@see math.core.Digit#add(Digit)
+		@see math.core.interfaces.Operable#subtract(Object)
+		@since v0.0.4
+
+	*/
+
+	@Override public Digit subtract(Digit other){
+
+<span class="fc" id="L1104">		return this.add(other.negate());</span>
+
+	}
+
+	/**
+
+		Multiplies two {@code Digit} numbers logicly and sequentially. Overriding the implemented function {@code multiply} from {@code Operable} interface.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;25&quot;);
+			Digit m = new Digit(5);
+
+			Digit result = n.multiply(m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 125}
+
+		@param other Digit instance.
+		@return Digit Result from the multiplication of the two instance.
+		@see math.core.interfaces.Operable#multiply(Object)
+		@see math.core.Digit#negate()
+		@see math.core.Operationer#multiplication(String, String)
+		@since v0.0.5
+
+	*/
+
+	@Override public Digit multiply(Digit other) {
+
+<span class="pc bpc" id="L1135" title="2 of 4 branches missed.">		if (this.compareToZero()==0 || other.compareToZero()==0) return new Digit(0);</span>
+
+<span class="fc" id="L1137">		int isThisOne = this.compareToOne();</span>
+
+<span class="pc bpc" id="L1139" title="1 of 2 branches missed.">		if (isThisOne==0) return other;</span>
+
+<span class="fc" id="L1141">		int isOtherOne = other.compareToOne();</span>
+
+<span class="pc bpc" id="L1143" title="1 of 2 branches missed.">		if (isOtherOne==0) return this;</span>
+
+<span class="fc" id="L1145">		int isThisMinusOne = this.compareToMinusOne();</span>
+
+<span class="pc bpc" id="L1147" title="1 of 2 branches missed.">		if (isThisMinusOne==0) return other.negate();</span>
+
+<span class="fc" id="L1149">		int isOtherMinusOne = other.compareToMinusOne();</span>
+
+<span class="pc bpc" id="L1151" title="1 of 2 branches missed.">		if (isOtherMinusOne==0) return this.negate();</span>
+
+<span class="fc" id="L1153">		int maxDecimalLength = this.decimalPart.length() + other.decimalPart.length();</span>
+
+<span class="fc" id="L1155">		String fullResult = this.operationManager.multiplication(this.integerPart+this.decimalPart, other.integerPart+other.decimalPart);</span>
+
+<span class="fc" id="L1157">		int length = fullResult.length();</span>
+
+<span class="fc" id="L1159">		String integerResult = this.operationManager.trimZerosLeft(fullResult.substring(0, length - maxDecimalLength));</span>
+<span class="fc" id="L1160">		String decimalResult = fullResult.substring(length - maxDecimalLength);</span>
+
+<span class="fc bfc" id="L1162" title="All 2 branches covered.">		return new Digit(integerResult, decimalResult, this.isNegative!=other.isNegative, this.notation);</span>
+
+	}
+
+	/**
+
+		Divides two {@code Digit} numbers logicly and sequentially with the precision set at {@code 128}. 
+		Overriding the implemented function {@code divide} from {@code Operable} interface.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;7&quot;);
+			Digit m = new Digit(4);
+
+			Digit result = n.divide(m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 1.75}
+
+		@param other Digit instance.
+		@exception UndeterminedException if {@code Digit} other is zero.
+		@return Digit Result from the division of the two instance.
+		@see math.core.interfaces.Operable#divide(Object)
+		@see math.core.Digit#divide(Digit, long)
+		@since v0.1.1
+
+	*/
+
+	@Override public Digit divide(Digit other) {
+
+<span class="fc" id="L1194">		return this.divide(other, 128);</span>
+
+	}
+
+	/**
+
+		Divides two {@code Digit} numbers logicly and sequentially.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;7&quot;);
+			Digit m = new Digit(4);
+
+			Digit result = n.divide(m, 16);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 1.75}
+
+		@param other Digit instance.
+		@param precision Decimal precision.
+		@exception UndeterminedException if {@code Digit} other is zero.
+		@return Digit Result from the division of the two instance.
+		@see math.core.interfaces.Operable#divide(Object)
+		@see math.core.Notationer#trimZeros(String)
+		@see math.core.Operationer#division(String, String, long)
+
+		@since v0.0.6
+
+	*/
+
+	public Digit divide(Digit other, long precision) {
+
+<span class="fc bfc" id="L1228" title="All 2 branches covered.">		if (other.compareToZero()==0) throw new UndeterminedException(&quot;Division by zero is undetermine.&quot;);</span>
+
+<span class="fc" id="L1230">		int decimalLeft = - this.decimalPart.length() + other.decimalPart.length();</span>
+
+<span class="fc" id="L1232">		String dividend = this.operationManager.trimZerosLeft(this.integerPart+this.decimalPart);</span>
+<span class="fc" id="L1233">		String divisor = this.operationManager.trimZerosLeft(other.integerPart+other.decimalPart);</span>
+
+<span class="fc bfc" id="L1235" title="All 2 branches covered.">		if (decimalLeft&gt;0){</span>
+
+<span class="fc" id="L1237">			dividend+= &quot;0&quot;.repeat(decimalLeft);</span>
+
+		}else{
+
+<span class="fc" id="L1241">			divisor+= &quot;0&quot;.repeat(-decimalLeft);</span>
+
+		}
+
+<span class="fc" id="L1245">		String[] result = this.operationManager.division(dividend, divisor, precision);</span>
+
+<span class="pc bpc" id="L1247" title="1 of 2 branches missed.">		return new Digit(result[0], result[1], this.isNegative!=other.isNegative, this.notation);</span>
+
+	}
+
+	/**
+
+		Gets the module between two {@code Digit} numbers logicly and sequentially.
+
+		&lt;br&gt;&lt;br&gt;{@literal a mod b = |a| - |b| * FLOOR(|a|/|b|)}
+		
+		&lt;br&gt;&lt;br&gt;The sign of the result will be the original sign from {@literal a}.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;4&quot;);
+			Digit m = new Digit(2);
+
+			Digit result = n.module(m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 0}
+
+		@param other Digit instance.
+		@exception UndeterminedException if {@code Digit} other is zero.
+		@return Digit Result from the module of the firts instance given the second instance.
+		@see math.core.Digit#abs()
+		@see math.core.Digit#subtract(Digit)
+		@see math.core.Digit#multiply(Digit)
+		@see math.core.Digit#divide(Digit, long)
+
+		@since v0.0.8
+
+	*/
+
+	public Digit module(Digit other) {
+
+<span class="pc bpc" id="L1285" title="1 of 2 branches missed.">		if (other.compareToZero()==0) throw new UndeterminedException(&quot;Moduling by zero is undetermine.&quot;);</span>
+
+<span class="fc" id="L1287">		Digit thisAbsolute = this.abs();</span>
+<span class="fc" id="L1288">		Digit otherAbsolute = other.abs();</span>
+
+<span class="fc" id="L1290">		Digit result = thisAbsolute.subtract(</span>
+
+<span class="fc" id="L1292">			otherAbsolute.multiply(</span>
+
+<span class="fc" id="L1294">				thisAbsolute.divide(</span>
+
+					otherAbsolute, 0
+
+				)
+
+			)
+
+		);// a - b * FLOOR(a/b)
+
+<span class="pc bpc" id="L1304" title="1 of 2 branches missed.">		return this.isNegative ? result.negate() : result;</span>
+
+	}/**/
+
+	/**
+
+		Rounds the number given a scale and a rounding mode.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;1.56&quot;);
+
+			Digit result = n.setScale(1, RoundingMode.HALF_UP);
+
+		}&lt;/pre&gt;
+
+		The return values will be {@code result = 1.6}
+
+		@param scale Decimal scale.
+		@param mode Rounding mode.
+		@exception ArithmeticException if {@code RoundingMode} mode is not either a given constant for {@code RoundingMode} class or the constant is {@code RoundingMode.UNNECESARY}.
+		@return Digit Rounded instance.
+		@see java.math.RoundingMode
+
+		@since v0.0.8
+
+	*/
+
+	public Digit setScale(int scale, RoundingMode mode) {
+
+<span class="pc bpc" id="L1335" title="1 of 2 branches missed.">		if (this.decimalPart.isEmpty()){</span>
+
+<span class="nc" id="L1337">			return this;</span>
+
+<span class="fc bfc" id="L1339" title="All 2 branches covered.">		}else if (scale&lt;=0){</span>
+
+<span class="fc" id="L1341">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
+
+<span class="pc bpc" id="L1343" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.CEILING){</span>
+
+<span class="nc bnc" id="L1345" title="All 2 branches missed.">			return this.RoundingOrTrunk(!this.isNegative);</span>
+
+<span class="pc bpc" id="L1347" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.FLOOR){</span>
+
+<span class="nc" id="L1349">			return this.RoundingOrTrunk(this.isNegative);</span>
+
+<span class="pc bpc" id="L1351" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.DOWN){</span>
+
+<span class="nc" id="L1353">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
+
+<span class="pc bpc" id="L1355" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.UP){</span>
+
+<span class="nc" id="L1357">			return RoundingOrTrunk(true);</span>
+
+<span class="pc bpc" id="L1359" title="1 of 2 branches missed.">		}else if (mode==RoundingMode.HALF_UP){</span>
+
+<span class="fc" id="L1361">			return this.RoundingHalf(scale, true);</span>
+
+<span class="nc bnc" id="L1363" title="All 2 branches missed.">		}else if (mode==RoundingMode.HALF_DOWN){</span>
+
+<span class="nc" id="L1365">			return this.RoundingHalf(scale, false);</span>
+
+<span class="nc bnc" id="L1367" title="All 2 branches missed.">		}else if (mode==RoundingMode.HALF_EVEN){</span>
+
+<span class="nc" id="L1369">			return this.RoundingEven(scale, true);</span>
+
+		}else{
+
+<span class="nc" id="L1373">			throw new ArithmeticException(&quot;Invalid RoundingMode&quot;);</span>
+
+		}
+
+	}
+
+	private Digit RoundingOrTrunk(boolean rounding){
+
+<span class="nc bnc" id="L1381" title="All 2 branches missed.">		if (rounding){</span>
+
+<span class="nc" id="L1383">			return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
+
+		}else{
+
+<span class="nc" id="L1387">			return new Digit(this.integerPart, this.isNegative, this.notation);</span>
+
+		}
+
+	}
+
+	private Digit RoundingEven(int scale, boolean even) {
+
+<span class="nc" id="L1395">		int isPointFive = this.operationManager.compareDecimalParts(this.decimalPart, &quot;5&quot;);</span>
+
+<span class="nc" id="L1397">		Digit Even = new Digit(this.integerPart, this.isNegative, this.notation);</span>
+
+<span class="nc" id="L1399">		int isEven = Even.module(new Digit(&quot;2&quot;, false, true)).compareToZero();</span>
+
+<span class="nc bnc" id="L1401" title="All 2 branches missed.">		if (isPointFive==0){</span>
+
+<span class="nc bnc" id="L1403" title="All 2 branches missed.">			if (isEven==0){</span>
+
+<span class="nc" id="L1405">				return Even;</span>
+
+			}else{
+
+<span class="nc" id="L1409">				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
+
+			}
+
+		}else{
+
+<span class="nc" id="L1415">			return this.RoundingHalf(scale, even);</span>
+
+		}
+
+	}/**/
+
+	private Digit RoundingHalf(int scale, boolean even){
+
+<span class="fc" id="L1423">		int decimalLength = this.decimalPart.length();</span>
+
+<span class="pc bpc" id="L1425" title="1 of 2 branches missed.">		if (decimalLength&lt;=scale) return this;</span>
+
+<span class="fc" id="L1427">		int carry = this.carry(this.decimalPart.substring(scale), even);</span>
+
+<span class="fc" id="L1429">		String newDecimalPart = this.decimalPart.substring(0, scale);</span>
+
+<span class="pc bpc" id="L1431" title="1 of 2 branches missed.">		if (carry==1){</span>
+
+<span class="nc" id="L1433">			String roundedPart = this.operationManager.increase(newDecimalPart);</span>
+
+<span class="nc bnc" id="L1435" title="All 2 branches missed.">			if (roundedPart.length()==newDecimalPart.length()){</span>
+
+<span class="nc" id="L1437">				return new Digit(this.integerPart, this.operationManager.trimZerosRight(roundedPart), this.isNegative, this.notation);</span>
+
+			}else{
+
+<span class="nc" id="L1441">				return new Digit(this.operationManager.increase(this.integerPart), this.isNegative, this.notation);</span>
+
+			}
+
+		}else{
+
+<span class="fc" id="L1447">			return new Digit(this.integerPart, newDecimalPart, this.isNegative, this.notation);</span>
+
+		}
+
+	}
+
+	private int carry(String number, boolean even){
+
+<span class="fc" id="L1455">		int carry = 0;</span>
+
+<span class="fc bfc" id="L1457" title="All 2 branches covered.">		if (number.length()!=1){</span>
+
+<span class="fc" id="L1459">			carry = this.carry(number.substring(1), even);</span>
+
+		}
+
+<span class="fc" id="L1463">		int n = number.charAt(0) - '0' + carry;</span>
+
+<span class="fc" id="L1465">		carry = 0;</span>
+
+<span class="pc bpc" id="L1467" title="3 of 6 branches missed.">		if (even ? n&gt;=5 : n&gt;5){</span>
+
+<span class="fc" id="L1469">			carry = 1;</span>
+
+		}
+
+<span class="fc" id="L1473">		return carry;</span>
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

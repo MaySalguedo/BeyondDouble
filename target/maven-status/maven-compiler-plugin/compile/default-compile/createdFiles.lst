@@ -1,5 +1,14 @@
+math\core\interfaces\Operable.class
+math\core\interfaces\EnhancedOperable.class
 math\core\package-info.class
+math\core\Digit.class
+math\core\exceptions\IllegalNumberFormatException.class
 math\core\exceptions\package-info.class
+math\core\exceptions\UndeterminedException.class
+math\taylor\Trigonometry.class
 math\core\interfaces\package-info.class
+math\core\Operationer.class
+math\core\Notationer.class
 math\taylor\package-info.class
+math\taylor\Util.class
 BeyondDouble\App.class

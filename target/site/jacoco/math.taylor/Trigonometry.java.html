@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Trigonometry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">math.taylor</a> &gt; <span class="el_source">Trigonometry.java</span></div><h1>Trigonometry.java</h1><pre class="source lang-java linenums">package math.taylor;
+
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.AbstractMap;
+
+import math.taylor.Util;
+import math.core.Digit;
+
+/**
+
+	Provides trigonometric functions and their inverses using Taylor series approximations
+	with arbitrary-precision arithmetic. This class computes trigonometric ratios (sin, cos, tan, 
+	csc, sec, cot) and inverse trigonometric functions (arcsin, arccos, arctan, arccsc, arcsec, arccot) 
+	along side mathematical constant π.
+
+	&lt;p&gt;Key features:&lt;/p&gt;
+	&lt;ul&gt;
+		&lt;li&gt;Arbitrary-precision calculations using {@link math.core.Digit}&lt;/li&gt;
+		&lt;li&gt;Parallel computation for performance optimization&lt;/li&gt;
+		&lt;li&gt;Asynchronous implementations using {@link CompletableFuture}&lt;/li&gt;
+		&lt;li&gt;Precision-controlled results&lt;/li&gt;
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+	&lt;pre&gt;{@code
+
+		Digit PI = Trigonometry.PI(); // 3.1415926535897932384626433832795028841988
+
+	}&lt;/pre&gt;
+
+	@author Dandelion
+	@version v0.0.1
+	@since v0.0.16
+
+*/
+
+public class Trigonometry extends Util{
+
+	/**
+
+		The {@code Digit pi} contant stores a π value up to 38 decimals.
+
+	*/
+
+<span class="nc" id="L53">	public static final Digit pi = new Digit(&quot;3.1415926535897932384626433832795028841972&quot;);</span>
+
+	/**
+
+		Empty constructor.
+
+	*/
+
+<span class="nc" id="L61">	public Trigonometry(){}</span>
+
+	/**
+		Returns the mathematical constant π (pi) with arbitrary precision.
+		&lt;p&gt;
+		This method uses caching for efficiency - the first call computes π using a parallelized Machin-like formula, 
+		while subsequent calls return the cached value. The computation uses:
+		&lt;ul&gt;
+
+		  &lt;li&gt;π {@code = 4 * (4 * arctan(1/5) - arctan(1/239))}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit PI = Trigonometry.PI(); // 3.1415926535897932384626433832795028841988
+
+		}&lt;/pre&gt;
+
+		@return π constant as a {@link Digit} object
+
+	*/
+
+	public static final Digit PI() {
+
+<span class="nc" id="L87">		return asyncPI(27, 40).join();</span>
+
+	}
+
+	/**
+
+		Computes the sine of an angle using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code sin(x) = x - x³/3! + x⁵/5! - x⁷/7! + ...}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit sin = Trigonometry.sin(Trigonometry.PI()); // 0
+
+		}&lt;/pre&gt;
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Sine value as a {@link Digit} object
+
+	*/
+
+	public static Digit sin(Digit x) {
+
+<span class="nc" id="L116">		return asyncSin(x, 11, 29).join();</span>
+
+	}
+
+	/**
+
+		Computes the cosine of an angle using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code cos(x) = x - x²/2! + x⁴/4! - x⁶/6! + ...}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit cos = Trigonometry.cos(Trigonometry.PI()); // -1
+
+		}&lt;/pre&gt;
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Cosine value as a {@link Digit} object
+
+	*/
+
+	public static Digit cos(Digit x) {
+
+<span class="nc" id="L145">		return asyncCos(x, 11, 29).join();</span>
+
+	}
+
+	/**
+
+		Computes the tangent of an angle using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code tan(x) = sin(x)/cos(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit tan = Trigonometry.tan(Trigonometry.PI()); // 0
+
+		}&lt;/pre&gt;
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Tangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit tan(Digit x) {
+
+<span class="nc" id="L174">		return asyncTanOrCot(x, 11, 29, true).join();</span>
+
+	}
+
+	/**
+
+		Computes the cosecant of an angle using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code csc(x) = 1/cos(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit csc = Trigonometry.csc(new Digit(&quot;0.52359877559829887307710723054658&quot;)); // 2
+
+		}&lt;/pre&gt;
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Cosecant value as a {@link Digit} object
+
+	*/
+
+	public static Digit csc(Digit x) {
+
+<span class="nc" id="L203">		return asyncSin(x, 11, 29).join().inverse(29);</span>
+
+	}
+
+	/**
+
+		Computes the secant of an angle using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code sec(x) = 1/sin(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit sec = Trigonometry.sin(new Digit(&quot;0.52359877559829887307710723054658&quot;)); // 2
+
+		}&lt;/pre&gt;
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Secant value as a {@link Digit} object
+
+	*/
+
+	public static Digit sec(Digit x) {
+
+<span class="nc" id="L232">		return asyncCos(x, 11, 29).join().inverse();</span>
+
+	}
+
+	/**
+
+		Computes the cotangent of an angle using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code cot(x) = cos(x)/sin(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit cot = Trigonometry.cot(new Digit(&quot;0.78539816339744830961566084581988&quot;)); // 1
+
+		}&lt;/pre&gt;
+
+		@param x Angle in radians as a {@link Digit} instance
+		@return Cotangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit cot(Digit x) {
+
+<span class="nc" id="L261">		return asyncTanOrCot(x, 11, 29, false).join();</span>
+
+	}
+
+	/**
+		Computes the arcsine of a value using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code arcsin(x) = x + (1/2)(x³/3) + (1*3)/(2*4)(x⁵/5) + (1*3*5)/(2*4*6)(x⁷/7) + ...}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit arcsin = Trigonometry.arcsin(new Digit(&quot;0.5&quot;)); // π/6 ≈ 0.5235987755982989
+
+		}&lt;/pre&gt;
+
+		@param x Value between -1 and 1 as a {@link Digit} instance
+		@return Arcsine value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arcsin(Digit x) {
+
+<span class="nc" id="L289">		return asyncArcsin(x, 15, 30).join();</span>
+
+	}
+
+	/**
+		Computes the arccosine of a value using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code arccos(x) = π/2 - arcsin(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit arccos = Trigonometry.arccos(new Digit(&quot;0&quot;)); // 1
+
+		}&lt;/pre&gt;
+
+		@param x Value in radians as a {@link Digit} instance
+		@return Arccosine value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arccos(Digit x) {
+
+<span class="nc" id="L317">		return Trigonometry.pi.divide(2, 38).subtract(asyncArcsin(x, 15, 30).join());</span>
+
+	}
+
+	/**
+
+		Computes the arctangent of a tan(x) value using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code arctan(x) = x - x³/3 + x⁵/5 - x⁷/7 + ...}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit arctan = Trigonometry.arctan(0); // 0
+
+		}&lt;/pre&gt;
+
+		@param x Vlue in radians as a {@link Digit} instance
+		@return Arctangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit arctan(Digit x) {
+
+<span class="nc bnc" id="L346" title="All 2 branches missed.">		if (x.abs().compareToOne()&gt;0){</span>
+
+<span class="nc" id="L348">			Digit result = asyncActan_v2(x.abs(), 11, 29).join();</span>
+
+<span class="nc bnc" id="L350" title="All 2 branches missed.">			return x.isNegative ? result.negate() : result;</span>
+
+		}
+
+<span class="nc" id="L354">		return asyncArctan(x, 11, 29).join();</span>
+
+	}
+
+	/**
+		Computes the arccosecant of a value using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code arccsc(x) = 1/arcsin(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit arccsc = Trigonometry.arcsin(new Digit(&quot;0.5&quot;)); // 6/π ≈ 1.909859317102
+
+		}&lt;/pre&gt;
+
+		@param x Value between -1 and 1 as a {@link Digit} instance
+		@return Arccsc value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arccsc(Digit x) {
+
+<span class="nc" id="L382">		return asyncArcsin(x, 15, 30).join().inverse();</span>
+
+	}
+
+	/**
+		Computes the arcsecant of a value using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code arcsec(x) = 1/arccos(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit arccos = Trigonometry.arcsec(new Digit(&quot;0&quot;)); // 2/π ≈ 0.63631977236758
+
+		}&lt;/pre&gt;
+
+		@param x Value in radians as a {@link Digit} instance
+		@return Arcsec value in radians as a {@link Digit} object
+
+	*/
+
+	public static Digit arcsec(Digit x) {
+
+<span class="nc" id="L410">		return Trigonometry.pi.divide(2, 38).subtract(asyncArcsin(x, 15, 30).join()).inverse();</span>
+
+	}
+
+	/**
+
+		Computes the arctangent of a tan(x) value using Taylor series expansion.
+
+		&lt;p&gt;The calculation is parallelized across available CPU cores and uses Taylor series:
+		&lt;ul&gt;
+
+			&lt;li&gt;{@code arccot(x) = arccos(x)/arcsin(x)}&lt;/li&gt;
+
+		&lt;/ul&gt;
+
+		&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+		&lt;pre&gt;{@code
+
+			Digit arctan = Trigonometry.arctan(0); // 0
+
+		}&lt;/pre&gt;
+
+		@param x Value in radians as a {@link Digit} instance
+		@return Arccotangent value as a {@link Digit} object
+
+	*/
+
+	public static Digit arccot(Digit x) {
+
+<span class="nc" id="L439">		return arccos(x).divide(arcsin(x), 38);</span>
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncArcsin(Digit x, int iteration, int precision) {
+
+<span class="nc" id="L445">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="nc" id="L446">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+
+<span class="nc" id="L448">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+
+<span class="nc bnc" id="L450" title="All 2 branches missed.">		for (int n = 0; n &lt; iteration; n++) {</span>
+
+<span class="nc" id="L452">			final int nth_term = n;</span>
+
+<span class="nc" id="L454">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeArcsinTerm(x, nth_term, precision), executor);</span>
+
+		}
+
+<span class="nc" id="L458">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+
+<span class="nc" id="L460">			executor.shutdown();</span>
+<span class="nc" id="L461">			return result;</span>
+
+		}, executor);
+
+	}
+
+	private static CompletableFuture&lt;Digit&gt; asyncActan_v2(Digit x, int iteration, int precision){
+
+<span class="nc" id="L469">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="nc" id="L470">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+
+<span class="nc" id="L472">		CompletableFuture&lt;Digit&gt; halfPi = CompletableFuture.supplyAsync(() -&gt; Trigonometry.pi.divide(2, 38), executor);</span>
+<span class="nc" id="L473">		CompletableFuture&lt;Digit&gt; inverse = CompletableFuture.supplyAsync(() -&gt; x.inverse(38), executor);</span>
+
+<span class="nc" id="L475">		return halfPi.thenCombineAsync(inverse, (a, b) -&gt; a.subtract(arctan(b)));</span>
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncArctan(Digit x, int iteration, int precision) {
+
+<span class="nc" id="L481">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="nc" id="L482">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+
+<span class="nc" id="L484">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+
+<span class="nc bnc" id="L486" title="All 2 branches missed.">		for (int n=0; n&lt;iteration; n++) {</span>
+
+<span class="nc" id="L488">			final int nth_term = n;</span>
+
+<span class="nc" id="L490">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeArctanTerm(x, nth_term, precision), executor);</span>
+
+		}
+
+<span class="nc" id="L494">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+
+<span class="nc" id="L496">			executor.shutdown();</span>
+<span class="nc" id="L497">			return result;</span>
+
+		}, executor);
+
+	}
+
+	private static CompletableFuture&lt;Digit&gt; asyncTanOrCot(Digit x, int iteration, int precision, boolean isTanOrCot){
+
+<span class="nc" id="L505">		CompletableFuture&lt;Digit&gt; sin = asyncSin(x, iteration, precision);</span>
+<span class="nc" id="L506">		CompletableFuture&lt;Digit&gt; cos = asyncCos(x, iteration, precision);</span>
+
+<span class="nc bnc" id="L508" title="All 2 branches missed.">		if (!isTanOrCot){</span>
+
+<span class="nc" id="L510">			return cos.thenCombineAsync(sin, (a, b) -&gt; a.divide(b, precision));</span>
+
+		}
+
+<span class="nc" id="L514">		return sin.thenCombineAsync(cos, (a, b) -&gt; a.divide(b, precision));</span>
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncCos(Digit x, int iteration, int precision) {
+
+<span class="nc" id="L520">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="nc" id="L521">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+
+<span class="nc" id="L523">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+
+<span class="nc bnc" id="L525" title="All 2 branches missed.">		for (int n=0; n&lt;iteration; n++) {</span>
+
+<span class="nc" id="L527">			final int nth_term = n;</span>
+
+<span class="nc" id="L529">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeSinOrCosTerm(x, nth_term, precision, false), executor);</span>
+
+		}
+
+<span class="nc" id="L533">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+
+<span class="nc" id="L535">			executor.shutdown();</span>
+<span class="nc" id="L536">			return result;</span>
+
+		}, executor);
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncSin(Digit x, int iteration, int precision) {
+
+<span class="nc" id="L544">		int cores = Math.min(iteration, Runtime.getRuntime().availableProcessors());</span>
+<span class="nc" id="L545">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+
+<span class="nc" id="L547">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[iteration];</span>
+
+<span class="nc bnc" id="L549" title="All 2 branches missed.">		for (int n=0; n&lt;iteration; n++) {</span>
+
+<span class="nc" id="L551">			final int nth_term = n;</span>
+
+<span class="nc" id="L553">			futures[n] = CompletableFuture.supplyAsync(() -&gt; computeSinOrCosTerm(x, nth_term, precision, true), executor);</span>
+
+		}
+
+<span class="nc" id="L557">		return asyncArrayAddition(futures, 0, iteration - 1).thenApplyAsync(result -&gt; {</span>
+
+<span class="nc" id="L559">			executor.shutdown();</span>
+<span class="nc" id="L560">			return result;</span>
+
+		}, executor);
+
+	}
+
+	private static CompletableFuture&lt;Digit&gt; asyncArrayAddition(CompletableFuture&lt;Digit&gt;[] futures, int start, int end){
+
+<span class="nc" id="L568">		final int intervalue = end - start + 1;</span>
+
+<span class="nc bnc" id="L570" title="All 2 branches missed.">		if (intervalue==1){</span>
+
+<span class="nc" id="L572">			return futures[start];</span>
+
+<span class="nc bnc" id="L574" title="All 2 branches missed.">		}else if (intervalue==2){</span>
+
+<span class="nc" id="L576">			return futures[start].thenCombine(futures[end], (a, b) -&gt; a.add(b));</span>
+
+		}
+
+<span class="nc" id="L580">		final int mid = (start + end) / 2;</span>
+
+<span class="nc" id="L582">		CompletableFuture&lt;Digit&gt; left = asyncArrayAddition(futures, start, mid);</span>
+<span class="nc" id="L583">		CompletableFuture&lt;Digit&gt; right = asyncArrayAddition(futures, mid + 1, end);</span>
+
+<span class="nc" id="L585">		return left.thenCombineAsync(right, (a, b) -&gt; a.add(b));</span>
+
+	}
+
+	private static Digit computeSinOrCosTerm(Digit x, int nth_term, int precision, boolean isSinOrCos) {
+
+<span class="nc bnc" id="L591" title="All 2 branches missed.">		int exponent = 2 * nth_term + (isSinOrCos ? 1 : 0);</span>
+
+<span class="nc" id="L593">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
+
+<span class="nc" id="L595">		CompletableFuture&lt;Digit&gt; futureFactorial = CompletableFuture.supplyAsync(() -&gt; factorial(exponent));</span>
+
+<span class="nc" id="L597">		return futurePower.thenCombineAsync(futureFactorial, (powerTerm, factorialTerm) -&gt; {</span>
+
+<span class="nc bnc" id="L599" title="All 2 branches missed.">			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(factorialTerm, precision));</span>
+
+<span class="nc" id="L601">		}).join();</span>
+
+	}
+
+	/*private static Digit computeArcsinTerm(Digit x, int nth_term, int precision, ExecutorService executor) {
+
+		// 2*n + 1
+		int exponent = 2 * nth_term + 1;
+
+		// (2n)!
+		CompletableFuture&lt;Digit&gt; futureFactorial = CompletableFuture.supplyAsync(() -&gt; factorial(2*nth_term));
+
+		// 4^n
+		CompletableFuture&lt;Digit&gt; future4thPower = CompletableFuture.supplyAsync(() -&gt; power(new Digit(4), exponent));
+
+		// (n!)^2
+		CompletableFuture&lt;Digit&gt; futurePowerFactorial = CompletableFuture.supplyAsync(() -&gt; power(factorial(nth_term), 2));
+
+		// x^(2*n + 1)
+		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));
+
+		CompletableFuture&lt;Digit&gt; coefficient = futureFactorial.thenCombineAsync(futurePower, (a, b) -&gt;  a.multiply(b), executor);
+
+		CompletableFuture&lt;Digit&gt; denominator = future4thPower.thenCombineAsync(futurePowerFactorial, (a, b) -&gt;  a.multiply(b.multiply(exponent)), executor);
+
+		return coefficient.thenCombineAsync(denominator, (a, b) -&gt;  a.divide(b, precision), executor).join();
+
+	}/**/
+
+	private static Digit computeArcsinTerm(Digit x, int nth_term, int precision) {
+
+<span class="nc" id="L632">		int exponent = 2 * nth_term + 1;</span>
+
+		// (2n)! / (4^n * (n!)^2)
+<span class="nc" id="L635">		CompletableFuture&lt;Digit&gt; futureCoefficient = CompletableFuture.supplyAsync(() -&gt; {</span>
+
+<span class="nc" id="L637">			Digit numerator = factorial(2 * nth_term);</span>
+<span class="nc" id="L638">			Digit denominator = power(new Digit(4), nth_term).multiply(power(factorial(nth_term), 2));</span>
+
+<span class="nc" id="L640">			return numerator.divide(denominator, precision);</span>
+
+		});
+
+		// x^(2*n + 1)
+<span class="nc" id="L645">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
+
+<span class="nc" id="L647">		return futureCoefficient.thenCombineAsync(futurePower, (coefficient, powerTerm) -&gt;  coefficient.multiply(powerTerm).divide(new Digit(exponent), precision)).join();</span>
+
+	}/**/
+
+	private static Digit computeArctanTerm(Digit x, int nth_term, int precision) {
+
+<span class="nc" id="L653">		int exponent = 2 * nth_term + 1 ;</span>
+
+<span class="nc" id="L655">		CompletableFuture&lt;Digit&gt; futurePower = CompletableFuture.supplyAsync(() -&gt; power(x, exponent));</span>
+
+<span class="nc" id="L657">		CompletableFuture&lt;Digit&gt; divident = CompletableFuture.supplyAsync(() -&gt; new Digit(exponent));</span>
+
+<span class="nc" id="L659">		return futurePower.thenCombineAsync(divident, (powerTerm, dividentTerm) -&gt; {</span>
+
+<span class="nc bnc" id="L661" title="All 2 branches missed.">			return new Digit((nth_term % 2) == 0 ? 1 : -1).multiply(powerTerm.divide(dividentTerm, precision));</span>
+
+<span class="nc" id="L663">		}).join();</span>
+
+	}
+
+	private static CompletableFuture&lt;Digit&gt; asyncPI(int iteration, int precision) {
+
+<span class="nc" id="L669">		int cores = Runtime.getRuntime().availableProcessors();</span>
+<span class="nc" id="L670">		ExecutorService executor = Executors.newFixedThreadPool(cores);</span>
+
+<span class="nc" id="L672">		Digit sign = new Digit(1);</span>
+
+<span class="nc" id="L674">		CompletableFuture&lt;Digit&gt; arctan1_5 = CompletableFuture.supplyAsync(() -&gt; parallelArctan(5, iteration, sign, precision, executor), executor);</span>
+
+<span class="nc" id="L676">		CompletableFuture&lt;Digit&gt; arctan1_239 = CompletableFuture.supplyAsync(() -&gt; parallelArctan(239, 11, sign, precision, executor), executor);</span>
+
+<span class="nc" id="L678">		return arctan1_5.thenCombineAsync(arctan1_239, (a, b) -&gt; {</span>
+
+<span class="nc" id="L680">			executor.shutdown();</span>
+
+<span class="nc" id="L682">			final Digit four = new Digit(4);</span>
+
+<span class="nc" id="L684">			return four.multiply(</span>
+
+<span class="nc" id="L686">				four.multiply(a).subtract(b)</span>
+
+			);
+
+		}, executor);
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static Digit parallelArctan(int x, int iterations, Digit sign, int precision, ExecutorService executor) {
+
+<span class="nc bnc" id="L696" title="All 2 branches missed.">		if (iterations &lt;= 30) {</span>
+
+<span class="nc" id="L698">			return computePartialArctan(x, 0, iterations, sign, precision);</span>
+
+		}/**/
+
+<span class="nc" id="L702">		int chunks = Runtime.getRuntime().availableProcessors();</span>
+<span class="nc" id="L703">		int chunkSize = (iterations + chunks - 1) / chunks;</span>
+
+<span class="nc" id="L705">		CompletableFuture&lt;Digit&gt;[] futures = new CompletableFuture[chunks];</span>
+
+<span class="nc bnc" id="L707" title="All 2 branches missed.">		for (int i = 0; i &lt; chunks; i++) {</span>
+
+<span class="nc" id="L709">			int start = i * chunkSize;</span>
+<span class="nc" id="L710">			int end = Math.min(start + chunkSize, iterations);</span>
+
+<span class="nc bnc" id="L712" title="All 2 branches missed.">			if (start &gt;= iterations) {</span>
+
+<span class="nc" id="L714">				futures[i] = CompletableFuture.completedFuture(new Digit(0));</span>
+<span class="nc" id="L715">				continue;</span>
+
+			}
+
+<span class="nc" id="L719">			Digit chunkInitialSign = sign;</span>
+
+<span class="nc bnc" id="L721" title="All 2 branches missed.">			if (start % 2 == 1) {</span>
+
+<span class="nc" id="L723">				chunkInitialSign = chunkInitialSign.negate();</span>
+
+			}
+
+<span class="nc" id="L727">			final int finalStart = start;</span>
+<span class="nc" id="L728">			final int finalEnd = end;</span>
+<span class="nc" id="L729">			final Digit finalChunkSign = chunkInitialSign;</span>
+<span class="nc" id="L730">			futures[i] = CompletableFuture.supplyAsync(() -&gt; computePartialArctan(x, finalStart, finalEnd, finalChunkSign, precision), executor);</span>
+
+		}
+
+<span class="nc" id="L734">		return CompletableFuture.allOf(futures).thenApply(v -&gt; {</span>
+
+<span class="nc" id="L736">			Digit result = new Digit(0);</span>
+
+<span class="nc bnc" id="L738" title="All 2 branches missed.">			for (int i = 0; i &lt; chunks; i++) {</span>
+
+<span class="nc" id="L740">				result = result.add(futures[i].join());</span>
+
+			}
+
+<span class="nc" id="L744">			return result;</span>
+
+<span class="nc" id="L746">		}).join();</span>
+
+	}
+
+	private static Digit computePartialArctan(int x, int start, int end, Digit initialSign, int precision) {
+
+<span class="nc bnc" id="L752" title="All 2 branches missed.">		if (start &gt;= end) {</span>
+
+<span class="nc" id="L754">			return new Digit(0);</span>
+
+		}
+
+<span class="nc" id="L758">		Digit partial = new Digit(0);</span>
+<span class="nc" id="L759">		Digit termSign = initialSign;</span>
+<span class="nc" id="L760">		Digit oneOverX = new Digit(1).divide(new Digit(x), precision);</span>
+<span class="nc" id="L761">		Digit oneOverXSquared = oneOverX.multiply(oneOverX);</span>
+<span class="nc" id="L762">		Digit currentTerm = power(oneOverX, 2 * start + 1);</span>
+
+<span class="nc bnc" id="L764" title="All 2 branches missed.">		for (int n = start; n &lt; end; n++) {</span>
+
+<span class="nc" id="L766">			int denominator = 2 * n + 1;</span>
+<span class="nc" id="L767">			Digit term = currentTerm.divide(new Digit(denominator), precision);</span>
+<span class="nc" id="L768">			term = term.multiply(termSign);</span>
+<span class="nc" id="L769">			partial = partial.add(term);</span>
+			
+<span class="nc" id="L771">			currentTerm = currentTerm.multiply(oneOverXSquared);</span>
+<span class="nc" id="L772">			termSign = termSign.negate();</span>
+
+		}
+
+<span class="nc" id="L776">		return partial;</span>
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

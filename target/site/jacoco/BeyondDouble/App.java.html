@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">BeyondDouble</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package BeyondDouble;
+
+import java.util.concurrent.ExecutionException;
+
+import java.math.RoundingMode;
+
+import math.core.*;
+import math.taylor.*;
+
+/**
+
+	Main Runnable App class.
+
+	@author Dandelion
+
+*/
+
+<span class="nc" id="L18">public class App extends Util {</span>
+
+	public static void main(String[] abc) throws InterruptedException, ExecutionException{
+
+<span class="nc" id="L22">		System.out.print(&quot;\n\n&quot;);</span>
+
+		//Digit x = new Digit(&quot;0.5&quot;);//(&quot;0.52359877559829887307710723054658&quot;);
+
+		//System.out.println(Trigonometry.PI());
+		//System.out.print(&quot;arcsin(&quot;+x+&quot;) = &quot;+Trigonometry.arcsin(x));
+
+		//taylor_util_test();
+
+<span class="nc" id="L31">		trigonometry_test();</span>
+
+<span class="nc" id="L33">		System.out.print(&quot;\n\n&quot;);</span>
+
+<span class="nc" id="L35">	}</span>
+
+	private static void trigonometry_test() {
+
+		/*for (int i=0; i&lt;=360; i++) {
+
+			System.out.println(&quot;sin(&quot;+i+&quot;) = \n&quot;+Math.sin(i*Math.PI/180)+&quot; | \n&quot;+Trigonometry.sin(
+
+				new Digit(i).multiply(Trigonometry.pi).divide(180, 20)
+
+			)+&quot; |\n&quot;);
+
+		}/**/
+
+		/*for (int i=0; i&lt;=360; i++) {
+
+			System.out.println(&quot;cos(&quot;+i+&quot;) = \n&quot;+Math.cos(i*Math.PI/180)+&quot; | \n&quot;+Trigonometry.cos(
+
+				new Digit(i).multiply(Trigonometry.pi).divide(180, 20)
+
+			)+&quot; |\n&quot;);
+
+		}/**/
+
+		/*for (int i=0; i&lt;=360; i++) {
+
+			System.out.println(&quot;tan(&quot;+i+&quot;) = \n&quot;+Math.tan(i*Math.PI/180)+&quot; | \n&quot;+Trigonometry.tan(
+
+				new Digit(i).multiply(Trigonometry.pi).divide(180, 20)
+
+			)+&quot; |\n&quot;);
+
+		}/**/
+
+		/*for (int i=0; i&lt;=360; i++) {
+
+			double mtan = Math.tan(i*Math.PI/180);
+			Digit dtan = Trigonometry.tan(
+
+				new Digit(i).multiply(Trigonometry.pi).divide(180, 20)
+
+			);
+
+			System.out.println(&quot;arctan(tan(&quot;+i+&quot;) | &quot;+mtan+&quot;) = \n&quot;+Math.atan(mtan)+&quot; | \n&quot;+Trigonometry.arctan(dtan)+&quot; |\n&quot;);
+
+		}/**/
+
+		/*for (int i=0; i&lt;=360; i++) {
+
+			double msin = Math.sin(i*Math.PI/180);
+			Digit dsin = Trigonometry.sin(
+
+				new Digit(i).multiply(Trigonometry.pi).divide(180, 20)
+
+			);
+
+			System.out.println(&quot;arcsin(sin(&quot;+i+&quot;) | &quot;+msin+&quot;) = \n&quot;+Math.asin(msin)+&quot; | \n&quot;+Trigonometry.arcsin(dsin)+&quot; |\n&quot;);
+
+		}/**/
+
+		/*for (int i=0; i&lt;=360; i++) {
+
+			double mcos = Math.cos(i*Math.PI/180);
+			Digit dcos = Trigonometry.cos(
+
+				new Digit(i).multiply(Trigonometry.pi).divide(180, 20)
+
+			);
+
+			System.out.println(&quot;arccos(cos(&quot;+i+&quot;) | &quot;+mcos+&quot;) = \n&quot;+Math.acos(mcos)+&quot; | \n&quot;+Trigonometry.arccos(dcos)+&quot; |\n&quot;);
+
+		}/**/
+
+<span class="nc" id="L108">	}</span>
+
+	private static void taylor_util_test() throws InterruptedException, ExecutionException{
+
+<span class="nc" id="L112">		double a = 245;</span>
+<span class="nc" id="L113">		int b = 400;</span>
+
+<span class="nc" id="L115">		Digit n = new Digit(a);</span>
+
+<span class="nc" id="L117">		System.out.println(n+&quot;^&quot;+b+&quot; = &quot;+Util.power(n, b)+&quot;\n&quot;);</span>
+<span class="nc" id="L118">		System.out.println(1000+&quot;! = &quot;+Util.factorial(1000));</span>
+
+		/*for(int i=0; i&lt;=100; i++){
+
+			System.out.println(i+&quot;! = &quot;+Util.factorial(i));
+
+		}/**/
+
+<span class="nc" id="L126">	}</span>
+
+	private static void core_digit_test() throws InterruptedException, ExecutionException{
+
+<span class="nc" id="L130">		double a = 2156;</span>
+<span class="nc" id="L131">		double b = 0.0023;</span>
+
+<span class="nc" id="L133">		Digit n = new Digit(a);</span>
+
+<span class="nc" id="L135">		System.out.print(a+&quot; + &quot;+b+&quot; = &quot;+(a + b)+&quot; | &quot;+n.add(b)+&quot;\n&quot;);</span>
+<span class="nc" id="L136">		System.out.print(a+&quot; - &quot;+b+&quot; = &quot;+(a - b)+&quot; | &quot;+n.subtract(b)+&quot;\n&quot;);</span>
+<span class="nc" id="L137">		System.out.print(a+&quot; * &quot;+b+&quot; = &quot;+(a * b)+&quot; | &quot;+n.multiply(b)+&quot;\n&quot;);</span>
+<span class="nc" id="L138">		System.out.print(a+&quot; / &quot;+b+&quot; = &quot;+(a / b)+&quot; | &quot;+n.divide(b, 20)+&quot;\n&quot;);</span>
+<span class="nc" id="L139">		System.out.print(a+&quot; % &quot;+b+&quot; = &quot;+(a % b)+&quot; | &quot;+n.module(b));</span>
+
+<span class="nc" id="L141">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UndeterminedException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">math.core.exceptions</a> &gt; <span class="el_source">UndeterminedException.java</span></div><h1>UndeterminedException.java</h1><pre class="source lang-java linenums">package math.core.exceptions;
+
+/**
+
+	Thrown to indicate that a mathematical operation has resulted in an indeterminate form.
+
+	&lt;p&gt;This exception extends {@link ArithmeticException} and handles cases where a mathematical expression cannot be resolved to a definite value&lt;/p&gt;
+
+	&lt;p&gt;&lt;b&gt;Key Features:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;Specialized exception for indeterminate mathematical forms&lt;/li&gt;
+		&lt;li&gt;Provides both default and detailed message constructors&lt;/li&gt;
+		&lt;li&gt;Maintains standard ArithmeticException behavior&lt;/li&gt;
+		&lt;li&gt;Identifies undefined calculation results&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+	&lt;pre&gt;{@code
+
+		public void MyFunction(){
+
+			//logic
+
+			throw new UndetermineException();
+
+		}
+
+	}&lt;/pre&gt;
+
+	@author Dandelion
+	@version v0.0.1
+	@since v0.0.16
+
+*/
+
+public class UndeterminedException extends ArithmeticException {
+
+	/**
+
+		Constructs an UndeterminedException with no detail message.
+
+		&lt;p&gt;Recommended for cases where the specific error context is provided through other means.&lt;/p&gt;
+
+		@since v0.0.1
+
+	*/
+
+	public UndeterminedException(){
+
+<span class="nc" id="L52">		super();</span>
+
+<span class="nc" id="L54">	}</span>
+
+	/**
+
+		Constructs an UndeterminedException with the specified detail message.
+
+		&lt;p&gt;The message should clearly describe the format violation and, where possible, include the invalid input.&lt;/p&gt;
+		
+		@param message The detail message explaining the format violation
+		@since v0.0.1
+
+	*/
+
+	public UndeterminedException(String message){
+
+<span class="fc" id="L69">		super(message);</span>
+
+<span class="fc" id="L71">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

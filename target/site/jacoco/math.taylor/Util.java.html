@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Util.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">math.taylor</a> &gt; <span class="el_source">Util.java</span></div><h1>Util.java</h1><pre class="source lang-java linenums">package math.taylor;
+
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Executors;
+
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import math.core.Digit;
+
+/**
+
+	Stakeholder for non-taylor util functions that will be used throughout the math.taylor package.&lt;br&gt;&lt;br&gt;
+
+	Provides utility functions for advanced mathematical computations, particularly
+	supporting Taylor series implementations through optimized factorial and power operations.
+	This class features parallel computation capabilities for improved performance with
+	large numbers and exponents.
+
+	&lt;p&gt;&lt;b&gt;Key Features:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;&lt;b&gt;Parallel Factorial Computation&lt;/b&gt; - Efficiently calculates factorials using divide-and-conquer approach&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Exponentiation&lt;/b&gt; - Optimized power operations with support for negative exponents&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Asynchronous Processing&lt;/b&gt; - Utilizes ForkJoinPool and CompletableFuture for concurrent execution&lt;/li&gt;
+		&lt;li&gt;&lt;b&gt;Recursive Algorithms&lt;/b&gt; - Implements binary exponentiation and range-based product calculation&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Use Cases:&lt;/b&gt;&lt;/p&gt;
+	&lt;ol&gt;
+
+		&lt;li&gt;Calculating large factorials for Taylor series coefficients&lt;/li&gt;
+		&lt;li&gt;Computing powers for polynomial terms in series expansions&lt;/li&gt;
+		&lt;li&gt;Optimizing computationally intensive operations through parallelism&lt;/li&gt;
+
+	&lt;/ol&gt;
+
+	&lt;p&gt;&lt;b&gt;Technical Implementation Notes:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;Static utility class designed for extension&lt;/li&gt;
+		&lt;li&gt;Thread-safe through immutable Digit instances&lt;/li&gt;
+		&lt;li&gt;Uses ForkJoinPool for factorial computation&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+	&lt;pre&gt;{@code
+
+		public class MyClass extends Util{
+
+			//logic
+
+		}
+
+	}&lt;/pre&gt;
+
+	@author Dandelion
+	@version v0.0.2
+	@since v0.0.15
+
+*/
+
+public class Util{
+	
+	/*private static HashMap&lt;Long, Digit&gt; factorialMap = new HashMap&lt;Long, Digit&gt;(Map.ofEntries(
+
+		new AbstractMap.SimpleEntry&lt;Long, Digit&gt;(0l, new Digit(&quot;1&quot;)),
+		new AbstractMap.SimpleEntry&lt;Long, Digit&gt;(1l, new Digit(&quot;1&quot;))
+
+	));*/
+
+<span class="nc" id="L79">	private static final ForkJoinPool factorialPool = new ForkJoinPool();</span>
+	private static final int SEQUENTIAL_THRESHOLD = 3;
+
+	/**
+
+		Empty constructor.
+
+	*/
+
+<span class="nc" id="L88">	public Util(){}</span>
+
+	/**
+
+		Powers one {@code Digit} intance to a {@code long} exponent.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit n = new Digit(&quot;2&quot;);
+			Digit m = new Digit(-4);
+
+			Digit result = Util.power(n, m);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 0.0625}
+
+		@param base Digit instance.
+		@param exponent Exponent.
+		@return Digit Result from the power of the exponent to the {@code Digit} instance.
+		@see math.core.interfaces.EnhancedOperable#inverse()
+		@see math.core.interfaces.EnhancedOperable#unity()
+		@see math.core.interfaces.Operable#multiply(Object)
+
+		@since v0.0.1
+
+	*/
+
+	protected static Digit power(Digit base, int exponent) {
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (exponent&lt;0){</span>
+
+<span class="nc" id="L121">			return Util.power(base, -exponent).inverse();</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		}else if (exponent==0){</span>
+
+<span class="nc" id="L125">			return base.unity();</span>
+
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		}else if (exponent==1){</span>
+
+<span class="nc" id="L129">			return base;</span>
+
+		}
+
+<span class="nc" id="L133">		return asyncBinaryPower(base, exponent).join();</span>
+
+	}
+
+	/**
+
+		Performs the {@code long} index factorial and returns its value as an instance of type {@code Digit}.
+
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Usage Example&lt;/b&gt;
+		&lt;pre&gt;{@code
+
+			Digit result = Util.factorial(6);
+
+		}&lt;/pre&gt;
+
+		The return value will be {@code result = 720}
+
+		@param index Factorial index.
+		@return Digit Result from the factorial of the index.
+		@see math.core.interfaces.Operable#multiply(Object)
+
+		@since v0.0.1
+
+	*/
+
+	protected static Digit factorial(long index) {
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (index &lt;= 1) {</span>
+
+<span class="nc" id="L162">			return new Digit(1);</span>
+
+		}
+
+<span class="nc" id="L166">		return asyncFactorialRange(1, index).join();</span>
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncFactorialRange(long start, long end) {
+
+<span class="nc" id="L172">		return CompletableFuture.supplyAsync(() -&gt; {</span>
+
+<span class="nc" id="L174">			long range = end - start + 1;</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (range &lt;= SEQUENTIAL_THRESHOLD) {</span>
+
+<span class="nc" id="L178">				return sequentialProduct(start, end);</span>
+
+			}
+
+<span class="nc" id="L182">			long mid = (start + end) / 2;</span>
+<span class="nc" id="L183">			CompletableFuture&lt;Digit&gt; left = asyncFactorialRange(start, mid);</span>
+<span class="nc" id="L184">			CompletableFuture&lt;Digit&gt; right = asyncFactorialRange(mid + 1, end);</span>
+
+<span class="nc" id="L186">			return left.thenCombine(right, (l, r) -&gt; l.multiply(r)).join();</span>
+
+		}, factorialPool);
+
+	}
+
+	private static Digit sequentialProduct(long start, long end) {
+
+<span class="nc" id="L194">		Digit product = new Digit(1);</span>
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (long i = start; i &lt;= end; i++) {</span>
+
+<span class="nc" id="L198">			product = product.multiply(new Digit(i));</span>
+
+		}
+
+<span class="nc" id="L202">		return product;</span>
+
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;) private static CompletableFuture&lt;Digit&gt; asyncBinaryPower(Digit base, int exponent) {
+
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (exponent&lt;=2) {</span>
+
+<span class="nc" id="L210">			return CompletableFuture.completedFuture(</span>
+
+<span class="nc bnc" id="L212" title="All 2 branches missed.">				exponent == 2 ? base.multiply(base) : base</span>
+
+			);
+
+		}
+		
+<span class="nc" id="L218">		int halfExponent = exponent / 2;</span>
+<span class="nc" id="L219">		int extra = exponent % 2;</span>
+		
+<span class="nc" id="L221">		CompletableFuture&lt;Digit&gt; halfPower = CompletableFuture.supplyAsync(() -&gt; asyncBinaryPower(base, halfExponent).join());</span>
+		
+<span class="nc" id="L223">		return halfPower.thenComposeAsync(half -&gt; {</span>
+
+<span class="nc" id="L225">			Digit squared = half.multiply(half);</span>
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			if (extra == 1) {</span>
+
+<span class="nc" id="L229">				return CompletableFuture.completedFuture(squared.multiply(base));</span>
+
+			}
+
+<span class="nc" id="L233">			return CompletableFuture.completedFuture(squared);</span>
+
+		});
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

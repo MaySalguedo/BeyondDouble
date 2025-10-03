@@ -1,0 +1,9 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+BeyondDouble,math.core,Notationer,168,177,31,23,32,33,20,17,1,9
+BeyondDouble,math.core,Operationer,326,604,39,51,46,121,34,34,5,18
+BeyondDouble,math.core,Digit,421,827,72,100,50,151,76,59,16,33
+BeyondDouble,BeyondDouble,App,109,0,0,0,21,0,5,0,5,0
+BeyondDouble,math.core.exceptions,UndeterminedException,3,4,0,0,2,2,1,1,1,1
+BeyondDouble,math.core.exceptions,IllegalNumberFormatException,3,4,0,0,2,2,1,1,1,1
+BeyondDouble,math.taylor,Trigonometry,892,0,38,0,141,0,76,0,57,0
+BeyondDouble,math.taylor,Util,173,0,18,0,35,0,20,0,11,0

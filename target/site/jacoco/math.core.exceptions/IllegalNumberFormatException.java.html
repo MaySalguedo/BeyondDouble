@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IllegalNumberFormatException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BeyondDouble</a> &gt; <a href="index.source.html" class="el_package">math.core.exceptions</a> &gt; <span class="el_source">IllegalNumberFormatException.java</span></div><h1>IllegalNumberFormatException.java</h1><pre class="source lang-java linenums">package math.core.exceptions;
+
+/**
+
+	Thrown to indicate that a number string does not conform to the required numeric format expected by mathematical operations.
+
+	&lt;p&gt;This exception extends {@link NumberFormatException} and provides specialized handling for numeric format errors in mathematical contexts.&lt;/p&gt;
+
+	&lt;p&gt;&lt;b&gt;Key Features:&lt;/b&gt;&lt;/p&gt;
+	&lt;ul&gt;
+
+		&lt;li&gt;Custom exception for number formatting issues&lt;/li&gt;
+		&lt;li&gt;Provides both default and detailed message constructors&lt;/li&gt;
+		&lt;li&gt;Maintains standard NumberFormatException behavior&lt;/li&gt;
+
+	&lt;/ul&gt;
+
+	&lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+	&lt;pre&gt;{@code
+
+		public void MyFunction(){
+
+			//logic
+
+			throw new IllegalNumberFormatException();
+
+		}
+
+	}&lt;/pre&gt;
+
+	@author Dandelion
+	@version v0.0.1
+	@since v0.0.16
+
+*/
+
+public class IllegalNumberFormatException extends NumberFormatException{
+
+	/**
+
+		Constructs an IllegalNumberFormatException with no detail message.
+
+		&lt;p&gt;Recommended for cases where the specific error context is provided through other means.&lt;/p&gt;
+
+		@since v0.0.1
+
+	*/
+
+	public IllegalNumberFormatException(){
+
+<span class="nc" id="L51">		super();</span>
+
+<span class="nc" id="L53">	}</span>
+
+	/**
+
+		Constructs an IllegalNumberFormatException with the specified detail message.
+
+		&lt;p&gt;The message should clearly describe the format violation and, where possible, include the invalid input string.&lt;/p&gt;
+		
+		@param message The detail message explaining the format violation
+		@since v0.0.1
+
+	*/
+
+	public IllegalNumberFormatException(String message){
+
+<span class="fc" id="L68">		super(message);</span>
+
+<span class="fc" id="L70">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
