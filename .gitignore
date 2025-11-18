@@ -1,3 +1,5 @@
 *.class
+*.html
+*.js
 docs/
 target/
