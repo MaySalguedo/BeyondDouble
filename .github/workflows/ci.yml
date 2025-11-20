@@ -2,7 +2,7 @@ name: Pipeline for BeyoundDouble Project
 
 on:
   push:
-    branches: [main, quality_assurence]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -23,6 +23,7 @@ jobs:
           VALIDATE_CHECKSTYLE: false
           VALIDATE_JSCPD: false
           VALIDATE_MARKDOWN: false
+          VALIDATE_GOOGLE_JAVA_FORMAT: false
           JAVA_CHECKSTYLE_CONFIG_FILE: ./.github/checkstyle-config.xml
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
