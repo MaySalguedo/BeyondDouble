@@ -1,11 +1,8 @@
 package BeyondDouble;
 
-import java.util.concurrent.ExecutionException;
-
-import java.math.RoundingMode;
-
-import math.core.*;
-import math.taylor.*;
+import math.core.Digit;
+import math.taylor.Util;
+import math.taylor.Trigonometry;
 
 /**
 
@@ -17,13 +14,27 @@ import math.taylor.*;
 
 public class App extends Util {
 
+	/**
+
+		Empty constructor.
+
+	*/
+
 	public App() {
 
 		super();
 
 	}
 
-	public static void main(String[] abc) {
+	/**
+
+		Main method.
+
+		@param abc String array.
+
+	*/
+
+	public static void main(final String[] abc) {
 
 		System.out.print("\n\n");
 

@@ -18,6 +18,9 @@ jobs:
         uses: github/super-linter@v4
         env:
           VALIDATE_JAVA: true
+          VALIDATE_JAVADOC: false
+          VALIDATE_JAVA_STYLE: false
+          JAVA_CHECKSTYLE_CONFIG_FILE: ./.github/checkstyle-config.xml
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -112,7 +115,6 @@ jobs:
           docker stop test-container || true
           docker rm test-container || true
 
-      # (Opcional) Publicar en Docker Hub
       # - name: Log in to Docker Hub
       #   uses: docker/login-action@v2
       #   with:

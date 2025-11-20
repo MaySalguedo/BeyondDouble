@@ -394,7 +394,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test compareTo with all scenarios")
-	void testCompareToComprehensive() {
+	public void testCompareToComprehensive() {
 		Digit two = new Digit("2");
 		Digit twoPointOne = new Digit("2.1");
 		Digit negativeTwo = new Digit("-2");
@@ -422,7 +422,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test comparison to special values")
-	void testSpecialComparisons() {
+	public void testSpecialComparisons() {
 		Digit pointFive = new Digit("0.5");
 		Digit negativePointFive = new Digit("-0.5");
 		Digit two = new Digit("2");
@@ -447,7 +447,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test addition comprehensively")
-	void testAddition() {
+	public void testAddition() {
 		// Basic addition
 		assertEquals(new Digit("3"), new Digit("1").add(new Digit("2")));
 		assertEquals(new Digit("0"), new Digit("1").add(new Digit("-1")));
@@ -470,7 +470,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test subtraction comprehensively")
-	void testSubtraction() {
+	public void testSubtraction() {
 		assertEquals(new Digit("1"), new Digit("2").subtract(new Digit("1")));
 		assertEquals(new Digit("3"), new Digit("2").subtract(new Digit("-1")));
 		assertEquals(new Digit("-1.5"), new Digit("1").subtract(new Digit("2.5")));
@@ -482,7 +482,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test multiplication comprehensively")
-	void testMultiplication() {
+	public void testMultiplication() {
 		assertEquals(new Digit("6"), new Digit("2").multiply(new Digit("3")));
 		assertEquals(new Digit("-6"), new Digit("2").multiply(new Digit("-3")));
 		assertEquals(new Digit("0.25"), new Digit("0.5").multiply(new Digit("0.5")));
@@ -499,7 +499,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test division comprehensively")
-	void testDivision() {
+	public void testDivision() {
 		assertEquals(new Digit("2"), new Digit("4").divide(2));
 		assertEquals(new Digit("0.5"), new Digit("1").divide(new Digit("2")));
 		assertEquals(new Digit("-2"), new Digit("4").divide(new Digit("-2")));
@@ -515,7 +515,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test division by zero")
-	void testDivisionByZero() {
+	public void testDivisionByZero() {
 		assertThrows(UndeterminedException.class, () -> one.divide(zero));
 		assertThrows(UndeterminedException.class, () -> one.divide(0));
 		assertThrows(UndeterminedException.class, () -> one.divide(0.0));
@@ -525,7 +525,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test enhanced operations")
-	void testEnhancedOperations() {
+	public void testEnhancedOperations() {
 		// Negation
 		assertEquals(minusOne, one.negate());
 		assertEquals(one, minusOne.negate());
@@ -552,7 +552,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test increase and decrease operations")
-	void testIncreaseDecrease() {
+	public void testIncreaseDecrease() {
 		// Increase
 		assertEquals(new Digit("1.5"), half.increase());
 		assertEquals(new Digit("0.5"), new Digit("-0.5").increase());
@@ -570,7 +570,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test all rounding modes")
-	void testAllRoundingModes() {
+	public void testAllRoundingModes() {
 		Digit number = new Digit("3.14159");
 		Digit number2 = new Digit("3.15");
 		Digit number3 = new Digit("3.25");
@@ -600,7 +600,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test rounding edge cases")
-	void testRoundingEdgeCases() {
+	public void testRoundingEdgeCases() {
 		// Exact zeros
 		assertEquals(zero, zero.setScale(2, RoundingMode.HALF_UP));
 		
@@ -615,7 +615,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test rounding with unnecessary mode should throw exception")
-	void testRoundingUnnecessary() {
+	public void testRoundingUnnecessary() {
 
 		assertThrows(ArithmeticException.class, () -> pi.setScale(0, RoundingMode.UNNECESSARY));
 
@@ -625,7 +625,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test equals")
-	void testEqualsAndHashCode() {
+	public void testEqualsAndHashCode() {
 		Digit digit1 = new Digit("123.45");
 		Digit digit2 = new Digit("123.45");
 		Digit digit3 = new Digit("123.46");
@@ -654,7 +654,7 @@ class DigitTest {
 		"0000123.45600, 123.456"
 	})
 	@DisplayName("Parameterized number creation and representation")
-	void testParameterizedNumberCreation(String input, String expected) {
+	public void testParameterizedNumberCreation(String input, String expected) {
 
 		Digit digit = new Digit(input);
 		assertEquals(expected, digit.stringValue());
@@ -669,7 +669,7 @@ class DigitTest {
 		"100, 50, 150"
 	})
 	@DisplayName("Parameterized addition tests")
-	void testParameterizedAddition(String a, String b, String expected) {
+	public void testParameterizedAddition(String a, String b, String expected) {
 		Digit digitA = new Digit(a);
 		Digit digitB = new Digit(b);
 		assertEquals(new Digit(expected), digitA.add(digitB));
@@ -685,7 +685,7 @@ class DigitTest {
 		"625, 625, 390625"
 	})
 	@DisplayName("Parameterized multiplication tests")
-	void testParameterizedMultiplication(String a, String b, String expected) {
+	public void testParameterizedMultiplication(String a, String b, String expected) {
 
 		Digit digitA = new Digit(a);
 		Digit digitB = new Digit(b);
@@ -696,7 +696,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test very large and very small numbers")
-	void testExtremeNumbers() {
+	public void testExtremeNumbers() {
 		// Very large number
 		String largeInt = "123456789012345678901234567890";
 		Digit large = new Digit(largeInt + ".1234567890123456789");
@@ -711,7 +711,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test number normalization")
-	void testNumberNormalization() {
+	public void testNumberNormalization() {
 		assertEquals("123", new Digit("0000123").integerPart);
 		assertEquals("000456", new Digit("123.000456000").decimalPart);
 		assertEquals("0", new Digit("0000").integerPart);
@@ -720,7 +720,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test sign handling")
-	void testSignHandling() {
+	public void testSignHandling() {
 		// Positive sign explicit
 		Digit explicitPositive = new Digit("+123.456");
 		assertFalse(explicitPositive.isNegative);
@@ -738,7 +738,7 @@ class DigitTest {
 
 	@Test
 	@DisplayName("Test performance with multiple operations")
-	void testPerformance() {
+	public void testPerformance() {
 		Digit result = new Digit("1");
 
 		// Chain multiple operations
@@ -748,4 +748,5 @@ class DigitTest {
 		
 		assertEquals(new Digit("11"), result);
 	}
+
 }

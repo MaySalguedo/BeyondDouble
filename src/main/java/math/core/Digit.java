@@ -1,17 +1,10 @@
 package math.core;
 
-import java.lang.Number;
-import java.lang.NumberFormatException;
-
 import java.math.RoundingMode;
 
-import java.util.concurrent.ExecutionException;
-
-import math.core.interfaces.EnhancedOperable;
 import math.core.exceptions.IllegalNumberFormatException;
 import math.core.exceptions.UndeterminedException;
-import math.core.Notationer;
-import math.core.Operationer;
+import math.core.interfaces.EnhancedOperable;
 
 /**
 
@@ -20,7 +13,7 @@ import math.core.Operationer;
 	Represents arbitrary-precision decimal numbers with configurable notation formatting.
 	This class provides immutable numeric values that can exceed primitive type limits,
 	along with comprehensive arithmetic operations, comparisons, and formatting capabilities.
-	
+
 	<p><b>Key Features:</b></p>
 	<ul>
 
@@ -47,7 +40,7 @@ import math.core.Operationer;
 		<tr><td>Precision Control</td><td>setScale (rounding modes), inverse (precision)</td></tr>
 
 	</table>
-	
+
 	<p><b>Technical Implementation Notes:</b></p>
 	<ul>
 
@@ -345,7 +338,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		Implements the {@code String format()} function from extended class Notationer to print the number on a 
 		readable notation using the attributes {@code this.integerPart}, {@code this.decimalPart} and {@code this.notation} 
 		as parameters for such function.
-		
+
 		The return values will be either negative or positive depending on the state of the attribute {@code this.isNegative}.
 
 		@return String Returns a full notationed readable number.
@@ -517,7 +510,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
-		
+
 		Digit other = (Digit) obj;
 		return this.compareTo(other)==0;
 
@@ -1251,7 +1244,7 @@ public class Digit extends Number implements EnhancedOperable<Digit>{
 		Gets the module between two {@code Digit} numbers logicly and sequentially.
 
 		<br><br>{@literal a mod b = |a| - |b| * FLOOR(|a|/|b|)}
-		
+
 		<br><br>The sign of the result will be the original sign from {@literal a}.
 
 		<br><br><b>Usage Example</b>
