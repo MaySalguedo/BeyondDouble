@@ -2,7 +2,7 @@ package math.core;
 
 /**
 
-	Manages the format and convertion between differents numeric notations. 
+	Manages the format and convertion between differents numeric notations.
 	Intended to be used only as a stakeholder manager for its functions.<br><br>
 
 	Provides comprehensive number formatting, validation, and conversion utilities for different numeric notations.

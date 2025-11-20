@@ -1,15 +1,13 @@
 package math.core;
 
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import java.util.ArrayList;
-
 /**
 
-	Manages the operations and results of the four basic mathemathic operations. 
+	Manages the operations and results of the four basic mathemathic operations.
 	Intended to be only used as a stakeholder manager for its functions.<br><br>
 
 	Provides core arithmetic operations for arbitrary-precision integer arithmetic using string-based number representation.
@@ -324,29 +322,20 @@ public class Operationer{
 
 		int arrayLength = integers.length;
 
-		if (arrayLength==1){
+		return switch (arrayLength) {
 
-			return integers[0];
-
-		}else if (arrayLength==2){
-
-			return this.addTwoTogether(integers[0], integers[1], true);
-
-		}else if (arrayLength==3){
-
-			return this.addTwoTogether(this.addTwoTogether(
+			case 1 -> integers[0];
+			case 2 -> this.addTwoTogether(integers[0], integers[1], true);
+			case 3 -> this.addTwoTogether(this.addTwoTogether(
 
 				integers[0],
 				integers[1],
 				true
 
 			), integers[2], true);
+			default -> asyncAdditionRecursive(integers).join();
 
-		}else{
-
-			return asyncAdditionRecursive(integers).join();
-
-		}
+		};
 
 	}
 

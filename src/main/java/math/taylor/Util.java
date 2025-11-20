@@ -1,15 +1,7 @@
 package math.taylor;
 
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Executors;
-
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
 
 import math.core.Digit;
 

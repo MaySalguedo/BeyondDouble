@@ -42,7 +42,7 @@ public class UndeterminedException extends ArithmeticException {
 		Constructs an UndeterminedException with the specified detail message.
 
 		<p>The message should clearly describe the format violation and, where possible, include the invalid input.</p>
-		
+
 		@param message The detail message explaining the format violation
 		@since v0.0.1
 

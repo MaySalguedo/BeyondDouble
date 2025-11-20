@@ -41,7 +41,7 @@ public class IllegalNumberFormatException extends NumberFormatException{
 		Constructs an IllegalNumberFormatException with the specified detail message.
 
 		<p>The message should clearly describe the format violation and, where possible, include the invalid input string.</p>
-		
+
 		@param message The detail message explaining the format violation
 		@since v0.0.1
 
