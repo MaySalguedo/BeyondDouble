@@ -62,3 +62,22 @@ mvn clean verify jacoco:report
 #Coverage report folder located at .\target\site\jacoco\index.html
 
 ```
+
+## Local CI/CD Testing with act
+
+You can test the GitHub Actions workflow locally using [nektos/act](https://github.com/nektos/act).
+
+### Prerequisites
+- Install [Docker](https://docs.docker.com/get-docker/)
+- Install [act](https://github.com/nektos/act#installation)
+
+### Usage
+```bash
+# Run the CI workflow locally
+act
+
+# Run with specific workflow file
+act -W .github/workflows/ci.yml
+
+# Run with verbose output
+act -v
