@@ -48,7 +48,7 @@
 - Shows actual vs required coverage percentages
 - Failed rules are listed with specific coverage metrics
 ![Failure](assets/failure.jpeg)
-![Success](assets/success.jpeg)
+![Success](assets/sucess.jpeg)
 ### Successful vs Failed Run Differences
 
 **Successful Run**:
