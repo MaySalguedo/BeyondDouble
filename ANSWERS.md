@@ -47,8 +47,8 @@
 - JaCoCo reports "Coverage checks have not been met"
 - Shows actual vs required coverage percentages
 - Failed rules are listed with specific coverage metrics
-![Failure](assets/failure.jpg)
-![Success](assets/success.jpg)
+![Failure](assets/failure.jpeg)
+![Success](assets/success.jpeg)
 ### Successful vs Failed Run Differences
 
 **Successful Run**:
