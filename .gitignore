@@ -1,5 +1,6 @@
 *.class
 *.html
 *.js
+.secrets
 docs/
 target/

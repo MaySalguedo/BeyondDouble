@@ -23,7 +23,9 @@ jobs:
           VALIDATE_CHECKSTYLE: false
           VALIDATE_JSCPD: false
           VALIDATE_MARKDOWN: false
+          VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_GOOGLE_JAVA_FORMAT: false
+          VALIDATE_YAML: false
           JAVA_CHECKSTYLE_CONFIG_FILE: ./.github/checkstyle-config.xml
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

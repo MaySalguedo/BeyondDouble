@@ -1,4 +1,5 @@
 [![Maven](https://img.shields.io/badge/Apache-Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org)
+[![Licence: APACHE](https://img.shields.io/badge/License-APACHE-yellow?style=for-the-badge)](https://mit-license.org/)
 
 # BeyondDouble: Arbitrary-Precision Arithmetic based on Taylor Series
 BeyondDouble is a Java library that provides arbitrary-precision decimal arithmetic operations using 
