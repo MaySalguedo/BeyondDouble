@@ -1,6 +1,37 @@
+# Build files
+build/
+*.jar
 *.class
+
+# Gradle
+.gradle/
+
+# Generated files
 *.html
 *.js
+
+# IDE/Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Secrets and sensitive files
 .secrets
+
+# Documentation
 docs/
+
+# Maven
 target/
+
+# Lock files
+*.lock
+
+# macOS
+.DS_Store
+
+# Temporary files and logs
+*.log
+*.pid
+*.seed

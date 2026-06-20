@@ -1,0 +1,14 @@
+{
+  "ref": "refs/heads/main",
+  "before": "0000000000000000000000000000000000000000",
+  "after": "3333333333333333333333333333333333333333",
+  "repository": {
+    "full_name": "local/BeyondDouble",
+    "name": "BeyondDouble",
+    "default_branch": "main"
+  },
+  "head_commit": {
+    "id": "3333333333333333333333333333333333333333",
+    "message": "Test main branch CI event"
+  }
+}

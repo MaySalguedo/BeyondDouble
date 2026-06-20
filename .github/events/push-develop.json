@@ -1,0 +1,14 @@
+{
+  "ref": "refs/heads/develop",
+  "before": "0000000000000000000000000000000000000000",
+  "after": "2222222222222222222222222222222222222222",
+  "repository": {
+    "full_name": "local/BeyondDouble",
+    "name": "BeyondDouble",
+    "default_branch": "main"
+  },
+  "head_commit": {
+    "id": "2222222222222222222222222222222222222222",
+    "message": "Test develop branch CI event"
+  }
+}

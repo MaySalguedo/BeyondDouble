@@ -1,0 +1,102 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco'
+    id 'checkstyle'
+}
+
+group = 'BeyondDouble'
+version = '1.0-SNAPSHOT'
+
+java {
+    // Use the current JVM for compilation and runtime
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JUnit 5 (junit-bom 5.11.0)
+    testImplementation platform('org.junit:junit-bom:5.11.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+application {
+    mainClass = 'BeyondDouble.App'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'BeyondDouble.App'
+    }
+}
+
+test {
+    useJUnitPlatform()
+
+    // Ensure test discovery matches **/*Test.java pattern
+    include '**/*Test.class'
+
+    // Disable all workers for testing
+    maxParallelForks = 1
+
+    // Alternative JVM args to ensure proper classpath
+    systemProperty 'java.class.path', sourceSets.test.runtimeClasspath.asPath
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+checkstyle {
+    toolVersion = "10.17.0"
+    configFile = file(".github/checkstyle-config.xml")
+}
+
+tasks.named("checkstyleTest") {
+    enabled = false
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+
+    violationRules {
+        rule {
+            element = 'BUNDLE'
+
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+    }
+}
+
+tasks.register('verify') {
+    dependsOn jacocoTestCoverageVerification
+}
+
+// Hook verify task into build lifecycle
+build.dependsOn verify

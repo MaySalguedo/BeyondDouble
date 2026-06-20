@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+.github
+
+# Build artifacts
+target/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.c9/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+LICENSE.md
+docs/
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Gradle (if used)
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# CI/CD
+.github/workflows
+
+# Temporary files
+*.swp
+*.swo
+*~
+.tmp/

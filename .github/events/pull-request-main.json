@@ -1,0 +1,26 @@
+{
+  "action": "opened",
+  "number": 2,
+  "repository": {
+    "full_name": "local/BeyondDouble",
+    "name": "BeyondDouble",
+    "default_branch": "main"
+  },
+  "pull_request": {
+    "number": 2,
+    "head": {
+      "ref": "feature/release-check",
+      "sha": "5555555555555555555555555555555555555555",
+      "repo": {
+        "full_name": "local/BeyondDouble"
+      }
+    },
+    "base": {
+      "ref": "main",
+      "sha": "3333333333333333333333333333333333333333",
+      "repo": {
+        "full_name": "local/BeyondDouble"
+      }
+    }
+  }
+}
